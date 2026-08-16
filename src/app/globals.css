@@ -1,0 +1,142 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-brand-3: var(--brand-3);
+  --color-accent-blue: var(--accent-blue);
+  --color-destructive: var(--destructive);
+
+  --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Brand */
+  --brand: oklch(0.58 0.22 25); /* #E11B22 */
+  --brand-2: oklch(0.66 0.22 25); /* #FF4D4D */
+  --brand-3: oklch(0.72 0.19 45); /* #FF7A45 */
+  --accent-blue: oklch(0.62 0.18 250); /* #2F80ED */
+
+  /* Neutrals - warm editorial off-white */
+  --ink: oklch(0.17 0.01 60); /* warm near-black */
+  --ink-soft: oklch(0.42 0.01 60);
+  --surface: oklch(0.985 0.008 75); /* warm off-white #F8F5EF feel */
+  --surface-2: oklch(0.965 0.012 75); /* slightly warmer */
+  --line: oklch(0.9 0.012 75);
+
+  --background: var(--surface);
+  --foreground: var(--ink);
+  --destructive: oklch(0.6 0.22 25);
+
+  --gradient-brand: linear-gradient(135deg, #e11b22 0%, #ff4d4d 55%, #ff7a45 100%);
+  --gradient-brand-soft: linear-gradient(
+    135deg,
+    oklch(0.58 0.22 25 / 0.08),
+    oklch(0.72 0.19 45 / 0.08)
+  );
+  --shadow-elevated: 0 30px 60px -20px oklch(0.16 0 0 / 0.18), 0 8px 20px -8px oklch(0.16 0 0 / 0.08);
+  --shadow-brand: 0 20px 60px -15px oklch(0.6 0.22 30 / 0.45);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    font-weight: 700;
+  }
+  .font-serif-display {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--brand);
+    color: #fff;
+  }
+}
+
+@utility bg-brand-gradient {
+  background-image: var(--gradient-brand);
+}
+@utility text-brand-gradient {
+  background-image: var(--gradient-brand);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+@utility shadow-brand {
+  box-shadow: var(--shadow-brand);
+}
+@utility shadow-elevated {
+  box-shadow: var(--shadow-elevated);
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(2deg);
+  }
+}
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@utility animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 12s ease infinite;
+}
+@utility animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+@utility animate-marquee {
+  animation: marquee 40s linear infinite;
+}
