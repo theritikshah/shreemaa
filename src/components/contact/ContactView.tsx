@@ -12,27 +12,7 @@ import {
   CheckCircle2,
   Globe,
 } from "lucide-react";
-
-// lucide-react dropped brand/logo marks; small inline replacements kept in the same stroke style.
-function LinkedinIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect width="4" height="12" x="2" y="9" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
-  );
-}
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={className}>
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <path d="M17.5 6.5h.01" />
-    </svg>
-  );
-}
+import { LinkedinIcon, InstagramIcon } from "@/components/icons/BrandIcons";
 import { z } from "zod";
 import { toast } from "sonner";
 

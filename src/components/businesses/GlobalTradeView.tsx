@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  ArrowUpRight,
   Globe2,
   Smartphone,
   Headphones,
@@ -177,40 +176,6 @@ export function GlobalTradeView() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="relative overflow-hidden rounded-3xl bg-ink text-white p-10 md:p-16">
-            <div className="absolute inset-0 bg-brand-gradient opacity-20" />
-            <div className="absolute -bottom-32 -right-20 h-[400px] w-[400px] rounded-full bg-white/10 blur-3xl" />
-            <div className="relative flex flex-col md:flex-row md:items-end gap-8 md:justify-between">
-              <div className="max-w-xl">
-                <h3 className="text-3xl md:text-5xl font-bold tracking-tight leading-[1.05]">
-                  Need a shipment?{" "}
-                  <span className="italic font-display text-white/90">
-                    Let&apos;s talk.
-                  </span>
-                </h3>
-                <p className="mt-4 text-white/70">
-                  Share the product, quantity and destination. We&apos;ll come back
-                  with pricing and a timeline.
-                </p>
-              </div>
-              <div className="flex-shrink-0">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-3 bg-white text-ink pl-6 pr-2 py-2 rounded-full text-sm font-semibold hover:bg-white/90 transition"
-                >
-                  Get in touch
-                  <span className="h-10 w-10 rounded-full bg-ink text-white flex items-center justify-center group-hover:bg-brand transition">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

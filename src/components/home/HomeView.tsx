@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, ShoppingBag, Truck, Cpu, Globe2, Leaf, MapPin, Building2 } from "lucide-react";
+import { ArrowUpRight, ShoppingBag, Truck, Cpu, Globe2, Leaf } from "lucide-react";
 import { Counter } from "@/components/Counter";
 import warehouse from "@/assets/infra-warehouse.jpg";
 import fulfillment from "@/assets/infra-fulfillment.jpg";
@@ -301,32 +301,6 @@ export function HomeView() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="relative overflow-hidden rounded-[2rem] bg-brand-gradient animate-gradient p-12 md:p-20 text-white">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,255,255,0.3),transparent_60%)]" />
-            <div className="relative max-w-3xl">
-              <h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-                Ready to launch or scale in India?
-              </h2>
-              <p className="mt-6 text-lg md:text-xl text-white/90 max-w-xl">
-                Let&apos;s discuss how SMG&apos;s commerce network can accelerate your brand&apos;s growth across the country.
-              </p>
-              <div className="mt-10 flex flex-wrap gap-3">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-ink px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white/90 transition-colors">
-                  Start the conversation <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link href="/about" className="inline-flex items-center gap-2 bg-white/10 border border-white/30 px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white/20 transition-colors">
-                  About SMG
-                </Link>
-              </div>
-            </div>
-            <Building2 className="absolute -right-12 -bottom-12 h-72 w-72 text-white/10" />
-            <MapPin className="absolute right-32 top-12 h-12 w-12 text-white/20 animate-float-slow" />
-          </div>
-        </div>
-      </section>
     </>
   );
 }

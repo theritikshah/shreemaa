@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  ArrowUpRight,
   ShoppingBag,
   Truck,
   PackageCheck,
@@ -284,38 +283,6 @@ export function MarketplaceView() {
         </div>
       </section>
 
-      {/* CTA — large editorial */}
-      <section className="pb-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="relative overflow-hidden rounded-3xl bg-ink text-white p-12 md:p-20">
-            <div className="absolute inset-0 bg-brand-gradient opacity-25" />
-            <div className="absolute -bottom-32 -right-20 h-[480px] w-[480px] rounded-full bg-white/10 blur-3xl" />
-            <div className="absolute -top-24 -left-24 h-[320px] w-[320px] rounded-full bg-brand/30 blur-3xl" />
-            <div className="relative grid grid-cols-1 md:grid-cols-12 gap-10 items-end">
-              <div className="md:col-span-8">
-                <div className="text-xs uppercase tracking-[0.2em] text-white/60 font-semibold">Let&apos;s talk</div>
-                <h3 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.02]">
-                  Launching, scaling or rescuing a <span className="italic font-display text-white/90">marketplace business?</span>
-                </h3>
-                <p className="mt-6 text-white/75 max-w-xl text-lg">
-                  Tell us about the brand, the categories and the goal. Our marketplace team will take it from there.
-                </p>
-              </div>
-              <div className="md:col-span-4 flex md:justify-end">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-3 bg-white text-ink pl-6 pr-2 py-2 rounded-full text-sm font-semibold hover:bg-white/90 transition"
-                >
-                  Get in touch
-                  <span className="h-10 w-10 rounded-full bg-ink text-white flex items-center justify-center group-hover:bg-brand transition">
-                    <ArrowUpRight className="h-4 w-4" />
-                  </span>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }

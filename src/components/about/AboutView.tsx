@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowUpRight, Plus, Minus } from "lucide-react";
+import { Plus, Minus } from "lucide-react";
 import { useRef, useEffect, useState, useMemo } from "react";
 import { geoNaturalEarth1, geoPath, geoInterpolate } from "d3-geo";
 import { feature } from "topojson-client";
@@ -254,45 +253,6 @@ export function AboutView() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="bg-ink text-white py-28 md:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-end">
-            <div className="md:col-span-8">
-              <h3 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] max-w-[18ch]">
-                Grow with us. <span className="font-serif-display italic text-brand">Wherever you are.</span>
-              </h3>
-              <p className="mt-6 text-lg text-white/70 max-w-2xl leading-relaxed">
-                Tell us what you are building. A new market, a new category or a long-term partnership. We will reply within two business days.
-              </p>
-            </div>
-            <div className="md:col-span-4 flex md:justify-end">
-              <Link
-                href="/contact"
-                className="group inline-flex items-center gap-3 text-lg font-medium bg-white text-ink px-6 py-3.5 rounded-full hover:bg-brand hover:text-white transition-colors"
-              >
-                Get in touch
-                <ArrowUpRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="mt-16 pt-10 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-8 text-sm text-white/60">
-            <div>
-              <span className="block text-white font-medium">Business</span>
-              <a href="mailto:contact@shrimaa.com" className="hover:text-white">contact@shrimaa.com</a>
-            </div>
-            <div>
-              <span className="block text-white font-medium">Careers</span>
-              <a href="mailto:careers@shrimaa.com" className="hover:text-white">careers@shrimaa.com</a>
-            </div>
-            <div>
-              <span className="block text-white font-medium">Partnerships</span>
-              <a href="mailto:partner@shrimaa.com" className="hover:text-white">partner@shrimaa.com</a>
-            </div>
-          </div>
-        </div>
-      </section>
     </>
   );
 }
