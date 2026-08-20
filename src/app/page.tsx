@@ -17,3 +17,6 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return <HomeView />;
 }
+
+
+// git fix
