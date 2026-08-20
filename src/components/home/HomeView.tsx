@@ -4,13 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ShoppingBag, Truck, Cpu, Globe2, Leaf } from "lucide-react";
+import { ArrowUpRight, ShoppingBag, Truck, Cpu, Globe2, Leaf, Package, Building2, Ship, Store } from "lucide-react";
 import { Counter } from "@/components/Counter";
 import warehouse from "@/assets/infra-warehouse.jpg";
-import fulfillment from "@/assets/infra-fulfillment.jpg";
-import office from "@/assets/infra-office.jpg";
-import port from "@/assets/infra-port.jpg";
-import retail from "@/assets/infra-retail.jpg";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
 
@@ -23,42 +19,43 @@ const businesses = [
 ];
 
 export function HomeView() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [mouse, setMouse] = useState({ x: 0.5, y: 0.4 });
-
   return (
     <>
-      {/* HERO - editorial, cursor-spotlight */}
-      <section
-        ref={heroRef}
-        onMouseMove={(e) => {
-          const r = heroRef.current?.getBoundingClientRect();
-          if (!r) return;
-          setMouse({ x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height });
-        }}
-        className="relative overflow-hidden bg-surface text-ink min-h-screen flex items-end pt-32 pb-16"
-      >
-        {/* Cursor-follow spotlight */}
+      {/* HERO - dark, ambient glows */}
+      <section className="relative overflow-hidden bg-ink text-white min-h-screen flex items-end pt-32 pb-16">
+        {/* Ambient glows */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(600px circle at ${mouse.x * 100}% ${mouse.y * 100}%, oklch(0.58 0.22 25 / 0.10), transparent 55%)`,
-          }}
+          className="pointer-events-none absolute -top-[200px] -left-[120px] h-[640px] w-[640px] rounded-full bg-[rgba(225,27,34,0.28)] blur-[160px]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -bottom-[240px] -right-[120px] h-[680px] w-[680px] rounded-full bg-[rgba(255,122,69,0.18)] blur-[180px]"
         />
         {/* Hairline grid */}
         <div
           aria-hidden
-          className="absolute inset-0 opacity-[0.35]"
+          className="absolute inset-0 opacity-[0.08]"
           style={{
             backgroundImage:
-              "linear-gradient(to right, oklch(0.17 0.01 60 / 0.06) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.17 0.01 60 / 0.06) 1px, transparent 1px)",
+              "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)",
             backgroundSize: "80px 80px",
-            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
+            maskImage: "radial-gradient(ellipse at 40% 60%, black 30%, transparent 78%)",
+            WebkitMaskImage: "radial-gradient(ellipse at 40% 60%, black 30%, transparent 78%)",
           }}
         />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full">
+          {/* Eyebrow badge */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-white/75"
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Est. 1997 · Commerce, distribution &amp; trade
+          </motion.div>
+
           {/* Headline */}
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
@@ -68,57 +65,77 @@ export function HomeView() {
           >
             The launchpad
             <br />
-            for <span className="font-serif-display italic text-brand">global brands</span>.
+            for{" "}
+            <span className="font-serif-display italic text-brand-gradient animate-gradient">
+              global brands
+            </span>
+            .
           </motion.h1>
 
-          {/* Bottom row: subtitle + CTAs */}
+          {/* Bottom row: subtitle + CTAs, and stats */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-14 max-w-xl"
+            className="mt-14 flex flex-wrap items-end justify-between gap-16"
           >
-            <p className="text-base md:text-lg text-ink-soft leading-relaxed">
-              A global commerce network, helping the world&apos;s leading brands launch, scale and operate across e-commerce, retail, distribution and international trade.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              <Link
-                href="/businesses/marketplace-operations"
-                className="group inline-flex items-center gap-2 bg-ink text-white pl-5 pr-2 py-2 rounded-full text-sm font-medium hover:bg-ink/85 transition-colors"
-              >
-                Explore businesses
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink group-hover:bg-brand group-hover:text-white transition-colors">
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </span>
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 border border-ink/15 text-ink px-5 py-2 rounded-full text-sm font-medium hover:bg-ink hover:text-white transition-colors"
-              >
-                Partner with us
-              </Link>
+            <div className="max-w-xl">
+              <p className="text-base md:text-lg text-white/70 leading-relaxed">
+                A global commerce network, helping the world&apos;s leading brands launch, scale and operate across e-commerce, retail, distribution and international trade.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-2">
+                <Link
+                  href="/businesses/marketplace-operations"
+                  className="inline-flex items-center gap-2 bg-white text-ink pl-5 pr-2 py-2 rounded-full text-sm font-medium hover:bg-white/90 transition-colors"
+                >
+                  Explore businesses
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-brand text-white">
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </span>
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 border border-white/20 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-white/10 transition-colors"
+                >
+                  Partner with us
+                </Link>
+              </div>
+            </div>
+
+            <div className="grid w-full grid-cols-3 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:w-auto sm:min-w-[420px] lg:min-w-[520px]">
+              {[
+                ["300M+", "Consumers"],
+                ["80K+", "Retailers"],
+                ["9", "Offices"],
+              ].map(([n, l]) => (
+                <div key={l} className="bg-ink px-6 py-5">
+                  <div className="font-display text-[28px] font-semibold tracking-[-0.025em]">{n}</div>
+                  <div className="mt-1 text-[10px] uppercase tracking-[0.18em] text-white/50">{l}</div>
+                </div>
+              ))}
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* TRUSTED BY */}
-      <section className="py-14 bg-surface-2 border-y border-line overflow-hidden">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 mb-8">
-          <p className="text-center text-[10px] uppercase tracking-[0.28em] text-ink-soft font-medium">
+      <section className="relative py-14 bg-ink border-y border-white/[0.08] overflow-hidden">
+        <div aria-hidden className="absolute inset-0 bg-white/[0.03] pointer-events-none" />
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-10 mb-8">
+          <p className="text-center text-[10px] uppercase tracking-[0.28em] text-white/50 font-medium">
             Trusted by global brands & India&apos;s largest marketplaces
           </p>
         </div>
         <div className="relative">
-          <div className="flex gap-16 animate-marquee whitespace-nowrap">
+          <div className="flex w-max gap-16 animate-marquee whitespace-nowrap">
             {[...brands, ...brands].map((b, i) => (
-              <span key={i} className="text-xl md:text-2xl font-serif-display italic text-ink/35 hover:text-ink/80 transition-colors">
+              <span key={i} className="text-xl md:text-2xl font-serif-display italic text-white/35">
                 {b}
               </span>
             ))}
           </div>
-          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-surface-2 to-transparent pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-surface-2 to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-ink to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-ink to-transparent pointer-events-none" />
         </div>
       </section>
 
@@ -242,60 +259,43 @@ export function HomeView() {
       </section>
 
       {/* INFRASTRUCTURE */}
-      <section className="py-28 md:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
-            <div className="lg:col-span-7">
+      <section className="bg-surface-2 overflow-hidden">
+        <div className="pt-28 md:pt-36">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+            <div className="lg:col-span-8">
               <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Infrastructure</div>
-              <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">
-                Owned. Operated.<br />Built for India.
+              <h2 className="mt-3 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1]">
+                The backbone<br />behind the brands.
               </h2>
             </div>
-            <p className="lg:col-span-5 text-ink-soft text-lg leading-relaxed self-end">
-              Warehouses, fulfillment centers and offices across the country. The physical backbone behind every brand we serve.
+            <p className="lg:col-span-4 text-ink-soft text-[17px] leading-[1.65]">
+              Warehouses, fulfillment centers and offices across the country — owned, operated and accountable.
             </p>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div className="md:col-span-7 relative rounded-3xl overflow-hidden group h-96">
-              <Image src={warehouse} alt="Warehouse" fill sizes="(min-width: 768px) 58vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Distribution hub</div>
-                <div className="text-2xl font-bold mt-1">National warehousing footprint</div>
-              </div>
-            </div>
-            <div className="md:col-span-5 relative rounded-3xl overflow-hidden group h-96">
-              <Image src={fulfillment} alt="Fulfillment center" fill sizes="(min-width: 768px) 42vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Fulfillment</div>
-                <div className="text-2xl font-bold mt-1">70+ centers</div>
-              </div>
-            </div>
-            <div className="md:col-span-4 relative rounded-3xl overflow-hidden group h-72">
-              <Image src={office} alt="Office" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Headquarters</div>
-                <div className="text-xl font-bold mt-1">Mumbai · India</div>
-              </div>
-            </div>
-            <div className="md:col-span-4 relative rounded-3xl overflow-hidden group h-72">
-              <Image src={port} alt="Port" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Global trade</div>
-                <div className="text-xl font-bold mt-1">Cross-border logistics</div>
-              </div>
-            </div>
-            <div className="md:col-span-4 relative rounded-3xl overflow-hidden group h-72">
-              <Image src={retail} alt="Retail" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Retail</div>
-                <div className="text-xl font-bold mt-1">80,000+ stores reached</div>
-              </div>
+        <div className="mt-16 bg-ink">
+          <InfrastructureBanner />
+
+          <div className="px-6 lg:px-10 pb-20 md:pb-24">
+            <div className="mx-auto max-w-7xl border-t border-white/[0.14] grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10">
+              {[
+                { icon: Package, n: "70+", label: "Fulfillment centers", desc: "Positioned close to demand across 21 cities." },
+                { icon: Building2, n: "9", label: "Global offices", desc: "Gurgaon HQ, with teams across five regions." },
+                { icon: Ship, n: "5", label: "Trade regions", desc: "Sourcing and export lanes, port to shelf." },
+                { icon: Store, n: "80K+", label: "Retailers served", desc: "From metros through to deep tier-3 towns." },
+              ].map((s) => (
+                <div key={s.label} className="bg-ink p-6 md:p-8">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 flex-none items-center justify-center rounded-[10px] border border-white/[0.22] text-brand-3">
+                      <s.icon className="h-[22px] w-[22px]" />
+                    </div>
+                    <div className="font-display text-[30px] font-semibold tracking-[-0.03em] text-white">{s.n}</div>
+                  </div>
+                  <div className="mt-5 text-[10px] uppercase tracking-[0.2em] text-brand-3 font-semibold">{s.label}</div>
+                  <div className="mt-2 max-w-[30ch] text-[13px] leading-[1.65] text-white/60">{s.desc}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -337,6 +337,76 @@ const eras = [
 ];
 
 const kineticWords = ["commerce.", "distribution.", "marketplaces.", "exports."];
+
+const PARALLAX_DEPTH = 60;
+
+function InfrastructureBanner() {
+  const frameRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    let ticking = false;
+    const park = () => {
+      const frame = frameRef.current;
+      const img = imgRef.current;
+      if (!frame || !img) return;
+      const r = frame.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      // -1 when the frame sits below the fold, +1 when it has passed above it
+      const centered = (vh / 2 - (r.top + r.height / 2)) / (vh / 2 + r.height / 2);
+      img.style.transform = `translate3d(0, ${(-centered * PARALLAX_DEPTH).toFixed(2)}px, 0)`;
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        park();
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    park();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return (
+    <div ref={frameRef} className="relative h-[520px] overflow-hidden">
+      <div ref={imgRef} className="absolute -top-[25%] left-0 h-[150%] w-full will-change-transform">
+        <Image src={warehouse} alt="Warehouse" fill sizes="100vw" className="object-cover" priority />
+      </div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_top,oklch(0.17_0.01_60)_0%,oklch(0.17_0.01_60/0.55)_40%,oklch(0.17_0.01_60/0.1)_85%)]" />
+      <div className="absolute inset-x-0 bottom-0 px-6 pb-10 lg:px-10 lg:pb-10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8 text-white">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.2em] text-white/70">
+              Bhiwandi · Gurgaon · Hyderabad · Kolkata
+            </div>
+            <div className="mt-2.5 font-display text-[28px] md:text-[34px] font-semibold tracking-[-0.03em]">
+              300K+ sq ft, owned and operated
+            </div>
+          </div>
+          <Link
+            href="/businesses/marketplace-operations"
+            className="inline-flex flex-none items-center gap-2 rounded-full bg-white py-2 pl-5 pr-2 text-sm font-medium text-ink hover:bg-white/90 transition-colors"
+          >
+            See the network
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand text-white">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function WhoWeAre() {
   const [active, setActive] = useState(0);
