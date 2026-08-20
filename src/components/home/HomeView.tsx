@@ -4,25 +4,52 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ShoppingBag, Truck, Cpu, Globe2, Leaf, Package, Building2, Ship, Store } from "lucide-react";
+import { ArrowUpRight, Package, Building2, Ship, Store, Users, Factory, Truck, TrendingUp } from "lucide-react";
 import { Counter } from "@/components/Counter";
+import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
 import warehouse from "@/assets/infra-warehouse.jpg";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
 
-const businesses = [
-  { to: "/businesses/marketplace-operations", title: "Marketplace Operations", desc: "End-to-end seller services across Amazon, Flipkart and India's leading marketplaces.", icon: ShoppingBag, kpi: "55,000+ orders / month" },
-  { to: "/businesses/distribution-network", title: "Distribution Network", desc: "Delivering brands to 80,000+ retailers through 600+ distribution partners.", icon: Truck, kpi: "80% pincode coverage" },
-  { to: "/businesses/commerce-trading", title: "Commerce Trading", desc: "Large-scale procurement and trading of smartphones and consumer electronics.", icon: Cpu, kpi: "100+ manufacturers" },
-  { to: "/businesses/global-trade", title: "Global Trade · Rio World", desc: "Trusted cross-border partnerships powering exports and international commerce.", icon: Globe2, kpi: "Cross-border" },
-  { href: "https://www.oyugreen.com", title: "Sustainability · OYU Green", desc: "Carbon markets and climate solutions for the next decade of growth.", icon: Leaf, kpi: "Climate forward" },
-];
+const LERP_EASE = 0.08;
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 export function HomeView() {
+  const heroRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const targetPos = useRef({ x: 0.5, y: 0.4 });
+  const currentPos = useRef({ x: 0.5, y: 0.4 });
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    let rafId: number;
+    const paint = () => {
+      currentPos.current.x = lerp(currentPos.current.x, targetPos.current.x, LERP_EASE);
+      currentPos.current.y = lerp(currentPos.current.y, targetPos.current.y, LERP_EASE);
+      if (glowRef.current) {
+        const { x, y } = currentPos.current;
+        glowRef.current.style.background = `radial-gradient(640px circle at ${x * 100}% ${y * 100}%, rgba(225,27,34,0.10), transparent 60%)`;
+      }
+      rafId = requestAnimationFrame(paint);
+    };
+    rafId = requestAnimationFrame(paint);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
   return (
     <>
       {/* HERO - dark, ambient glows */}
-      <section className="relative overflow-hidden bg-ink text-white min-h-screen flex items-end pt-32 pb-16">
+      <section
+        ref={heroRef}
+        onMouseMove={(e) => {
+          const r = heroRef.current?.getBoundingClientRect();
+          if (!r) return;
+          targetPos.current = { x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height };
+        }}
+        className="relative overflow-hidden bg-ink text-white min-h-screen flex items-end pt-32 pb-16"
+      >
         {/* Ambient glows */}
         <div
           aria-hidden
@@ -32,6 +59,8 @@ export function HomeView() {
           aria-hidden
           className="pointer-events-none absolute -bottom-[240px] -right-[120px] h-[680px] w-[680px] rounded-full bg-[rgba(255,122,69,0.18)] blur-[180px]"
         />
+        {/* Soft cursor-follow light, eased with lerp */}
+        <div ref={glowRef} aria-hidden className="pointer-events-none absolute inset-0" />
         {/* Hairline grid */}
         <div
           aria-hidden
@@ -118,16 +147,13 @@ export function HomeView() {
         </div>
       </section>
 
-      {/* TRUSTED BY */}
-      <section className="relative py-14 bg-ink border-y border-white/[0.08] overflow-hidden">
-        <div aria-hidden className="absolute inset-0 bg-white/[0.03] pointer-events-none" />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10 mb-8">
-          <p className="text-center text-[10px] uppercase tracking-[0.28em] text-white/50 font-medium">
-            Trusted by global brands & India&apos;s largest marketplaces
-          </p>
+      {/* MARQUEE BRANDS */}
+      <section className="py-10 border-y border-line bg-ink text-white overflow-hidden">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10 mb-4">
+          <div className="text-[11px] uppercase tracking-[0.2em] text-white/50">Trusted by market leaders</div>
         </div>
-        <div className="relative">
-          <div className="flex w-max gap-16 animate-marquee whitespace-nowrap">
+        <div className="relative flex overflow-x-hidden">
+          <div className="py-2 animate-marquee whitespace-nowrap flex items-center gap-12 sm:gap-16">
             {[...brands, ...brands].map((b, i) => (
               <span key={i} className="text-xl md:text-2xl font-serif-display italic text-white/35">
                 {b}
@@ -140,7 +166,7 @@ export function HomeView() {
       </section>
 
       {/* IMPACT AT SCALE */}
-      <section className="py-28 md:py-36">
+      <section className="py-28 md:py-36 bg-surface">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
@@ -154,21 +180,20 @@ export function HomeView() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line rounded-3xl overflow-hidden border border-line">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
             {[
-              { n: 100, suf: "M+", label: "Consumers reached" },
-              { n: 80000, suf: "+", label: "Retailers in network" },
-              { n: 100, suf: "+", label: "Manufacturers" },
-              { n: 600, suf: "+", label: "Distribution partners" },
-              { n: 4000, suf: "+ Cr", label: "Annual revenue (₹)" },
-              { n: 150, suf: "K+ sq ft", label: "Infrastructure" },
-            ].map((s) => (
-              <div key={s.label} className="bg-white p-10 hover:bg-surface-2 transition-colors group">
-                <div className="text-5xl md:text-6xl font-bold font-display tracking-tight whitespace-nowrap">
-                  <Counter to={s.n} suffix={s.suf} />
+              { v: <Counter to={100} suffix="M+" />, l: "Consumers reached" },
+              { v: <Counter to={80000} suffix="+" />, l: "Retailers in network" },
+              { v: <Counter to={100} suffix="+" />, l: "Manufacturers" },
+              { v: <Counter to={600} suffix="+" />, l: "Distribution partners" },
+              { v: <Counter prefix="₹" to={4000} suffix="+ Cr" />, l: "Annual revenue" },
+              { v: <Counter to={150} suffix="K+ sq ft" />, l: "Infrastructure" },
+            ].map((s, i) => (
+              <div key={i} className="bg-white p-8 md:p-10 hover:bg-surface-2 transition-colors duration-300">
+                <div className="font-display text-4xl md:text-5xl tracking-tight font-bold text-ink whitespace-nowrap">
+                  {s.v}
                 </div>
-                <div className="mt-3 text-sm text-ink-soft uppercase tracking-wider">{s.label}</div>
-                <div className="mt-6 h-0.5 w-10 bg-brand-gradient group-hover:w-24 transition-all duration-500" />
+                <div className="mt-4 text-xs uppercase tracking-[0.22em] text-ink-soft font-semibold">{s.l}</div>
               </div>
             ))}
           </div>
@@ -179,58 +204,7 @@ export function HomeView() {
       <WhoWeAre />
 
       {/* OUR BUSINESSES */}
-      <section className="py-28 md:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="max-w-3xl mb-16">
-            <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Our businesses</div>
-            <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">
-              Five businesses. One commerce engine.
-            </h2>
-            <p className="mt-5 text-lg text-ink-soft leading-relaxed">
-              From marketplace operations to global trade, every business is built to give partner brands deeper reach, faster scale and stronger execution in India.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {businesses.map((b, i) => {
-              const Icon = b.icon;
-              const isLarge = i === 0;
-              const cardClass = `group relative overflow-hidden rounded-3xl border border-line bg-white p-8 hover:shadow-elevated transition-all duration-500 hover:-translate-y-1 ${
-                isLarge ? "md:col-span-2 lg:row-span-2 lg:col-span-1" : ""
-              }`;
-              const cardContent = (
-                <>
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,rgba(225,27,34,0.08),transparent_60%)]" />
-                  <div className="relative">
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-brand">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-6 text-2xl md:text-3xl font-bold tracking-tight">{b.title}</h3>
-                    <p className="mt-3 text-ink-soft leading-relaxed">{b.desc}</p>
-                    <div className="mt-8 flex items-center justify-between">
-                      <span className="text-xs uppercase tracking-wider text-brand font-semibold">{b.kpi}</span>
-                      <ArrowUpRight className="h-5 w-5 text-ink/40 group-hover:text-brand group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                    </div>
-                  </div>
-                </>
-              );
-              const key = b.to || b.href;
-              if (b.href) {
-                return (
-                  <a key={key} href={b.href} target="_blank" rel="noopener noreferrer" className={cardClass}>
-                    {cardContent}
-                  </a>
-                );
-              }
-              return (
-                <Link key={key} href={b.to!} className={cardClass}>
-                  {cardContent}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <OurBusinessesSection />
 
       {/* WHY BRANDS CHOOSE SMG */}
       <section className="py-28 md:py-36 bg-surface-2">
