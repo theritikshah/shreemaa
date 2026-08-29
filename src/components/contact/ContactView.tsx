@@ -194,7 +194,7 @@ export function ContactView() {
             initial={{ x: 0 }}
             animate={{ x: "-50%" }}
             transition={{ duration: 32, ease: "linear", repeat: Infinity }}
-            className="flex whitespace-nowrap gap-12 text-[clamp(2rem,5vw,4rem)] font-display font-semibold tracking-tight"
+            className="flex w-max whitespace-nowrap gap-12 text-[clamp(2rem,5vw,4rem)] font-display font-semibold tracking-tight"
           >
             {Array.from({ length: 2 }).map((_, copy) => (
               <div key={copy} className="flex items-center gap-12">

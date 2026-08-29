@@ -4,23 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ShoppingBag, Truck, Cpu, Globe2, Leaf } from "lucide-react";
+import { ArrowUpRight, Package, Building2, Ship, Store } from "lucide-react";
 import { Counter } from "@/components/Counter";
+import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
 import warehouse from "@/assets/infra-warehouse.jpg";
-import fulfillment from "@/assets/infra-fulfillment.jpg";
-import office from "@/assets/infra-office.jpg";
-import port from "@/assets/infra-port.jpg";
-import retail from "@/assets/infra-retail.jpg";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
-
-const businesses = [
-  { to: "/businesses/marketplace-operations", title: "Marketplace Operations", desc: "End-to-end seller services across Amazon, Flipkart and India's leading marketplaces.", icon: ShoppingBag, kpi: "55,000+ orders / month" },
-  { to: "/businesses/distribution-network", title: "Distribution Network", desc: "Delivering brands to 80,000+ retailers through 600+ distribution partners.", icon: Truck, kpi: "80% pincode coverage" },
-  { to: "/businesses/commerce-trading", title: "Commerce Trading", desc: "Large-scale procurement and trading of smartphones and consumer electronics.", icon: Cpu, kpi: "100+ manufacturers" },
-  { to: "/businesses/global-trade", title: "Global Trade · Rio World", desc: "Trusted cross-border partnerships powering exports and international commerce.", icon: Globe2, kpi: "Cross-border" },
-  { href: "https://www.oyugreen.com", title: "Sustainability · OYU Green", desc: "Carbon markets and climate solutions for the next decade of growth.", icon: Leaf, kpi: "Climate forward" },
-];
 
 export function HomeView() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -123,7 +112,7 @@ export function HomeView() {
       </section>
 
       {/* IMPACT AT SCALE */}
-      <section className="py-28 md:py-36">
+      <section className="py-28 md:py-36 bg-surface">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
@@ -137,21 +126,20 @@ export function HomeView() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line rounded-3xl overflow-hidden border border-line">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
             {[
-              { n: 100, suf: "M+", label: "Consumers reached" },
-              { n: 80000, suf: "+", label: "Retailers in network" },
-              { n: 100, suf: "+", label: "Manufacturers" },
-              { n: 600, suf: "+", label: "Distribution partners" },
-              { n: 4000, suf: "+ Cr", label: "Annual revenue (₹)" },
-              { n: 150, suf: "K+ sq ft", label: "Infrastructure" },
-            ].map((s) => (
-              <div key={s.label} className="bg-white p-10 hover:bg-surface-2 transition-colors group">
-                <div className="text-5xl md:text-6xl font-bold font-display tracking-tight whitespace-nowrap">
-                  <Counter to={s.n} suffix={s.suf} />
+              { v: <Counter to={100} suffix="M+" />, l: "Consumers reached" },
+              { v: <Counter to={80000} suffix="+" />, l: "Retailers in network" },
+              { v: <Counter to={100} suffix="+" />, l: "Manufacturers" },
+              { v: <Counter to={600} suffix="+" />, l: "Distribution partners" },
+              { v: <Counter prefix="₹" to={4000} suffix="+ Cr" />, l: "Annual revenue" },
+              { v: <Counter to={150} suffix="K+ sq ft" />, l: "Infrastructure" },
+            ].map((s, i) => (
+              <div key={i} className="bg-white p-8 md:p-10 hover:bg-surface-2 transition-colors duration-300">
+                <div className="font-display text-4xl md:text-5xl tracking-tight font-bold text-ink whitespace-nowrap">
+                  {s.v}
                 </div>
-                <div className="mt-3 text-sm text-ink-soft uppercase tracking-wider">{s.label}</div>
-                <div className="mt-6 h-0.5 w-10 bg-brand-gradient group-hover:w-24 transition-all duration-500" />
+                <div className="mt-4 text-xs uppercase tracking-[0.22em] text-ink-soft font-semibold">{s.l}</div>
               </div>
             ))}
           </div>
@@ -162,58 +150,7 @@ export function HomeView() {
       <WhoWeAre />
 
       {/* OUR BUSINESSES */}
-      <section className="py-28 md:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="max-w-3xl mb-16">
-            <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Our businesses</div>
-            <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">
-              Five businesses. One commerce engine.
-            </h2>
-            <p className="mt-5 text-lg text-ink-soft leading-relaxed">
-              From marketplace operations to global trade, every business is built to give partner brands deeper reach, faster scale and stronger execution in India.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {businesses.map((b, i) => {
-              const Icon = b.icon;
-              const isLarge = i === 0;
-              const cardClass = `group relative overflow-hidden rounded-3xl border border-line bg-white p-8 hover:shadow-elevated transition-all duration-500 hover:-translate-y-1 ${
-                isLarge ? "md:col-span-2 lg:row-span-2 lg:col-span-1" : ""
-              }`;
-              const cardContent = (
-                <>
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,rgba(225,27,34,0.08),transparent_60%)]" />
-                  <div className="relative">
-                    <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient text-white shadow-brand">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <h3 className="mt-6 text-2xl md:text-3xl font-bold tracking-tight">{b.title}</h3>
-                    <p className="mt-3 text-ink-soft leading-relaxed">{b.desc}</p>
-                    <div className="mt-8 flex items-center justify-between">
-                      <span className="text-xs uppercase tracking-wider text-brand font-semibold">{b.kpi}</span>
-                      <ArrowUpRight className="h-5 w-5 text-ink/40 group-hover:text-brand group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                    </div>
-                  </div>
-                </>
-              );
-              const key = b.to || b.href;
-              if (b.href) {
-                return (
-                  <a key={key} href={b.href} target="_blank" rel="noopener noreferrer" className={cardClass}>
-                    {cardContent}
-                  </a>
-                );
-              }
-              return (
-                <Link key={key} href={b.to!} className={cardClass}>
-                  {cardContent}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <OurBusinessesSection />
 
       {/* WHY BRANDS CHOOSE SMG */}
       <section className="py-28 md:py-36 bg-surface-2">
@@ -242,60 +179,43 @@ export function HomeView() {
       </section>
 
       {/* INFRASTRUCTURE */}
-      <section className="py-28 md:py-36">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
-            <div className="lg:col-span-7">
+      <section className="bg-surface-2 overflow-hidden">
+        <div className="pt-28 md:pt-36">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+            <div className="lg:col-span-8">
               <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Infrastructure</div>
-              <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">
-                Owned. Operated.<br />Built for India.
+              <h2 className="mt-3 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1]">
+                The backbone<br />behind the brands.
               </h2>
             </div>
-            <p className="lg:col-span-5 text-ink-soft text-lg leading-relaxed self-end">
-              Warehouses, fulfillment centers and offices across the country. The physical backbone behind every brand we serve.
+            <p className="lg:col-span-4 text-ink-soft text-[17px] leading-[1.65]">
+              Warehouses, fulfillment centers and offices across the country — owned, operated and accountable.
             </p>
           </div>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <div className="md:col-span-7 relative rounded-3xl overflow-hidden group h-96">
-              <Image src={warehouse} alt="Warehouse" fill sizes="(min-width: 768px) 58vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Distribution hub</div>
-                <div className="text-2xl font-bold mt-1">National warehousing footprint</div>
-              </div>
-            </div>
-            <div className="md:col-span-5 relative rounded-3xl overflow-hidden group h-96">
-              <Image src={fulfillment} alt="Fulfillment center" fill sizes="(min-width: 768px) 42vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Fulfillment</div>
-                <div className="text-2xl font-bold mt-1">70+ centers</div>
-              </div>
-            </div>
-            <div className="md:col-span-4 relative rounded-3xl overflow-hidden group h-72">
-              <Image src={office} alt="Office" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Headquarters</div>
-                <div className="text-xl font-bold mt-1">Mumbai · India</div>
-              </div>
-            </div>
-            <div className="md:col-span-4 relative rounded-3xl overflow-hidden group h-72">
-              <Image src={port} alt="Port" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Global trade</div>
-                <div className="text-xl font-bold mt-1">Cross-border logistics</div>
-              </div>
-            </div>
-            <div className="md:col-span-4 relative rounded-3xl overflow-hidden group h-72">
-              <Image src={retail} alt="Retail" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/20 to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white">
-                <div className="text-xs uppercase tracking-wider text-white/70">Retail</div>
-                <div className="text-xl font-bold mt-1">80,000+ stores reached</div>
-              </div>
+        <div className="mt-16 bg-ink">
+          <InfrastructureBanner />
+
+          <div className="px-6 lg:px-10 pb-20 md:pb-24">
+            <div className="mx-auto max-w-7xl border-t border-white/[0.14] grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10">
+              {[
+                { icon: Package, n: "70+", label: "Fulfillment centers", desc: "Positioned close to demand across 21 cities." },
+                { icon: Building2, n: "9", label: "Global offices", desc: "Gurgaon HQ, with teams across five regions." },
+                { icon: Ship, n: "5", label: "Trade regions", desc: "Sourcing and export lanes, port to shelf." },
+                { icon: Store, n: "80K+", label: "Retailers served", desc: "From metros through to deep tier-3 towns." },
+              ].map((s) => (
+                <div key={s.label} className="bg-ink p-6 md:p-8">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 flex-none items-center justify-center rounded-[10px] border border-white/[0.22] text-brand-3">
+                      <s.icon className="h-[22px] w-[22px]" />
+                    </div>
+                    <div className="font-display text-[30px] font-semibold tracking-[-0.03em] text-white">{s.n}</div>
+                  </div>
+                  <div className="mt-5 text-[10px] uppercase tracking-[0.2em] text-brand-3 font-semibold">{s.label}</div>
+                  <div className="mt-2 max-w-[30ch] text-[13px] leading-[1.65] text-white/60">{s.desc}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -337,6 +257,76 @@ const eras = [
 ];
 
 const kineticWords = ["commerce.", "distribution.", "marketplaces.", "exports."];
+
+const PARALLAX_DEPTH = 60;
+
+function InfrastructureBanner() {
+  const frameRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) return;
+
+    let ticking = false;
+    const park = () => {
+      const frame = frameRef.current;
+      const img = imgRef.current;
+      if (!frame || !img) return;
+      const r = frame.getBoundingClientRect();
+      const vh = window.innerHeight || 800;
+      if (r.bottom < -200 || r.top > vh + 200) return;
+      // -1 when the frame sits below the fold, +1 when it has passed above it
+      const centered = (vh / 2 - (r.top + r.height / 2)) / (vh / 2 + r.height / 2);
+      img.style.transform = `translate3d(0, ${(-centered * PARALLAX_DEPTH).toFixed(2)}px, 0)`;
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        park();
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    park();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return (
+    <div ref={frameRef} className="relative h-[520px] overflow-hidden">
+      <div ref={imgRef} className="absolute -top-[25%] left-0 h-[150%] w-full will-change-transform">
+        <Image src={warehouse} alt="Warehouse" fill sizes="100vw" className="object-cover" priority />
+      </div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_top,oklch(0.17_0.01_60)_0%,oklch(0.17_0.01_60/0.55)_40%,oklch(0.17_0.01_60/0.1)_85%)]" />
+      <div className="absolute inset-x-0 bottom-0 px-6 pb-10 lg:px-10 lg:pb-10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8 text-white">
+          <div>
+            <div className="text-[11px] uppercase tracking-[0.2em] text-white/70">
+              Bhiwandi · Gurgaon · Hyderabad · Kolkata
+            </div>
+            <div className="mt-2.5 font-display text-[28px] md:text-[34px] font-semibold tracking-[-0.03em]">
+              300K+ sq ft, owned and operated
+            </div>
+          </div>
+          <Link
+            href="/businesses/marketplace-operations"
+            className="inline-flex flex-none items-center gap-2 rounded-full bg-white py-2 pl-5 pr-2 text-sm font-medium text-ink hover:bg-white/90 transition-colors"
+          >
+            See the network
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand text-white">
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function WhoWeAre() {
   const [active, setActive] = useState(0);
