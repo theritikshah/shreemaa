@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Package, Building2, Ship, Store } from "lucide-react";
 import { ImpactSection } from "@/components/home/ImpactSection";
 import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
+import { WhyBrandsSection } from "@/components/home/WhyBrandsSection";
 import warehouse from "@/assets/infra-warehouse.jpg";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
@@ -121,30 +122,7 @@ export function HomeView() {
       <OurBusinessesSection />
 
       {/* WHY BRANDS CHOOSE SMG */}
-      <section className="py-28 md:py-36 bg-surface-2">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="max-w-3xl mb-16">
-            <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Why brands choose SMG</div>
-            <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight">Built for serious scale.</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-line rounded-3xl overflow-hidden border border-line">
-            {[
-              ["Nationwide Reach", "Active presence across India with 80% pincode coverage and 15+ fulfillment centers."],
-              ["Marketplace Expertise", "Deep operational fluency with Amazon, Flipkart and emerging marketplaces."],
-              ["Distribution Leadership", "Three decades of relationships with 80,000+ retailers and 600+ distributors."],
-              ["Infrastructure at Scale", "150K+ sq ft of owned warehousing and operational facilities."],
-              ["Capital Strength", "₹4,000+ crore revenue base supporting working capital for partner brands."],
-              ["Long-Term Partnerships", "Multi-decade relationships with India's most demanding manufacturers."],
-            ].map(([t, d]) => (
-              <div key={t} className="bg-white p-8 hover:bg-surface-2 transition-colors group">
-                <div className="h-1 w-8 bg-brand-gradient mb-5 group-hover:w-16 transition-all duration-500" />
-                <h3 className="text-xl font-bold tracking-tight">{t}</h3>
-                <p className="mt-3 text-sm text-ink-soft leading-relaxed">{d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <WhyBrandsSection />
 
       {/* INFRASTRUCTURE
       <section className="bg-surface-2 overflow-hidden">
