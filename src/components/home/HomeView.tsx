@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Package, Building2, Ship, Store } from "lucide-react";
-import { Counter } from "@/components/Counter";
+import { ImpactSection } from "@/components/home/ImpactSection";
 import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
 import warehouse from "@/assets/infra-warehouse.jpg";
 
@@ -112,39 +112,7 @@ export function HomeView() {
       </section>
 
       {/* IMPACT AT SCALE */}
-      <section className="py-28 md:py-36 bg-surface">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-            <div>
-              <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Impact at scale</div>
-              <h2 className="mt-3 text-4xl md:text-6xl font-bold tracking-tight max-w-2xl">
-                Numbers that define <span className="text-brand-gradient">India-wide reach.</span>
-              </h2>
-            </div>
-            <p className="md:max-w-sm text-ink-soft leading-relaxed">
-              For nearly three decades, SMG has built one of the country&apos;s most powerful commerce networks, spanning marketplaces, retail, distribution, trade and exports.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
-            {[
-              { v: <Counter to={100} suffix="M+" />, l: "Consumers reached" },
-              { v: <Counter to={80000} suffix="+" />, l: "Retailers in network" },
-              { v: <Counter to={100} suffix="+" />, l: "Manufacturers" },
-              { v: <Counter to={600} suffix="+" />, l: "Distribution partners" },
-              { v: <Counter prefix="₹" to={4000} suffix="+ Cr" />, l: "Annual revenue" },
-              { v: <Counter to={150} suffix="K+ sq ft" />, l: "Infrastructure" },
-            ].map((s, i) => (
-              <div key={i} className="bg-white p-8 md:p-10 hover:bg-surface-2 transition-colors duration-300">
-                <div className="font-display text-4xl md:text-5xl tracking-tight font-bold text-ink whitespace-nowrap">
-                  {s.v}
-                </div>
-                <div className="mt-4 text-xs uppercase tracking-[0.22em] text-ink-soft font-semibold">{s.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ImpactSection />
 
       {/* WHO WE ARE - interactive eras */}
       <WhoWeAre />
