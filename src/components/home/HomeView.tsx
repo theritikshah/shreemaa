@@ -101,7 +101,7 @@ export function HomeView() {
         <div className="relative">
           <div className="flex gap-16 animate-marquee whitespace-nowrap">
             {[...brands, ...brands].map((b, i) => (
-              <span key={i} className="text-xl md:text-2xl font-serif-display italic text-ink/35 hover:text-ink/80 transition-colors">
+              <span key={i} className="text-xl md:text-2xl font-display font-semibold text-ink/35 hover:text-ink/80 transition-colors">
                 {b}
               </span>
             ))}

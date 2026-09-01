@@ -122,7 +122,7 @@ export function AboutView() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-8 lg:sticky lg:top-28">
               <div className="relative w-full rounded-2xl bg-white border border-line overflow-hidden">
                 <WorldMap points={MAP_POINTS} offices={OFFICES} active={active} onHover={setActive} />
               </div>
