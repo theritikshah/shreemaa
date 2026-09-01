@@ -4,11 +4,11 @@ import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { ShoppingBag, Truck, Factory, Globe2, Leaf, type LucideIcon } from "lucide-react";
-import marketplaceImg from "@/assets/marketpless.png";
-import distributionImg from "@/assets/distribution and retail.png";
-import tradingImg from "@/assets/commerce trading.png";
-import exportImg from "@/assets/export.png";
-import oyuImg from "@/assets/oyu green.png";
+import marketplaceImg from "@/assets/online-shopping.png";
+import distributionImg from "@/assets/india-distribution.png";
+import tradingImg from "@/assets/electronics-returns.png";
+import exportImg from "@/assets/global-logistics.png";
+import oyuImg from "@/assets/tea-sustainability.png";
 
 type Card = {
   key: string;
@@ -41,7 +41,7 @@ const cards: Card[] = [
     statLabel: "Orders / month",
     headline: (
       <>
-        Launchpad for <span className="text-brand-3">digital shelf space</span>.
+        Launchpad for <span className="text-[#fd0000]">digital shelf space</span>.
       </>
     ),
     body: "Full-stack marketplace operations across Amazon, Flipkart and Meesho.",
@@ -61,7 +61,7 @@ const cards: Card[] = [
     statLabel: "Retail touchpoints",
     headline: (
       <>
-        <span className="text-brand">50 million consumers</span>, one retailer at a time.
+        <span className="text-[#fd0000]">50 million consumers</span>, one retailer at a time.
       </>
     ),
     body: "Central and Western India's distribution leader, metro to rural.",
@@ -81,7 +81,7 @@ const cards: Card[] = [
     statLabel: "Traded annually",
     headline: (
       <>
-        Polymers to <span className="text-brand-3">institutional steel</span>.
+        Polymers to <span className="text-[#fd0000]">institutional steel</span>.
       </>
     ),
     body: "Procurement, trading and OEM manufacturing at industrial scale.",
@@ -101,7 +101,7 @@ const cards: Card[] = [
     statLabel: "Sourced & served",
     headline: (
       <>
-        Sourcing the world. <span className="text-brand">Exporting India.</span>
+        Sourcing the world. <span className="text-[#fd0000]">Exporting India.</span>
       </>
     ),
     body: "Cross-border trading and procurement, port to shelf.",
@@ -122,7 +122,7 @@ const cards: Card[] = [
     statLabel: "Verra · GS · GCC · CDM",
     headline: (
       <>
-        Verified climate impact, <span className="text-brand-3">at scale</span>.
+        Verified climate impact, <span className="text-[#fd0000]">at scale</span>.
       </>
     ),
     body: "Carbon projects with community execution and digital MRV.",
@@ -143,7 +143,8 @@ export function OurBusinessesSection() {
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    if (prefersReducedMotion || isMobile) return;
 
     const clamp = (v: number) => Math.min(1, Math.max(0, v));
 
@@ -245,14 +246,10 @@ export function OurBusinessesSection() {
               ref={(el) => {
                 rectRefs.current[i] = el;
               }}
-              className="sticky"
-              style={{
-                top: BASE_TOP,
-                zIndex: i + 1,
-                height: "min(calc(100vh - 300px), 70vh)",
-                minHeight: "min(340px, calc(100vh - 300px))",
-                marginTop: i === 0 ? undefined : "65vh",
-              }}
+              className={`sticky top-20 md:top-[260px] md:h-[min(calc(100vh-300px),70vh)] md:min-h-[min(340px,calc(100vh-300px))] ${
+                i === 0 ? "" : "mt-[48vh] md:mt-[65vh]"
+              }`}
+              style={{ zIndex: i + 1 }}
             >
               <div
                 ref={(el) => {
@@ -263,7 +260,7 @@ export function OurBusinessesSection() {
                 } ${card.dark ? "bg-ink text-white" : "bg-white text-ink"}`}
               >
                 {/* Top bar */}
-                <div className="flex-none h-12 flex items-center gap-3.5 px-7">
+                <div className="flex-none min-h-12 flex items-center gap-3 px-5 py-3 md:px-7">
                   <span
                     className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11.5px] font-semibold ${
                       card.dark ? "bg-white/[0.14]" : "bg-[oklch(0.94_0.008_75)]"
@@ -294,13 +291,13 @@ export function OurBusinessesSection() {
                   ref={(el) => {
                     if (i < 4) contentRefs.current[i] = el;
                   }}
-                  className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-14 px-7 md:px-14 pt-2 pb-6 md:pb-12 overflow-y-auto md:overflow-visible z-10"
+                  className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-14 px-5 md:px-14 pt-2 pb-5 md:pt-2 md:pb-12 md:overflow-visible z-10"
                 >
-                  <div className="md:col-span-5 flex flex-col justify-between min-h-0">
-                    <Icon className={`h-6 w-6 flex-none self-start ${card.dark ? "text-brand-3" : "text-brand"}`} />
+                  <div className="md:col-span-5 flex flex-col justify-end min-h-0">
+                    <Icon className="mb-2 h-5 w-5 flex-none self-start text-[#fd0000] md:mb-4 md:h-6 md:w-6" />
 
                     {/* Mobile-only collage image (Hidden on desktop) */}
-                    <div className="md:hidden my-2 h-28 w-full flex items-center justify-center">
+                    <div className="md:hidden my-1 h-24 w-full flex items-center justify-center overflow-hidden">
                       <Image
                         src={card.collage}
                         alt={card.collageAlt}
@@ -309,14 +306,7 @@ export function OurBusinessesSection() {
                     </div>
 
                     <div>
-                      <div
-                        className={`hidden sm:block font-display font-bold leading-[0.8] tracking-[-0.05em] text-[clamp(52px,14vh,190px)] ${
-                          card.dark ? "text-white/[0.07]" : "text-ink/[0.06]"
-                        }`}
-                      >
-                        {card.ghost}
-                      </div>
-                      <div className="mt-[clamp(6px,1.6vh,20px)] font-display text-[clamp(20px,3vh,38px)] font-bold tracking-[-0.03em]">
+                      <div className="font-display text-[clamp(20px,3vh,38px)] font-bold tracking-[-0.03em]">
                         {card.statValue}
                       </div>
                       <div
@@ -333,14 +323,14 @@ export function OurBusinessesSection() {
                       {card.headline}
                     </h3>
                     <p
-                      className={`mt-3 text-sm leading-relaxed max-w-[44ch] ${
+                      className={`mt-2 text-[13px] leading-relaxed max-w-[44ch] md:mt-3 md:text-sm ${
                         card.dark ? "text-white/60" : "text-ink-soft"
                       }`}
                     >
                       {card.body}
                     </p>
-                    <div className={`h-px my-6 ${card.dark ? "bg-white/[0.14]" : "bg-line"}`} />
-                    <div className="grid grid-cols-3 gap-3 md:flex md:gap-10">
+                    <div className={`h-px my-3 md:my-6 ${card.dark ? "bg-white/[0.14]" : "bg-line"}`} />
+                    <div className="grid grid-cols-3 gap-2 md:flex md:gap-10">
                       {card.features.map((f, fi) => (
                         <div key={f} className="min-w-0">
                           <div
@@ -350,7 +340,7 @@ export function OurBusinessesSection() {
                           >
                             {String(fi + 1).padStart(2, "0")}
                           </div>
-                          <div className="mt-1 text-[13px] font-semibold">{f}</div>
+                          <div className="mt-1 text-[11px] leading-tight font-semibold sm:text-[12px] md:text-[13px]">{f}</div>
                         </div>
                       ))}
                     </div>
