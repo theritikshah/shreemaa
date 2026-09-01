@@ -178,7 +178,7 @@ export function HomeView() {
         </div>
       </section>
 
-      {/* INFRASTRUCTURE */}
+      {/* INFRASTRUCTURE
       <section className="bg-surface-2 overflow-hidden">
         <div className="pt-28 md:pt-36">
           <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
@@ -220,6 +220,7 @@ export function HomeView() {
           </div>
         </div>
       </section>
+      */}
 
     </>
   );
