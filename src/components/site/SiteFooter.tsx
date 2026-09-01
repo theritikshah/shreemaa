@@ -32,15 +32,6 @@ const columns: { title: string; links: { label: string; href: string; external?:
       { label: "Contact", href: "/contact" },
     ],
   },
-  {
-    title: "Reach",
-    links: [
-      { label: "300M+ consumers", href: "/about" },
-      { label: "80,000+ retailers", href: "/businesses/distribution-network" },
-      { label: "9 global offices", href: "/about" },
-      { label: "3 continents", href: "/about" },
-    ],
-  },
 ];
 
 export function SiteFooter() {
@@ -158,11 +149,13 @@ export function SiteFooter() {
 
       {/* Wordmark */}
       <div className="relative overflow-hidden px-[clamp(20px,3vw,40px)]">
-        <div
-          aria-hidden
-          className="select-none whitespace-nowrap text-center font-display text-[clamp(36px,12.2vw,160px)] font-bold leading-[0.82] tracking-[-0.05em] text-white/[0.055]"
-        >
-          SHRI MAA GROUP
+        <div className="text-[clamp(36px,12.2vw,160px)] h-[0.7em] overflow-hidden">
+          <div
+            aria-hidden
+            className="select-none whitespace-nowrap text-center font-display font-bold leading-none tracking-[-0.05em] text-white/[0.055]"
+          >
+            SHRI MAA GROUP
+          </div>
         </div>
       </div>
     </footer>
