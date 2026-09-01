@@ -191,6 +191,7 @@ const reasons: Reason[] = [
 export function WhyBrandsSection() {
   const trackRef = useRef<HTMLDivElement>(null);
   const mcardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const navigationRef = useRef<{ index: number; scrollTop: number; expiresAt: number } | null>(null);
   const [active, setActive] = useState(0);
   const [mActive, setMActive] = useState(0);
 
@@ -200,6 +201,16 @@ export function WhyBrandsSection() {
     const fromScroll = () => {
       const el = trackRef.current;
       if (!el || window.innerWidth < 1024) return;
+      const navigation = navigationRef.current;
+      if (navigation) {
+        const reachedTarget = Math.abs(window.scrollY - navigation.scrollTop) < 6;
+        const expired = performance.now() > navigation.expiresAt;
+        if (!reachedTarget && !expired) {
+          setActive((prev) => (prev === navigation.index ? prev : navigation.index));
+          return;
+        }
+        navigationRef.current = null;
+      }
       const vh = window.innerHeight || 800;
       const len = el.offsetHeight - vh;
       if (len <= 0) return;
@@ -256,7 +267,9 @@ export function WhyBrandsSection() {
       const vh = window.innerHeight || 800;
       const len = el.offsetHeight - vh;
       const top = el.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top + (len * (n + 0.5)) / N, behavior: "smooth" });
+      const scrollTop = top + (len * (n + 0.5)) / N;
+      navigationRef.current = { index: n, scrollTop, expiresAt: performance.now() + 1600 };
+      window.scrollTo({ top: scrollTop, behavior: "smooth" });
     }
   }, []);
 
@@ -330,7 +343,14 @@ export function WhyBrandsSection() {
                         sizes="(min-width: 1024px) 40vw, 100vw"
                         className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,12,11,0.88)_0%,rgba(14,12,11,0.35)_45%,rgba(14,12,11,0.12)_100%)]" />
+                      <div
+                        className="absolute inset-0 transition-[background] duration-500"
+                        style={{
+                          background: on
+                            ? "linear-gradient(to top, oklch(0.17 0.01 60 / 0.85) 0%, oklch(0.17 0.01 60 / 0.55) 45%, oklch(0.17 0.01 60 / 0.22) 100%)"
+                            : "linear-gradient(to top, oklch(0.17 0.01 60 / 0.88) 0%, oklch(0.17 0.01 60 / 0.58) 55%, oklch(0.17 0.01 60 / 0.42) 100%)",
+                        }}
+                      />
 
                       {/* Glass stat card */}
                       <div
@@ -358,7 +378,7 @@ export function WhyBrandsSection() {
                         }}
                       >
                         <span
-                          className="whitespace-nowrap font-display text-[clamp(20px,2.6vw,30px)] font-bold uppercase tracking-[-0.01em] text-white"
+                          className="whitespace-nowrap font-display text-[clamp(24px,3vh_+_8px,40px)] font-bold uppercase tracking-[-0.01em] text-white"
                           style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
                         >
                           {r.word}
@@ -468,7 +488,14 @@ export function WhyBrandsSection() {
                     className="object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     style={{ transform: `scale(${on ? 1 : 1.12})` }}
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(to_top,rgba(14,12,11,0.82),rgba(14,12,11,0.15)_65%)]" />
+                  <div
+                    className="absolute inset-0 transition-[background] duration-500"
+                    style={{
+                      background: on
+                        ? "linear-gradient(to top, oklch(0.17 0.01 60 / 0.82) 0%, oklch(0.17 0.01 60 / 0.22) 68%, transparent 100%)"
+                        : "linear-gradient(to right, oklch(0.17 0.01 60 / 0.82) 0%, oklch(0.17 0.01 60 / 0.52) 68%, oklch(0.17 0.01 60 / 0.38) 100%)",
+                    }}
+                  />
                   <div className="absolute inset-x-3.5 bottom-3 flex items-center gap-2.5 text-white">
                     <span
                       className="flex h-[26px] w-[26px] flex-none items-center justify-center rounded-lg transition-colors duration-400"
