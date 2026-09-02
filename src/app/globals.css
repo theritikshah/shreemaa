@@ -130,6 +130,11 @@
     transform: translateX(-50%);
   }
 }
+@keyframes life-spin {
+  to {
+    transform: rotateY(1turn);
+  }
+}
 @utility animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 12s ease infinite;
@@ -139,4 +144,61 @@
 }
 @utility animate-marquee {
   animation: marquee 40s linear infinite;
+}
+/* ── Life at SMG · 3D cylinder carousel ─────────────────────────────
+   Cards are stacked in a single grid cell, then each is rotated to its
+   own slice of the circle and pushed back by the apothem of a regular
+   --n-gon, so they tile a cylinder exactly. Spinning the ring one full
+   turn loops seamlessly by construction — there is no seam to hide. */
+.life-scene {
+  display: grid;
+  overflow: hidden;
+  /* Roughly matches the ring's own radius, giving a gentle, even curve
+     rather than an exaggerated near/far contrast. */
+  perspective: 52em;
+  perspective-origin: 50% 50%;
+  /* An explicit height, not min-height: a card's *layout* box (28.8em) is far
+     taller than it ever projects once rotated, so letting content size the
+     scene just adds dead space above and below. 26em is the tightest that
+     still clears the tallest card seen across a full turn (~22.5em). */
+  height: 26em;
+  /* The ring is centred, so bands of empty space sit above and below the
+     cards no matter how short the scene gets. These pull the surrounding
+     content into them; the top value is kept well under the ~35px minimum
+     clearance so no card can reach the header. */
+  margin-top: -1.25em;
+  margin-bottom: -1.5em;
+  /* Drives every em below, so the whole rig scales as one unit — bumping
+     this enlarges the cards without altering the curve's shape. */
+  font-size: clamp(11px, 1.65vw, 20px);
+  -webkit-mask: linear-gradient(90deg, #0000 0%, #000 5% 95%, #0000 100%);
+  mask: linear-gradient(90deg, #0000 0%, #000 5% 95%, #0000 100%);
+}
+.life-ring {
+  display: grid;
+  place-self: center;
+  transform-style: preserve-3d;
+  animation: life-spin 72s linear infinite;
+}
+.life-card {
+  --w: 18em;
+  --ba: calc(1turn / var(--n));
+  grid-area: 1 / 1;
+  /* Positioned so the fill images inside stay bound to their own card. */
+  position: relative;
+  display: block;
+  width: var(--w);
+  aspect-ratio: 5 / 8;
+  border-radius: 1.5em;
+  overflow: hidden;
+  /* Hides the half of the ring facing away, leaving one concave wall. */
+  backface-visibility: hidden;
+  box-shadow: 0 1.4em 3em -1.8em rgb(20 18 16 / 0.55);
+  transform: rotateY(calc(var(--i) * var(--ba)))
+    translateZ(calc(-1 * (0.5 * var(--w) + 0.5em) / tan(0.5 * var(--ba))));
+}
+@media (prefers-reduced-motion: reduce) {
+  .life-ring {
+    animation: none;
+  }
 }

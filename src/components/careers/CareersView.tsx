@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
-import { ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight, Expand } from "lucide-react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
+import { ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import life1 from "@/assets/life-1.jpeg";
 import life2 from "@/assets/life-2.jpeg";
 import life3 from "@/assets/life-3.jpeg";
@@ -29,6 +29,20 @@ const gallery: Photo[] = [
   { src: life6, caption: "Diwali, decked up", tag: "Festivals" },
 ];
 
+// The gallery is doubled so the ring has enough slices to read as a solid
+// wall. Because backface-visibility hides the far half, the ~180° that is
+// ever visible spans nine consecutive cards — so no photo is on screen twice.
+const ring = [...gallery, ...gallery];
+
+const heroFloatingPhotos = [
+  { i: 3, left: 1, top: 7, width: 18, aspect: 1.05, lag: 0.14, shrink: 0.1 },
+  { i: 4, left: 91, top: 12, width: 7, aspect: 0.92, lag: 0.2, shrink: 0.14 },
+  { i: 5, left: 1, top: 66, width: 5, aspect: 0.72, lag: 0.1, shrink: 0.08 },
+  { i: 6, left: 16, top: 70, width: 19, aspect: 1.35, lag: 0.22, shrink: 0.16 },
+  { i: 7, left: 46, top: 73, width: 7, aspect: 0.88, lag: 0.16, shrink: 0.1 },
+  { i: 8, left: 67, top: 72, width: 14, aspect: 1.18, lag: 0.08, shrink: 0.12 },
+];
+
 const pillars = [
   { n: "01", t: "People first, always", d: "Twenty-eight years in, we still know everyone by name. Birthdays, weddings, festivals — we show up for each other." },
   { n: "02", t: "Real ownership", d: "Flat structure. Your work ships to millions of customers across India, not into a slide deck nobody reads." },
@@ -38,6 +52,57 @@ const pillars = [
 
 export function CareersView() {
   const [active, setActive] = useState<number | null>(null);
+  const heroPhotoRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const floatingStageRef = useRef<HTMLDivElement>(null);
+  const floatingPhotoRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // The reference images move at roughly two-thirds of page speed and shrink
+  // apart as the hero leaves the viewport. The centre image retains more scale.
+  useEffect(() => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const targetScales = [0.64, 0.78, 0.64];
+    const restingY = [34, 0, 34];
+    let frame = 0;
+    const paint = () => {
+      const distance = Math.min(680, Math.max(0, window.scrollY));
+      const progress = distance / 680;
+      heroPhotoRefs.current.forEach((card, index) => {
+        if (!card) return;
+        const parallax = reducedMotion ? 0 : distance * 0.33;
+        const scale = reducedMotion ? 1 : 1 + (targetScales[index] - 1) * progress;
+        card.style.transform = `translate3d(0, ${restingY[index] + parallax}px, 0) scale(${scale})`;
+      });
+
+      const stage = floatingStageRef.current;
+      if (stage) {
+        const rect = stage.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || 800;
+        const stageProgress = Math.min(
+          1,
+          Math.max(0, (viewportHeight - rect.top) / (rect.height + viewportHeight)),
+        );
+        floatingPhotoRefs.current.forEach((card, index) => {
+          if (!card) return;
+          const config = heroFloatingPhotos[index];
+          const lag = reducedMotion ? 0 : stageProgress * viewportHeight * config.lag;
+          const scale = reducedMotion ? 1 : 1 - stageProgress * config.shrink;
+          card.style.transform = `translate3d(0, ${lag}px, 0) scale(${scale})`;
+        });
+      }
+    };
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(paint);
+    };
+    paint();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
 
   const close = useCallback(() => setActive(null), []);
   const next = useCallback(() => setActive((i) => (i === null ? i : (i + 1) % gallery.length)), []);
@@ -62,7 +127,7 @@ export function CareersView() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative bg-bg pt-32 md:pt-40 pb-16 md:pb-24">
+      <section className="relative overflow-x-clip bg-bg pt-32 md:pt-40 pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid lg:grid-cols-12 gap-10 items-end">
             <div className="lg:col-span-7">
@@ -88,30 +153,78 @@ export function CareersView() {
             </div>
           </div>
 
-          {/* Hero photo band */}
-          <div className="mt-16 md:mt-20 grid grid-cols-12 gap-3 md:gap-4">
+        </div>
+
+        {/* Full-width three-image composition with scroll-linked scale/parallax. */}
+        <div className="mt-14 grid w-full grid-cols-3 gap-2 overflow-visible px-2 pb-20 md:mt-20 md:gap-3 md:px-3 md:pb-28">
+          {gallery.slice(0, 3).map((photo, index) => (
             <button
+              key={photo.caption}
+              ref={(element) => {
+                heroPhotoRefs.current[index] = element;
+              }}
               type="button"
-              onClick={() => setActive(0)}
-              className="col-span-12 md:col-span-8 aspect-[16/9] rounded-2xl overflow-hidden group relative cursor-zoom-in"
-              aria-label="Open photo: SMG team gathering"
+              onClick={() => setActive(index)}
+              className="group relative aspect-square min-w-0 origin-center overflow-hidden rounded-[18px] will-change-transform cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brand md:rounded-[24px]"
+              aria-label={`Open photo: ${photo.caption}`}
             >
-              <Image src={gallery[0].src} alt={gallery[0].caption} fill sizes="(min-width: 768px) 66vw, 100vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-700" priority />
-              <span className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors" />
-              <span className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-sm font-medium">{gallery[0].caption}</span>
-                <Expand className="h-4 w-4" />
-              </span>
+              <Image
+                src={photo.src}
+                alt={photo.caption}
+                fill
+                sizes="33vw"
+                priority={index === 0}
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.025]"
+              />
+              <span className="absolute inset-0 bg-ink/0 transition-colors group-hover:bg-ink/15" />
             </button>
-            <button
-              type="button"
-              onClick={() => setActive(1)}
-              className="col-span-12 md:col-span-4 aspect-[3/4] md:aspect-auto rounded-2xl overflow-hidden group relative cursor-zoom-in"
-              aria-label="Open photo: Women of SMG"
-            >
-              <Image src={gallery[1].src} alt={gallery[1].caption} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover group-hover:scale-[1.03] transition-transform duration-700" />
-              <span className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors" />
-            </button>
+          ))}
+        </div>
+
+        {/* The remaining photos and statement complete the same composition. */}
+        <div
+          ref={floatingStageRef}
+          className="relative mx-auto -mt-16 h-[86svh] min-h-[620px] max-w-[1440px] overflow-visible md:-mt-24 md:h-[105vh] md:min-h-[780px]"
+        >
+          {heroFloatingPhotos.map((config, index) => {
+            const photo = gallery[config.i];
+            return (
+              <button
+                key={photo.caption}
+                ref={(element) => {
+                  floatingPhotoRefs.current[index] = element;
+                }}
+                type="button"
+                onClick={() => setActive(config.i)}
+                className="group absolute overflow-hidden rounded-[18px] bg-ink/5 shadow-[0_20px_45px_-30px_rgba(20,18,16,0.55)] will-change-transform cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brand md:rounded-[24px]"
+                style={{
+                  left: `${config.left}%`,
+                  top: `${config.top}%`,
+                  width: `${config.width}%`,
+                  aspectRatio: String(config.aspect),
+                  transformOrigin: "center",
+                }}
+                aria-label={`Open photo: ${photo.caption}`}
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.caption}
+                  fill
+                  sizes="(min-width: 768px) 20vw, 24vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </button>
+            );
+          })}
+
+          <div className="pointer-events-none absolute left-1/2 top-[42%] z-10 w-full max-w-3xl -translate-x-1/2 -translate-y-1/2 px-8 text-center md:top-[43%]">
+            <p className="mx-auto max-w-2xl text-sm leading-relaxed text-ink-soft md:text-lg">
+              We hire for curiosity and follow-through, not for a résumé that ticks the right boxes.
+            </p>
+            <h2 className="mt-5 text-3xl font-bold leading-[1.05] tracking-tight md:mt-6 md:text-5xl">
+              Real work, real ownership,{" "}
+              <span className="italic font-display font-normal text-brand">from day one.</span>
+            </h2>
           </div>
         </div>
       </section>
@@ -134,9 +247,11 @@ export function CareersView() {
       </section>
 
       {/* ── LIFE AT SMG ── interactive gallery ── */}
-      <section className="py-24 md:py-32 bg-surface-2">
+      {/* No bottom padding: the next section's top padding already supplies
+          the page's standard gap between content blocks. */}
+      <section className="pt-16 md:pt-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid lg:grid-cols-12 gap-10 mb-14">
+          <div className="grid gap-10 mb-4 md:mb-5 lg:grid-cols-12">
             <div className="lg:col-span-6">
               <div className="text-xs uppercase tracking-[0.24em] text-brand font-semibold">Life at SMG</div>
               <h2 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.02]">
@@ -150,40 +265,38 @@ export function CareersView() {
             </div>
           </div>
 
-          {/* Uniform card grid — predictable, scannable, interactive */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
-            {gallery.map((p, i) => (
-              <button
-                key={p.caption}
-                type="button"
-                onClick={() => setActive(i)}
-                className="group relative aspect-[4/5] overflow-hidden rounded-2xl bg-ink/5 cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
-                aria-label={`Open photo: ${p.caption}`}
-              >
-                <Image
-                  src={p.src}
-                  alt={p.caption}
-                  fill
-                  sizes="(min-width: 768px) 33vw, 50vw"
-                  className="object-cover transition-transform duration-[900ms] ease-out group-hover:scale-110"
-                />
-                <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="absolute top-3 left-3 inline-flex items-center rounded-full bg-white/95 text-ink text-[10px] font-semibold uppercase tracking-[0.14em] px-2.5 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
-                  {p.tag}
-                </span>
-                <span className="absolute bottom-0 left-0 right-0 p-4 text-white translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                  <span className="block text-sm font-medium leading-snug">{p.caption}</span>
-                </span>
-                <span className="absolute top-3 right-3 grid place-items-center h-8 w-8 rounded-full bg-white/95 text-ink opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300">
-                  <Expand className="h-3.5 w-3.5" />
-                </span>
-              </button>
-            ))}
-          </div>
+        </div>
 
-          <p className="mt-8 text-xs text-ink-soft text-center uppercase tracking-[0.18em]">
-            More moments added every quarter · Use ← → to browse
-          </p>
+        {/* Rotating 3D cylinder of photos — full-bleed so the edge mask reads */}
+        <div className="life-scene">
+          <div className="life-ring" style={{ "--n": ring.length } as CSSProperties}>
+            {ring.map((p, i) => {
+              const isClone = i >= gallery.length;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setActive(i % gallery.length)}
+                  className="life-card group cursor-zoom-in bg-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+                  style={{ "--i": i } as CSSProperties}
+                  // The far half of the ring is hidden by backface-visibility,
+                  // so the clones are decorative only — keep them out of the
+                  // tab order and the accessibility tree.
+                  aria-hidden={isClone}
+                  tabIndex={isClone ? -1 : 0}
+                  aria-label={`Open photo: ${p.caption}`}
+                >
+                  <Image
+                    src={p.src}
+                    alt={isClone ? "" : p.caption}
+                    fill
+                    sizes="(min-width: 768px) 340px, 200px"
+                    className="object-cover"
+                  />
+                </button>
+              );
+            })}
+          </div>
         </div>
       </section>
 
