@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import life1 from "@/assets/life-1.jpeg";
@@ -34,13 +35,24 @@ const gallery: Photo[] = [
 // ever visible spans nine consecutive cards — so no photo is on screen twice.
 const ring = [...gallery, ...gallery];
 
-const heroFloatingPhotos = [
-  { i: 3, left: 1, top: 7, width: 18, aspect: 1.05, lag: 0.14, shrink: 0.1 },
-  { i: 4, left: 91, top: 12, width: 7, aspect: 0.92, lag: 0.2, shrink: 0.14 },
-  { i: 5, left: 1, top: 66, width: 5, aspect: 0.72, lag: 0.1, shrink: 0.08 },
-  { i: 6, left: 16, top: 70, width: 19, aspect: 1.35, lag: 0.22, shrink: 0.16 },
-  { i: 7, left: 46, top: 73, width: 7, aspect: 0.88, lag: 0.16, shrink: 0.1 },
-  { i: 8, left: 67, top: 72, width: 14, aspect: 1.18, lag: 0.08, shrink: 0.12 },
+// Circular portraits flanking the opening statement. left/top/size are
+// percentages of the stage, kept clear of the centre column so the headline
+// always has room. `lag` is the fraction of a viewport each one holds back by
+// as the page scrolls, so they drift vertically at different speeds.
+const avatarRing = [
+  { i: 0, left: 2.6, top: 2, size: 5.8, lag: 0.10 },
+  { i: 1, left: 12.3, top: 9, size: 6.3, lag: 0.20 },
+  { i: 2, left: 1.5, top: 30, size: 5.1, lag: 0.06 },
+  { i: 3, left: 9.9, top: 27.6, size: 6.0, lag: 0.16 },
+  { i: 4, left: 14.5, top: 44.3, size: 4.2, lag: 0.24 },
+  { i: 5, left: 4.4, top: 48, size: 7.6, lag: 0.08 },
+  { i: 6, left: 14.3, top: 63.4, size: 4.4, lag: 0.18 },
+  { i: 7, left: 78.1, top: 16.2, size: 7.6, lag: 0.14 },
+  { i: 8, left: 90.9, top: 11.7, size: 5.3, lag: 0.22 },
+  { i: 0, left: 91.2, top: 27.6, size: 7.4, lag: 0.07 },
+  { i: 2, left: 83.3, top: 38.2, size: 5.3, lag: 0.19 },
+  { i: 4, left: 88.8, top: 52.4, size: 4.0, lag: 0.11 },
+  { i: 6, left: 79.6, top: 56.8, size: 7.6, lag: 0.25 },
 ];
 
 const pillars = [
@@ -52,55 +64,32 @@ const pillars = [
 
 export function CareersView() {
   const [active, setActive] = useState<number | null>(null);
-  const heroPhotoRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const floatingStageRef = useRef<HTMLDivElement>(null);
-  const floatingPhotoRefs = useRef<(HTMLButtonElement | null)[]>([]);
-
-  // The reference images move at roughly two-thirds of page speed and shrink
-  // apart as the hero leaves the viewport. The centre image retains more scale.
+  const ringStageRef = useRef<HTMLDivElement>(null);
+  const ringRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Vertical drift only, at a different rate per circle. Reads just scrollY and
+  // writes transforms, so it forces no layout; painting straight from the
+  // scroll event means a dropped frame can't wedge a latch and kill it.
   useEffect(() => {
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const targetScales = [0.64, 0.78, 0.64];
-    const restingY = [34, 0, 34];
-    let frame = 0;
-    const paint = () => {
-      const distance = Math.min(680, Math.max(0, window.scrollY));
-      const progress = distance / 680;
-      heroPhotoRefs.current.forEach((card, index) => {
-        if (!card) return;
-        const parallax = reducedMotion ? 0 : distance * 0.33;
-        const scale = reducedMotion ? 1 : 1 + (targetScales[index] - 1) * progress;
-        card.style.transform = `translate3d(0, ${restingY[index] + parallax}px, 0) scale(${scale})`;
-      });
+    const stage = ringStageRef.current;
+    if (!stage) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      const stage = floatingStageRef.current;
-      if (stage) {
-        const rect = stage.getBoundingClientRect();
-        const viewportHeight = window.innerHeight || 800;
-        const stageProgress = Math.min(
-          1,
-          Math.max(0, (viewportHeight - rect.top) / (rect.height + viewportHeight)),
-        );
-        floatingPhotoRefs.current.forEach((card, index) => {
-          if (!card) return;
-          const config = heroFloatingPhotos[index];
-          const lag = reducedMotion ? 0 : stageProgress * viewportHeight * config.lag;
-          const scale = reducedMotion ? 1 : 1 - stageProgress * config.shrink;
-          card.style.transform = `translate3d(0, ${lag}px, 0) scale(${scale})`;
-        });
+    const paint = () => {
+      const vh = window.innerHeight || 800;
+      const p = Math.min(1, Math.max(0, window.scrollY / vh));
+      for (let i = 0; i < avatarRing.length; i++) {
+        const el = ringRefs.current[i];
+        if (!el) continue;
+        el.style.transform = `translate3d(0, ${(p * vh * avatarRing[i].lag).toFixed(1)}px, 0)`;
       }
     };
-    const schedule = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(paint);
-    };
+
     paint();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule, { passive: true });
+    window.addEventListener("scroll", paint, { passive: true });
+    window.addEventListener("resize", paint, { passive: true });
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      window.removeEventListener("scroll", paint);
+      window.removeEventListener("resize", paint);
     };
   }, []);
 
@@ -126,105 +115,101 @@ export function CareersView() {
 
   return (
     <>
-      {/* ── HERO ── */}
-      <section className="relative overflow-x-clip bg-bg pt-32 md:pt-40 pb-16 md:pb-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid lg:grid-cols-12 gap-10 items-end">
-            <div className="lg:col-span-7">
-              <div className="text-[11px] uppercase tracking-[0.28em] text-brand font-semibold">Work with us</div>
-              <h1 className="mt-6 text-[clamp(2.75rem,8vw,6.5rem)] font-bold tracking-[-0.03em] leading-[0.95]">
-                The people<br />
-                <span className="italic font-display font-normal text-brand">who actually</span><br />
-                build SMG.
-              </h1>
-            </div>
-            <div className="lg:col-span-5 lg:pl-8">
-              <p className="text-lg text-ink leading-relaxed max-w-md">
-                What&apos;s actually rare isn&apos;t free snacks or ping-pong tables. It&apos;s a workplace where you&apos;re known by name, trusted with real decisions, and surrounded by people who genuinely like showing up.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link href="/jobs" className="group inline-flex items-center gap-2 bg-ink text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-ink/85 transition-colors">
-                  See open roles <ArrowRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-                <a href="mailto:careers@shrimaa.com" className="inline-flex items-center gap-2 border border-line text-ink px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-surface-2 transition-colors">
-                  careers@shrimaa.com
-                </a>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Full-width three-image composition with scroll-linked scale/parallax. */}
-        <div className="mt-14 grid w-full grid-cols-3 gap-2 overflow-visible px-2 pb-20 md:mt-20 md:gap-3 md:px-3 md:pb-28">
-          {gallery.slice(0, 3).map((photo, index) => (
-            <button
-              key={photo.caption}
-              ref={(element) => {
-                heroPhotoRefs.current[index] = element;
-              }}
-              type="button"
-              onClick={() => setActive(index)}
-              className="group relative aspect-square min-w-0 origin-center overflow-hidden rounded-[18px] will-change-transform cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brand md:rounded-[24px]"
-              aria-label={`Open photo: ${photo.caption}`}
-            >
-              <Image
-                src={photo.src}
-                alt={photo.caption}
-                fill
-                sizes="33vw"
-                priority={index === 0}
-                className="object-cover transition-transform duration-700 group-hover:scale-[1.025]"
-              />
-              <span className="absolute inset-0 bg-ink/0 transition-colors group-hover:bg-ink/15" />
-            </button>
-          ))}
-        </div>
-
-        {/* The remaining photos and statement complete the same composition. */}
+      {/* ── OPENING STATEMENT ── centred copy ringed by circular portraits ── */}
+      {/* Fills the viewport and centres its contents, so the copy sits on the
+          optical centre instead of being pushed down by a large top padding.
+          The top padding only needs to clear the fixed nav. */}
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-bg pt-20 pb-10 md:pt-24 md:pb-14">
         <div
-          ref={floatingStageRef}
-          className="relative mx-auto -mt-16 h-[86svh] min-h-[620px] max-w-[1440px] overflow-visible md:-mt-24 md:h-[105vh] md:min-h-[780px]"
+          ref={ringStageRef}
+          // One shared vanishing point for the whole ring: the circles fly in
+          // along Z, so off-centre ones sweep outward as they come forward.
+          // Per-element perspective would flatten this back to a plain scale.
+          className="relative mx-auto min-h-[460px] w-full max-w-[1600px] [perspective:1200px] md:min-h-[540px]"
         >
-          {heroFloatingPhotos.map((config, index) => {
-            const photo = gallery[config.i];
+          {/* Circles sit behind the copy and are decorative only */}
+          {avatarRing.map((a, n) => {
+            const p = gallery[a.i];
             return (
-              <button
-                key={photo.caption}
-                ref={(element) => {
-                  floatingPhotoRefs.current[index] = element;
+              // Outer: position + the scroll-linked vertical drift.
+              <div
+                key={n}
+                aria-hidden
+                ref={(el) => {
+                  ringRefs.current[n] = el;
                 }}
-                type="button"
-                onClick={() => setActive(config.i)}
-                className="group absolute overflow-hidden rounded-[18px] bg-ink/5 shadow-[0_20px_45px_-30px_rgba(20,18,16,0.55)] will-change-transform cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-brand md:rounded-[24px]"
+                className="absolute hidden will-change-transform md:block"
                 style={{
-                  left: `${config.left}%`,
-                  top: `${config.top}%`,
-                  width: `${config.width}%`,
-                  aspectRatio: String(config.aspect),
-                  transformOrigin: "center",
+                  left: `${a.left}%`,
+                  top: `${a.top}%`,
+                  width: `${a.size}%`,
+                  aspectRatio: "1",
+                  // Keeps the inner circle inside the stage's 3D space, so its
+                  // translateZ resolves against the shared vanishing point.
+                  transformStyle: "preserve-3d",
                 }}
-                aria-label={`Open photo: ${photo.caption}`}
               >
-                <Image
-                  src={photo.src}
-                  alt={photo.caption}
-                  fill
-                  sizes="(min-width: 768px) 20vw, 24vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              </button>
+                {/* Middle: the endless ambient drift. Pure CSS, so it costs
+                    nothing per frame, and it waits for the entrance to land
+                    before starting. */}
+                <div
+                  className="ring-float h-full w-full [transform-style:preserve-3d]"
+                  style={
+                    {
+                      "--float-y": `${5 + (n % 4) * 2.5}px`,
+                      "--float-dur": `${28 + (n % 5) * 5}s`,
+                      "--float-delay": `${1.3 + n * 0.06}s`,
+                    } as CSSProperties
+                  }
+                >
+                  {/* Inner: the entrance — rushing in from depth along Z. Runs on
+                      mount rather than on scroll-into-view: this sits above the
+                      fold, so an observer would only add a way for it to never
+                      fire and leave the ring blank. */}
+                  <motion.div
+                    // Hairline outline with the photo inset from it. Padding is
+                    // a percentage so the gap stays proportional across circles
+                    // that range from ~45px to ~120px wide.
+                    className="h-full w-full rounded-full border border-ink/10 p-[4%]"
+                    initial={{ opacity: 0, z: -900 }}
+                    animate={{ opacity: 1, z: 0 }}
+                    transition={{
+                      duration: 1.05,
+                      delay: 0.2 + n * 0.055,
+                      ease: [0.16, 1, 0.3, 1],
+                      opacity: { duration: 0.5, delay: 0.2 + n * 0.055 },
+                    }}
+                  >
+                    {/* `fill` resolves against inset-0 and would ignore the
+                        padding above, so the photo needs its own clip box. */}
+                    <div className="relative h-full w-full overflow-hidden rounded-full bg-ink/5">
+                      <Image src={p.src} alt="" fill sizes="(min-width: 768px) 12vw, 0px" className="object-cover" />
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
             );
           })}
 
-          <div className="pointer-events-none absolute left-1/2 top-[42%] z-10 w-full max-w-3xl -translate-x-1/2 -translate-y-1/2 px-8 text-center md:top-[43%]">
-            <p className="mx-auto max-w-2xl text-sm leading-relaxed text-ink-soft md:text-lg">
-              We hire for curiosity and follow-through, not for a résumé that ticks the right boxes.
-            </p>
-            <h2 className="mt-5 text-3xl font-bold leading-[1.05] tracking-tight md:mt-6 md:text-5xl">
-              Real work, real ownership,{" "}
-              <span className="italic font-display font-normal text-brand">from day one.</span>
+          {/* Centred copy */}
+          <div className="relative mx-auto flex min-h-[460px] max-w-3xl flex-col items-center justify-center px-6 text-center md:min-h-[540px]">
+            <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.035em] leading-[0.98]">
+              The people who{" "}
+              <span className="italic font-display font-normal text-brand">build SMG</span>
             </h2>
+            <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-soft">
+              Known by name, trusted with real decisions, and surrounded by people who
+              genuinely like showing up.
+            </p>
+            <div className="mt-9">
+              <Link
+                href="/jobs"
+                className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-ink/85"
+              >
+                See open roles
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>

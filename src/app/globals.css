@@ -135,6 +135,26 @@
     transform: rotateY(1turn);
   }
 }
+/* Slow ambient drift for the careers hero portraits, so the ring feels like it
+   is suspended rather than pinned. Runs on its own layer, between the scroll
+   drift and the entrance, so the three transforms never overwrite each other. */
+/* Starts and ends at zero deliberately. The animation is delayed so it begins
+   after the entrance lands, and with no fill-mode the element sits untransformed
+   until then — so if the first keyframe were an offset, every circle would snap
+   that distance the instant the delay elapsed. Passing through 0 also makes the
+   loop seamless. */
+@keyframes ring-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  25% {
+    transform: translate3d(0, calc(var(--float-y, 8px) * -1), 0);
+  }
+  75% {
+    transform: translate3d(0, var(--float-y, 8px), 0);
+  }
+}
 @utility animate-gradient {
   background-size: 200% 200%;
   animation: gradient-shift 12s ease infinite;
@@ -197,8 +217,12 @@
   transform: rotateY(calc(var(--i) * var(--ba)))
     translateZ(calc(-1 * (0.5 * var(--w) + 0.5em) / tan(0.5 * var(--ba))));
 }
+.ring-float {
+  animation: ring-float var(--float-dur, 8s) ease-in-out var(--float-delay, 0s) infinite;
+}
 @media (prefers-reduced-motion: reduce) {
-  .life-ring {
+  .life-ring,
+  .ring-float {
     animation: none;
   }
 }
