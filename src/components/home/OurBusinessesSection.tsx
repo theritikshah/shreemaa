@@ -2,8 +2,9 @@
 
 import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import Image, { type StaticImageData } from "next/image";
-import { ShoppingBag, Truck, Factory, Globe2, Leaf, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, ShoppingBag, Truck, Factory, Globe2, Leaf, type LucideIcon } from "lucide-react";
 import marketplaceImg from "@/assets/online-shopping.png";
 import distributionImg from "@/assets/india-distribution.png";
 import tradingImg from "@/assets/electronics-returns.png";
@@ -137,9 +138,27 @@ const BASE_TOP = 260;
 export function OurBusinessesSection() {
   const headRef = useRef<HTMLDivElement>(null);
   const rectRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const innerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const innerRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const contentRefs = useRef<(HTMLDivElement | null)[]>([]);
   const gfxRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cursorRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const cursorMotion = useRef(cards.map(() => ({ x: 0, y: 0, tx: 0, ty: 0, initialized: false })));
+
+  useEffect(() => {
+    let frame = 0;
+    const animate = () => {
+      cursorMotion.current.forEach((point, index) => {
+        if (!point.initialized) return;
+        point.x += (point.tx - point.x) * 0.14;
+        point.y += (point.ty - point.y) * 0.14;
+        const cursor = cursorRefs.current[index];
+        if (cursor) cursor.style.transform = `translate3d(${point.x}px, ${point.y}px, 0) translate(-50%, -50%)`;
+      });
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -251,14 +270,48 @@ export function OurBusinessesSection() {
               }`}
               style={{ zIndex: i + 1 }}
             >
-              <div
+              <Link
+                href={card.href}
+                target={card.external ? "_blank" : undefined}
+                rel={card.external ? "noopener noreferrer" : undefined}
+                aria-label={`Explore ${card.name}`}
                 ref={(el) => {
                   if (i < 4) innerRefs.current[i] = el;
                 }}
-                className={`relative h-full rounded-[28px] overflow-hidden shadow-[0_24px_60px_-24px_rgba(20,18,16,0.35)] flex flex-col ${
+                onMouseEnter={(event) => {
+                  const bounds = event.currentTarget.getBoundingClientRect();
+                  const point = cursorMotion.current[i];
+                  point.tx = event.clientX - bounds.left;
+                  point.ty = event.clientY - bounds.top;
+                  point.x = point.tx;
+                  point.y = point.ty;
+                  point.initialized = true;
+                  const cursor = cursorRefs.current[i];
+                  if (cursor) cursor.style.opacity = "1";
+                }}
+                onMouseMove={(event) => {
+                  const bounds = event.currentTarget.getBoundingClientRect();
+                  const point = cursorMotion.current[i];
+                  point.tx = event.clientX - bounds.left;
+                  point.ty = event.clientY - bounds.top;
+                }}
+                onMouseLeave={() => {
+                  const cursor = cursorRefs.current[i];
+                  if (cursor) cursor.style.opacity = "0";
+                }}
+                className={`relative flex h-full flex-col overflow-hidden rounded-[28px] shadow-[0_24px_60px_-24px_rgba(20,18,16,0.35)] md:cursor-none ${
                   i < 4 ? "origin-top will-change-transform" : ""
                 } ${card.dark ? "bg-ink text-white" : "bg-white text-ink"}`}
               >
+                <div
+                  ref={(el) => { cursorRefs.current[i] = el; }}
+                  aria-hidden
+                  className={`pointer-events-none absolute left-0 top-0 z-30 hidden h-16 w-16 place-items-center rounded-full opacity-0 shadow-lg backdrop-blur-md transition-opacity duration-200 md:grid ${
+                    card.dark ? "bg-white text-ink" : "bg-ink text-white"
+                  }`}
+                >
+                  <ArrowUpRight className="h-5 w-5" />
+                </div>
                 {/* Top bar */}
                 <div className="flex-none min-h-12 flex items-center gap-3 px-5 py-3 md:px-7">
                   <span
@@ -346,7 +399,7 @@ export function OurBusinessesSection() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           );
         })}
