@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Package, Building2, Ship, Store } from "lucide-react";
 import { ImpactSection } from "@/components/home/ImpactSection";
 import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
-import { WhyBrandsSection } from "@/components/home/WhyBrandsSection";
+import { ScaleOffersSection } from "@/components/home/ScaleOffersSection";
 import warehouse from "@/assets/infra-warehouse.jpg";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
@@ -122,7 +122,10 @@ export function HomeView() {
       <OurBusinessesSection />
 
       {/* WHY BRANDS CHOOSE SMG */}
-      <WhyBrandsSection />
+      {/* <WhyBrandsSection /> */}
+
+      {/* FULL-BLEED SCALE OFFERS */}
+      <ScaleOffersSection />
 
       {/* INFRASTRUCTURE
       <section className="bg-surface-2 overflow-hidden">
