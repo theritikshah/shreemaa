@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MapPin, Briefcase, ArrowRight, X, ArrowLeft } from "lucide-react";
-import { PageHero } from "@/components/site/PageHero";
+import UnicornScene from "unicornstudio-react/next";
 
 const jobs = [
   { id: 1, title: "Senior Manager · Marketplace Operations", dept: "Operations", location: "Mumbai", type: "Full-time", desc: "Lead end-to-end Amazon/Flipkart operations for category brands." },
@@ -18,21 +18,102 @@ const jobs = [
 
 const departments = ["All", "Sales", "Operations", "Supply Chain", "Finance", "Marketing", "Technology"];
 
+const heroPhrases = [
+  "problem solvers",
+  "curious minds",
+  "farming gurus",
+  "niche experts",
+  "boundary pushers",
+  "intelligent executors",
+  "ruthless prioritisers",
+  "skilled generalists",
+  "impact driven",
+  "compassionate humans",
+  "challenge seekers",
+  "first-principle thinkers",
+];
+
 export function JobsView() {
   const [filter, setFilter] = useState("All");
   const [open, setOpen] = useState<typeof jobs[number] | null>(null);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+    const timer = window.setInterval(
+      () => setPhraseIndex((index) => (index + 1) % heroPhrases.length),
+      1900,
+    );
+    return () => window.clearInterval(timer);
+  }, []);
 
   const filtered = filter === "All" ? jobs : jobs.filter((j) => j.dept === filter);
 
   return (
     <>
-      <PageHero
-        eyebrow="Open roles"
-        title={<>Find your <span className="italic font-display">next chapter.</span></>}
-        subtitle="Current openings across operations, sales, trade, technology and finance. Apply in two minutes — we read every application."
-      />
+      <section className="relative mx-3 mt-20 min-h-[calc(100svh-96px)] overflow-hidden rounded-[26px] bg-ink text-white md:mx-5 md:rounded-[34px]">
+        <div className="absolute inset-0 overflow-hidden bg-ink">
+          <div aria-hidden className="pointer-events-none absolute -right-[120px] -top-[180px] h-[560px] w-[560px] rounded-full bg-[rgba(225,27,34,0.22)] blur-[150px]" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-[200px] -left-[100px] h-[520px] w-[520px] rounded-full bg-[rgba(255,122,69,0.14)] blur-[160px]" />
+          <div className="absolute inset-0">
+            <UnicornScene
+              projectId="tnAhw4e67txvvqrBP7oz"
+              width="100%"
+              height="100%"
+              scale={1}
+              dpi={1.5}
+              lazyLoad={false}
+              ariaLabel="Animated dark gradient background"
+              placeholderClassName="h-full w-full bg-transparent"
+            />
+          </div>
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage: "linear-gradient(135deg, #b30000 0%, #fd0000 100%)",
+            mixBlendMode: "multiply",
+            opacity: 1,
+          }}
+        />
 
-      <section className="py-16">
+        <div className="relative z-10 flex min-h-[calc(100svh-96px)] flex-col justify-center px-6 py-24 md:px-12 lg:px-[8vw]">
+          <h1 className="sr-only">Open roles for problem solvers at SMG</h1>
+
+          <div className="flex flex-col text-[clamp(1.75rem,6vw,6rem)] font-medium leading-[0.96] tracking-[-0.055em] md:flex-row md:items-center md:gap-[0.22em]">
+            <span className="relative z-20 shrink-0 text-white">For the</span>
+            <div className="relative mt-3 h-[4.8em] min-w-0 flex-1 md:mt-0 md:h-[3.3em]">
+              {heroPhrases.map((phrase, index) => {
+                const length = heroPhrases.length;
+                let offset = index - phraseIndex;
+                if (offset > length / 2) offset -= length;
+                if (offset < -length / 2) offset += length;
+                const distance = Math.abs(offset);
+                return (
+                  <span
+                    key={phrase}
+                    aria-hidden={offset !== 0}
+                    className="absolute left-0 top-1/2 whitespace-nowrap transition-[transform,opacity,filter,color] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    style={{
+                      transform: `translateY(calc(-50% + ${offset * 1.02}em))`,
+                      opacity: distance === 0 ? 1 : distance <= 3 ? Math.max(0.08, 0.3 - distance * 0.07) : 0,
+                      filter: distance === 0 ? "blur(0px)" : `blur(${Math.min(distance * 0.7, 2)}px)`,
+                      color: offset === 0 ? "white" : "rgba(255,255,255,0.38)",
+                    }}
+                  >
+                    {phrase}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="open-roles" className="scroll-mt-24 py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <Link href="/careers" className="inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-brand mb-8">
             <ArrowLeft className="h-3.5 w-3.5" /> Back to life at SMG
