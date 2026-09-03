@@ -7,15 +7,9 @@ import { useEffect, useRef, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import logo from "@/assets/smg-logo.png";
 
-const nav = [
-  { to: "/", label: "Home" },
-  { to: "/about", label: "About" },
-  { to: "/businesses/marketplace-operations", label: "Businesses", match: "/businesses" },
-  { to: "/careers", label: "Work with us" },
-  { to: "/contact", label: "Contact" },
-];
+type SubItem = { to?: string; href?: string; title: string; desc: string };
 
-const businesses = [
+const businesses: SubItem[] = [
   { to: "/businesses/marketplace-operations", title: "Marketplace Operations", desc: "Amazon, Flipkart & beyond" },
   { to: "/businesses/distribution-network", title: "Distribution Network", desc: "80,000+ retailers nationwide" },
   { to: "/businesses/commerce-trading", title: "Commerce Trading", desc: "Electronics supply chain" },
@@ -23,15 +17,55 @@ const businesses = [
   { href: "https://www.oyugreen.com", title: "Sustainability · OYU Green", desc: "Carbon & climate" },
 ];
 
+const workWithUs: SubItem[] = [
+  { to: "/careers", title: "Life at SMG", desc: "The people, and how we work" },
+  { to: "/jobs", title: "Open roles", desc: "Current openings, every team" },
+];
+
+// `matchAny` marks the item active across a set of unrelated paths — Work with
+// us spans both /careers and /jobs, which no single prefix covers.
+const nav: {
+  to: string;
+  label: string;
+  match?: string;
+  matchAny?: string[];
+  menu?: SubItem[];
+  menuWidth?: string;
+}[] = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  {
+    to: "/businesses/marketplace-operations",
+    label: "Businesses",
+    match: "/businesses",
+    menu: businesses,
+    menuWidth: "w-[420px]",
+  },
+  {
+    to: "/careers",
+    label: "Work with us",
+    matchAny: ["/careers", "/jobs"],
+    menu: workWithUs,
+    menuWidth: "w-[320px]",
+  },
+  { to: "/contact", label: "Contact" },
+];
+
 export function SiteHeader() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
-  const [bizOpen, setBizOpen] = useState(false);
+  const [openMenu, setOpenMenu] = useState<number | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
   const [pill, setPill] = useState<{ left: number; width: number; opacity: number }>({ left: 0, width: 0, opacity: 0 });
 
   // Active item index
-  const activeIdx = nav.findIndex((n) => (n.match ? path.startsWith(n.match) : path === n.to));
+  const activeIdx = nav.findIndex((n) =>
+    n.matchAny
+      ? n.matchAny.some((p) => path === p || path.startsWith(`${p}/`))
+      : n.match
+        ? path.startsWith(n.match)
+        : path === n.to,
+  );
 
   const setPillTo = (el: HTMLElement | null) => {
     if (!el || !navRef.current) return;
@@ -70,7 +104,7 @@ export function SiteHeader() {
             if (el) setPillTo(el);
             else setPill((p) => ({ ...p, opacity: 0 }));
           }}
-          className="hidden lg:flex relative items-center gap-1 px-2 py-1.5 rounded-full bg-white/85 backdrop-blur-xl border border-line/80 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)]"
+          className="hidden lg:flex isolate relative items-center gap-1 px-2 py-1.5 rounded-full bg-white/85 backdrop-blur-xl border border-line/80 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.12)]"
         >
           {/* Hover/active pill */}
           <span
@@ -79,31 +113,27 @@ export function SiteHeader() {
             style={{ left: pill.left, width: pill.width, opacity: pill.opacity }}
           />
           {nav.map((n, i) => {
-            const isBiz = n.label === "Businesses";
-            const active = i === activeIdx;
             return (
               <div
                 key={n.to}
                 className="relative"
                 onMouseEnter={(e) => {
                   setPillTo(e.currentTarget.firstChild as HTMLElement);
-                  if (isBiz) setBizOpen(true);
+                  if (n.menu) setOpenMenu(i);
                 }}
-                onMouseLeave={() => isBiz && setBizOpen(false)}
+                onMouseLeave={() => n.menu && setOpenMenu((cur) => (cur === i ? null : cur))}
               >
                 <Link
                   href={n.to}
                   data-idx={i}
-                  className={`relative z-10 inline-flex items-center px-4 py-2 text-[13px] font-medium rounded-full transition-colors duration-300 ${
-                    active ? "text-white" : "text-ink/70 hover:text-white"
-                  }`}
+                  className="relative z-10 inline-flex items-center rounded-full px-4 py-2 text-[13px] font-medium text-white mix-blend-difference"
                 >
                   {n.label}
                 </Link>
-                {isBiz && bizOpen && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-3 w-[420px] z-50">
+                {n.menu && openMenu === i && (
+                  <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 z-50 ${n.menuWidth ?? "w-[420px]"}`}>
                     <div className="bg-white border border-line rounded-2xl shadow-elevated p-2 grid gap-0.5 animate-in fade-in slide-in-from-top-2 duration-200">
-                      {businesses.map((b) => {
+                      {n.menu.map((b) => {
                         const key = b.to || b.href;
                         const content = (
                           <>
@@ -176,24 +206,30 @@ export function SiteHeader() {
               {n.label}
             </Link>
           ))}
-          <div className="mt-3 pt-3 border-t border-line">
-            <div className="text-[10px] uppercase tracking-wider text-ink-soft mb-2">Businesses</div>
-            {businesses.map((b) => {
-              const key = b.to || b.href;
-              if (b.href) {
-                return (
-                  <a key={key} href={b.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="block py-1.5 text-sm text-ink/80">
-                    {b.title}
-                  </a>
-                );
-              }
-              return (
-                <Link key={key} href={b.to!} onClick={() => setOpen(false)} className="block py-1.5 text-sm text-ink/80">
-                  {b.title}
-                </Link>
-              );
-            })}
-          </div>
+          {/* One section per nav item that has a submenu, so any future menu
+              shows up here without another hardcoded block. */}
+          {nav
+            .filter((n) => n.menu)
+            .map((n) => (
+              <div key={n.label} className="mt-3 pt-3 border-t border-line">
+                <div className="text-[10px] uppercase tracking-wider text-ink-soft mb-2">{n.label}</div>
+                {n.menu!.map((b) => {
+                  const key = b.to || b.href;
+                  if (b.href) {
+                    return (
+                      <a key={key} href={b.href} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="block py-1.5 text-sm text-ink/80">
+                        {b.title}
+                      </a>
+                    );
+                  }
+                  return (
+                    <Link key={key} href={b.to!} onClick={() => setOpen(false)} className="block py-1.5 text-sm text-ink/80">
+                      {b.title}
+                    </Link>
+                  );
+                })}
+              </div>
+            ))}
         </div>
       )}
     </header>
