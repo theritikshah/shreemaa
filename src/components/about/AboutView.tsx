@@ -6,6 +6,7 @@ import { geoNaturalEarth1, geoPath, geoInterpolate } from "d3-geo";
 import { feature } from "topojson-client";
 import type { FeatureCollection } from "geojson";
 import { Counter } from "@/components/Counter";
+import { PeopleStories } from "./PeopleStories";
 
 type Office = {
   city: string;
@@ -108,6 +109,8 @@ export function AboutView() {
           </div>
         </div>
       </section>
+
+      <PeopleStories />
 
       {/* GLOBAL PRESENCE */}
       <section className="bg-surface-2 py-28 md:py-36">
