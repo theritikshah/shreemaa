@@ -64,34 +64,12 @@ const contactSchema = z.object({
 
 type FieldErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
 
-function useIstClock() {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(t);
-  }, []);
-  const fmt = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-  return fmt.format(now);
-}
-
 export function ContactView() {
   const [greetIdx, setGreetIdx] = useState(0);
   const [type, setType] = useState("business");
   const [office, setOffice] = useState(offices[0]);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [mounted, setMounted] = useState(false);
-  const time = useIstClock();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const t = setInterval(() => setGreetIdx((i) => (i + 1) % greetings.length), 2400);
@@ -216,7 +194,7 @@ export function ContactView() {
       <section id="form" className="py-24 md:py-32 bg-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="mb-14">
-            <h2 className="text-4xl md:text-6xl font-display font-semibold tracking-[-0.03em] leading-[1.02] max-w-3xl">
+            <h2 className="max-w-3xl font-display text-4xl font-semibold leading-[1.02] tracking-[-0.03em] md:text-6xl">
               Write to us.
             </h2>
           </div>
@@ -232,25 +210,19 @@ export function ContactView() {
                     <button
                       key={i.id}
                       onClick={() => setType(i.id)}
-                      className="group w-full text-left border-b border-ink/10 py-6 flex items-start gap-6 relative"
+                      className="group relative flex w-full items-start gap-6 border-b border-ink/10 py-6 text-left"
                     >
-                      <span className="text-[11px] tracking-[0.22em] uppercase text-ink-soft mt-2 tabular-nums">
+                      <span className="mt-2 text-[11px] tabular-nums uppercase tracking-[0.22em] text-ink-soft">
                         0{idx + 1}
                       </span>
-                      <div className="flex-1 min-w-0">
+                      <div className="min-w-0 flex-1">
                         <div className="flex items-baseline justify-between gap-4">
-                          <div
-                            className={`text-3xl md:text-4xl font-display font-semibold tracking-tight transition-colors ${
-                              active ? "text-brand" : "text-ink group-hover:text-brand"
-                            }`}
-                          >
+                          <div className={`font-display text-3xl font-semibold tracking-tight transition-colors md:text-4xl ${active ? "text-brand" : "text-ink group-hover:text-brand"}`}>
                             {i.label}
                           </div>
                           <motion.span
                             animate={{ rotate: active ? 45 : 0, scale: active ? 1.1 : 1 }}
-                            className={`h-9 w-9 rounded-full flex items-center justify-center transition-colors ${
-                              active ? "bg-brand text-white" : "bg-ink/5 text-ink"
-                            }`}
+                            className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${active ? "bg-brand text-white" : "bg-ink/5 text-ink"}`}
                           >
                             <Icon className="h-4 w-4" />
                           </motion.span>
@@ -261,7 +233,7 @@ export function ContactView() {
                               initial={{ height: 0, opacity: 0 }}
                               animate={{ height: "auto", opacity: 1 }}
                               exit={{ height: 0, opacity: 0 }}
-                              className="text-ink-soft text-sm mt-3 overflow-hidden"
+                              className="mt-3 overflow-hidden text-sm text-ink-soft"
                             >
                               {i.desc}
                             </motion.p>
@@ -273,7 +245,7 @@ export function ContactView() {
                 })}
               </div>
 
-              <div className="mt-10 p-6 rounded-2xl bg-surface-2 border border-ink/5">
+              <div className="mt-10 rounded-2xl border border-ink/5 bg-surface-2 p-6">
                 <div className="text-[11px] uppercase tracking-[0.2em] text-ink-soft mb-2">
                   Prefer email?
                 </div>
@@ -334,7 +306,6 @@ export function ContactView() {
                       error={errors.message}
                     />
                     <input type="hidden" name="type" value={type} />
-
                     <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                       <div className="text-xs text-ink-soft">
                         Subject:{" "}
@@ -360,138 +331,135 @@ export function ContactView() {
         </div>
       </section>
 
-      {/* SECTION 03 — Offices, two-card switcher with live clocks */}
-      <section id="offices" className="py-24 md:py-32 bg-surface">
+      {/* SECTION 03 — Offices as two distinct doors */}
+      <section id="offices" className="bg-surface py-24 md:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <h2 className="text-4xl md:text-6xl font-display font-semibold tracking-[-0.03em] leading-[1.02] max-w-3xl">
-              Two doors,{" "}
-              <span className="font-serif-display italic text-brand">always open</span>.
-            </h2>
-            <p className="md:max-w-xs text-ink-soft text-sm">
-              Our headquarters sit in Bhopal. Our corporate office runs out of Gurgaon. Stop by either, with a heads-up.
+          <div className="grid items-end gap-6 md:grid-cols-12 md:gap-10">
+            <div className="md:col-span-8">
+              <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
+                Find us in India
+              </div>
+              <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.02] tracking-[-0.03em] md:text-6xl">
+                Two doors, <span className="font-serif-display italic text-brand">always open</span>.
+              </h2>
+            </div>
+            <p className="text-sm leading-relaxed text-ink-soft md:col-span-4 md:max-w-sm">
+              Strategy and operations in Bhopal. Partnerships and corporate teams in Gurgaon.
+              Choose a door to see where to find us.
             </p>
           </div>
 
-          {/* Office tabs (city names as big toggles) */}
-          <div className="flex flex-wrap gap-3 mb-8">
-            {offices.map((o) => {
-              const active = office.id === o.id;
+          <div className="mt-12 grid gap-4 lg:grid-cols-2">
+            {offices.map((location, index) => {
+              const isActive = office.id === location.id;
               return (
                 <button
-                  key={o.id}
-                  onClick={() => setOffice(o)}
-                  className={`relative px-6 py-2.5 rounded-full text-sm font-medium transition-colors border ${
-                    active
-                      ? "bg-ink text-white border-ink"
-                      : "bg-white text-ink border-ink/10 hover:border-ink/40"
+                  key={location.id}
+                  type="button"
+                  onClick={() => setOffice(location)}
+                  aria-pressed={isActive}
+                  className={`group relative min-h-[310px] overflow-hidden rounded-[28px] border p-7 text-left transition-all duration-300 md:p-9 ${
+                    isActive
+                      ? "border-ink bg-ink text-white shadow-[0_24px_60px_-36px_rgba(20,18,16,0.65)]"
+                      : "border-ink/10 bg-white text-ink hover:border-ink/30"
                   }`}
                 >
-                  <span className="tabular-nums text-[10px] uppercase tracking-[0.22em] mr-2 opacity-60">
-                    {o.id === "bhopal" ? "HQ" : "Corp"}
-                  </span>
-                  {o.city}
+                  <div
+                    aria-hidden
+                    className={`absolute -right-20 -top-24 h-64 w-64 rounded-full blur-3xl transition-opacity ${
+                      isActive ? "bg-brand/30 opacity-100" : "bg-brand/10 opacity-0 group-hover:opacity-100"
+                    }`}
+                  />
+
+                  <div className="relative flex h-full flex-col">
+                    <div className="flex items-center justify-between gap-5">
+                      <div className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${isActive ? "text-white/50" : "text-ink-soft"}`}>
+                        0{index + 1} · {location.role}
+                      </div>
+                      <div className={`flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] ${isActive ? "text-white/60" : "text-ink-soft"}`}>
+                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Mon–Sat
+                      </div>
+                    </div>
+
+                    <div className="mt-9">
+                      <div className="font-display text-5xl font-semibold tracking-[-0.04em] md:text-6xl">
+                        {location.city}
+                      </div>
+                      <div className={`mt-1 text-sm ${isActive ? "text-white/55" : "text-ink-soft"}`}>
+                        {location.state}
+                      </div>
+                    </div>
+
+                    <div className="mt-auto grid grid-cols-[1fr_auto] items-end gap-6 pt-10">
+                      <div>
+                        <div className={`flex max-w-md items-start gap-2 text-sm ${isActive ? "text-white/75" : "text-ink/75"}`}>
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
+                          <span>{location.address}</span>
+                        </div>
+                        <div className={`mt-4 text-xs ${isActive ? "text-white/45" : "text-ink-soft"}`}>
+                          <span>{location.hours}</span>
+                        </div>
+                      </div>
+                      <span className={`grid h-11 w-11 place-items-center rounded-full transition-colors ${isActive ? "bg-white text-ink" : "bg-ink text-white group-hover:bg-brand"}`}>
+                        <ArrowUpRight className="h-4 w-4" />
+                      </span>
+                    </div>
+                  </div>
                 </button>
               );
             })}
           </div>
 
-          <div className="grid grid-cols-12 gap-6">
-            {/* Map */}
-            <div className="col-span-12 lg:col-span-8">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={office.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -16 }}
-                  transition={{ duration: 0.5 }}
-                  className="rounded-3xl overflow-hidden border border-ink/10 aspect-[4/3] md:aspect-[16/10] bg-white relative"
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={office.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.35 }}
+              className="relative mt-5 h-[280px] overflow-hidden rounded-[28px] border border-ink/10 bg-white md:h-[360px]"
+            >
+              <iframe
+                title={`SMG ${office.city} office`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(office.mapQuery)}&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="absolute inset-x-4 bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-ink/90 px-4 py-3 text-white backdrop-blur md:inset-x-auto md:left-4 md:min-w-[420px]">
+                <div>
+                  <div className="text-[10px] uppercase tracking-[0.2em] text-white/50">Selected office</div>
+                  <div className="mt-0.5 text-sm font-medium">{office.city} · {office.coords}</div>
+                </div>
+                <a
+                  href={`https://www.google.com/maps?q=${encodeURIComponent(office.mapQuery)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-xs font-semibold hover:text-brand"
                 >
-                  <iframe
-                    title={`SMG ${office.city} office`}
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(office.mapQuery)}&output=embed`}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                  <div className="absolute bottom-4 left-4 bg-ink/90 backdrop-blur text-white px-4 py-2 rounded-full text-[11px] uppercase tracking-[0.22em]">
-                    {office.coords}
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-
-            {/* Details */}
-            <div className="col-span-12 lg:col-span-4">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={office.id}
-                  initial={{ opacity: 0, x: 16 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -16 }}
-                  transition={{ duration: 0.4 }}
-                  className="h-full rounded-3xl bg-white border border-ink/10 p-8 flex flex-col"
-                >
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-brand font-medium">
-                    {office.role}
-                  </div>
-                  <div className="mt-3 text-5xl font-display font-semibold tracking-tight">
-                    {office.city}
-                  </div>
-                  <div className="text-ink-soft text-sm">{office.state}</div>
-
-                  <div className="mt-8 space-y-5 text-sm">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.22em] text-ink-soft mb-1">
-                        Address
-                      </div>
-                      <div className="text-ink flex items-start gap-2">
-                        <MapPin className="h-4 w-4 mt-0.5 text-brand flex-shrink-0" />
-                        <span>{office.address}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.22em] text-ink-soft mb-1">
-                        Hours
-                      </div>
-                      <div className="text-ink">{office.hours}</div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.22em] text-ink-soft mb-1">
-                        Local time
-                      </div>
-                      <div className="font-display text-2xl tabular-nums">{mounted ? time : "--:--:--"}</div>
-                    </div>
-                  </div>
-
-                  <a
-                    href={`https://www.google.com/maps?q=${encodeURIComponent(office.mapQuery)}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-auto pt-6 inline-flex items-center gap-2 text-sm font-medium text-ink hover:text-brand transition-colors"
-                  >
-                    Get directions <ArrowUpRight className="h-4 w-4" />
-                  </a>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
+                  Directions <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 
-      {/* SECTION 04 — Social / Footer CTA */}
-      <section className="py-20 md:py-24 bg-ink text-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-12 gap-6 items-center">
-          <div className="col-span-12 lg:col-span-8">
-            <div className="text-3xl md:text-5xl font-display font-semibold tracking-tight">
+      {/* SECTION 04 — Compact social handoff */}
+      <section className="border-b border-white/10 bg-ink py-9 text-white md:py-10">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5 px-6 lg:px-10">
+          <div className="flex min-w-0 items-baseline gap-3">
+            <div className="shrink-0 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/40">
+              Connect
+            </div>
+            <div className="text-lg font-medium tracking-tight text-white/80 md:text-xl">
               Or find us where you{" "}
               <span className="font-serif-display italic text-brand">already are</span>.
             </div>
           </div>
-          <div className="col-span-12 lg:col-span-3 flex lg:justify-end gap-2">
+          <div className="flex gap-2">
             {[
               { Icon: LinkedinIcon, href: "#", label: "LinkedIn" },
               { Icon: InstagramIcon, href: "#", label: "Instagram" },
@@ -502,9 +470,9 @@ export function ContactView() {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="h-12 w-12 rounded-full border border-white/15 flex items-center justify-center hover:bg-brand hover:border-brand transition-colors"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:border-brand hover:bg-brand hover:text-white"
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="h-3.5 w-3.5" />
               </a>
             ))}
           </div>

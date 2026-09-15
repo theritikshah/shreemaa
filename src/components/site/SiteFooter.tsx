@@ -1,5 +1,10 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { ArrowUpRight, Globe, Mail } from "lucide-react";
+import { toast } from "sonner";
 import { LinkedinIcon, InstagramIcon } from "@/components/icons/BrandIcons";
 
 const focusRing =
@@ -35,6 +40,16 @@ const columns: { title: string; links: { label: string; href: string; external?:
 ];
 
 export function SiteFooter() {
+  const pathname = usePathname();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const isContactPage = pathname === "/contact";
+
+  function handleNewsletterSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setNewsletterEmail("");
+    toast.success("You are on the list. Watch your inbox.");
+  }
+
   return (
     <footer className="relative overflow-hidden bg-ink text-white">
       <div className="h-px w-full bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_0%,var(--brand)_35%,var(--brand-3)_62%,rgba(255,255,255,0.06)_100%)]" />
@@ -48,32 +63,73 @@ export function SiteFooter() {
       />
 
       <div className="relative mx-auto max-w-[1280px] px-[clamp(20px,3vw,40px)] pt-[clamp(56px,6vw,88px)]">
-        {/* Band 1 — CTA */}
+        {/* Band 1 — Contact CTA / contact-page newsletter */}
         <div className="flex flex-wrap items-end gap-[clamp(28px,4vw,48px)] border-b border-white/10 pb-[clamp(40px,5vw,64px)]">
-          <div className="min-w-0 flex-[1_1_440px]">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
-              Start a conversation
-            </div>
-            <h2 className="mt-[clamp(14px,2vw,20px)] text-pretty font-display text-[clamp(30px,4.2vw,56px)] font-semibold leading-[1.04] tracking-[-0.03em]">
-              Let&apos;s put your brand in front of{" "}
-              <span className="font-serif-display italic text-brand">300 million people.</span>
-            </h2>
-          </div>
-          <div className="flex min-w-0 flex-[1_1_330px] flex-col items-start gap-5">
-            <p className="max-w-[420px] text-pretty text-[15px] leading-[1.7] text-white/65">
-              Tell us the category, the market and the goal. A real person on our team reads every
-              note and replies within one business day.
-            </p>
-            <Link
-              href="/contact"
-              className={`group inline-flex items-center gap-3 whitespace-nowrap rounded-full bg-white py-2 pl-[26px] pr-2 text-[15px] font-semibold text-ink motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:translate-x-[3px] ${focusRing}`}
-            >
-              Get in touch
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-gradient text-white">
-                <ArrowUpRight className="h-4 w-4" />
-              </span>
-            </Link>
-          </div>
+          {isContactPage ? (
+            <>
+              <div className="min-w-0 flex-[1_1_440px]">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
+                  Stay in the loop
+                </div>
+                <h2 className="mt-[clamp(14px,2vw,20px)] text-pretty font-display text-[clamp(30px,4.2vw,56px)] font-semibold leading-[1.04] tracking-[-0.03em]">
+                  Commerce moves fast.{" "}
+                  <span className="font-serif-display italic text-brand">Stay ahead of it.</span>
+                </h2>
+              </div>
+              <div className="min-w-0 flex-[1_1_360px]">
+                <p className="max-w-[460px] text-pretty text-[15px] leading-[1.7] text-white/65">
+                  A considered briefing on marketplaces, distribution and global trade—delivered
+                  when there is something worth sharing.
+                </p>
+                <form onSubmit={handleNewsletterSubmit} className="mt-6 flex max-w-[500px] gap-2" aria-label="Newsletter signup">
+                  <label htmlFor="footer-newsletter-email" className="sr-only">Work email</label>
+                  <input
+                    id="footer-newsletter-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={newsletterEmail}
+                    onChange={(event) => setNewsletterEmail(event.target.value)}
+                    placeholder="Work email"
+                    className={`min-w-0 flex-1 rounded-full border border-white/15 bg-white/[0.07] px-5 py-3.5 text-sm text-white placeholder:text-white/40 transition-colors focus:border-white/40 ${focusRing}`}
+                  />
+                  <button
+                    type="submit"
+                    className={`group inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-5 py-3.5 text-sm font-semibold text-ink transition-transform duration-200 hover:translate-x-[2px] ${focusRing}`}
+                  >
+                    Subscribe <ArrowUpRight className="h-4 w-4" />
+                  </button>
+                </form>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="min-w-0 flex-[1_1_440px]">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
+                  Start a conversation
+                </div>
+                <h2 className="mt-[clamp(14px,2vw,20px)] text-pretty font-display text-[clamp(30px,4.2vw,56px)] font-semibold leading-[1.04] tracking-[-0.03em]">
+                  Let&apos;s put your brand in front of{" "}
+                  <span className="font-serif-display italic text-brand">300 million people.</span>
+                </h2>
+              </div>
+              <div className="flex min-w-0 flex-[1_1_330px] flex-col items-start gap-5">
+                <p className="max-w-[420px] text-pretty text-[15px] leading-[1.7] text-white/65">
+                  Tell us the category, the market and the goal. A real person on our team reads every
+                  note and replies within one business day.
+                </p>
+                <Link
+                  href="/contact"
+                  className={`group inline-flex items-center gap-3 whitespace-nowrap rounded-full bg-white py-2 pl-[26px] pr-2 text-[15px] font-semibold text-ink motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:translate-x-[3px] ${focusRing}`}
+                >
+                  Get in touch
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-gradient text-white">
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Band 2 — Contact + link columns */}
