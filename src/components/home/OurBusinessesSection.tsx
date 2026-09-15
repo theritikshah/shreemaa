@@ -133,7 +133,7 @@ const cards: Card[] = [
   },
 ];
 
-const BASE_TOP = 260;
+const BASE_TOP = 240;
 
 export function OurBusinessesSection() {
   const headRef = useRef<HTMLDivElement>(null);
@@ -265,7 +265,7 @@ export function OurBusinessesSection() {
               ref={(el) => {
                 rectRefs.current[i] = el;
               }}
-              className={`sticky top-20 md:top-[260px] md:h-[min(calc(100vh-300px),70vh)] md:min-h-[min(340px,calc(100vh-300px))] ${
+              className={`sticky top-20 md:top-[240px] md:h-[clamp(420px,58vh,560px)] ${
                 i === 0 ? "" : "mt-[48vh] md:mt-[65vh]"
               }`}
               style={{ zIndex: i + 1 }}
@@ -330,7 +330,7 @@ export function OurBusinessesSection() {
                     gfxRefs.current[i] = el;
                   }}
                   aria-hidden
-                  className="hidden md:flex absolute left-[17%] top-[52px] -bottom-[70px] w-[23%] items-end justify-center pointer-events-none will-change-transform z-0"
+                  className="pointer-events-none absolute bottom-5 left-[17%] top-[52px] z-0 hidden w-[23%] items-center justify-center will-change-transform md:flex"
                 >
                   <Image
                     src={card.collage}
@@ -344,9 +344,9 @@ export function OurBusinessesSection() {
                   ref={(el) => {
                     if (i < 4) contentRefs.current[i] = el;
                   }}
-                  className="flex-1 min-h-0 grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-14 px-5 md:px-14 pt-2 pb-5 md:pt-2 md:pb-12 md:overflow-visible z-10"
+                  className="z-10 grid min-h-0 flex-1 grid-cols-1 gap-4 px-5 pb-5 pt-2 md:grid-cols-12 md:items-center md:gap-14 md:overflow-visible md:px-14 md:py-7"
                 >
-                  <div className="md:col-span-5 flex flex-col justify-end min-h-0">
+                  <div className="flex min-h-0 flex-col justify-end md:col-span-5 md:justify-center">
                     <Icon className="mb-2 h-5 w-5 flex-none self-start text-[#fd0000] md:mb-4 md:h-6 md:w-6" />
 
                     {/* Mobile-only collage image (Hidden on desktop) */}
@@ -371,7 +371,7 @@ export function OurBusinessesSection() {
                       </div>
                     </div>
                   </div>
-                  <div className="md:col-span-7 flex flex-col justify-end min-h-0">
+                  <div className="flex min-h-0 flex-col justify-end md:col-span-7 md:justify-center">
                     <h3 className="font-display text-[clamp(24px,3vh_+_8px,40px)] font-bold tracking-[-0.025em] leading-[1.12]">
                       {card.headline}
                     </h3>

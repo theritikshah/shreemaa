@@ -119,13 +119,13 @@ export function CareersView() {
       {/* Fills the viewport and centres its contents, so the copy sits on the
           optical centre instead of being pushed down by a large top padding.
           The top padding only needs to clear the fixed nav. */}
-      <section className="relative flex min-h-screen items-center overflow-hidden bg-bg pt-20 pb-10 md:pt-24 md:pb-14">
+      <section className="relative flex min-h-[620px] items-center overflow-hidden bg-bg pb-10 pt-20 md:min-h-[680px] md:pb-12 md:pt-24">
         <div
           ref={ringStageRef}
           // One shared vanishing point for the whole ring: the circles fly in
           // along Z, so off-centre ones sweep outward as they come forward.
           // Per-element perspective would flatten this back to a plain scale.
-          className="relative mx-auto min-h-[460px] w-full max-w-[1600px] [perspective:1200px] md:min-h-[540px]"
+          className="relative mx-auto h-[460px] w-full max-w-[1400px] [perspective:1200px] md:h-[clamp(500px,62svh,560px)]"
         >
           {/* Circles sit behind the copy and are decorative only */}
           {avatarRing.map((a, n) => {
@@ -142,7 +142,7 @@ export function CareersView() {
                 style={{
                   left: `${a.left}%`,
                   top: `${a.top}%`,
-                  width: `${a.size}%`,
+                  width: `clamp(56px, ${a.size}vw, 104px)`,
                   aspectRatio: "1",
                   // Keeps the inner circle inside the stage's 3D space, so its
                   // translateZ resolves against the shared vanishing point.
@@ -192,16 +192,16 @@ export function CareersView() {
           })}
 
           {/* Centred copy */}
-          <div className="relative mx-auto flex min-h-[460px] max-w-3xl flex-col items-center justify-center px-6 text-center md:min-h-[540px]">
-            <h2 className="text-[clamp(2.5rem,7vw,5.5rem)] font-bold tracking-[-0.035em] leading-[0.98]">
+          <div className="relative mx-auto flex h-[460px] max-w-3xl flex-col items-center justify-center px-6 text-center md:h-[clamp(500px,62svh,560px)]">
+            <h2 className="text-[clamp(2.5rem,6vw,4.75rem)] font-bold tracking-[-0.035em] leading-[0.98]">
               The people who{" "}
               <span className="italic font-display font-normal text-brand">build SMG</span>
             </h2>
-            <p className="mt-7 max-w-xl text-lg leading-relaxed text-ink-soft">
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-soft md:text-lg">
               Known by name, trusted with real decisions, and surrounded by people who
               genuinely like showing up.
             </p>
-            <div className="mt-9">
+            <div className="mt-7">
               <Link
                 href="/jobs"
                 className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-ink/85"

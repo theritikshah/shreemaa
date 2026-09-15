@@ -16,18 +16,9 @@ const offers: Offer[] = [
   { index: "06", eyebrow: "Long-term partnerships", title: "Here for the", accent: "long run.", description: "Multi-decade relationships with demanding manufacturers are built on transparent execution, shared accountability and durable value.", stat: "1997", statLabel: "Operating since", note: "100+ manufacturer relationships", href: "/contact", icon: Handshake },
 ];
 
-const statementLines = [
-  "Built for serious scale.",
-  "Nationwide reach,",
-  "three decades of retail relationships",
-  "and the capital strength",
-  "to carry a brand's growth.",
-];
-
 export function ScaleOffersSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [progress, setProgress] = useState(0);
-  const [fillProgress, setFillProgress] = useState(0);
 
   useEffect(() => {
     let frame = 0;
@@ -38,10 +29,7 @@ export function ScaleOffersSection() {
       const rect = section.getBoundingClientRect();
       const distance = section.offsetHeight - window.innerHeight;
       const next = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0;
-      const entryStart = window.innerHeight * 0.5;
-      const entry = Math.min(1, Math.max(0, (entryStart - rect.top) / entryStart));
       setProgress((current) => (Math.abs(current - next) > 0.0005 ? next : current));
-      setFillProgress((current) => (Math.abs(current - entry) > 0.0005 ? entry : current));
     };
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
     update();
@@ -54,13 +42,8 @@ export function ScaleOffersSection() {
     };
   }, []);
 
-  const introEnd = 0.14;
   const settleEnd = 0.22;
-  const introProgress = Math.min(1, progress / introEnd);
-  const settleProgress = Math.min(1, Math.max(0, (progress - introEnd) / (settleEnd - introEnd)));
   const horizontalProgress = Math.min(1, Math.max(0, (progress - settleEnd) / (1 - settleEnd)));
-  const cardScale = introProgress;
-  const firstProofProgress = settleProgress;
 
   return (
     <>
@@ -106,7 +89,7 @@ export function ScaleOffersSection() {
       </div>
     </section>
 
-    <section ref={sectionRef} className="relative hidden h-[700svh] bg-ink md:block" aria-label="Why brands choose SMG — horizontal story">
+    <section ref={sectionRef} className="relative hidden h-[350svh] bg-ink md:block" aria-label="Why brands choose SMG — horizontal story">
       <div className="sticky top-0 h-[100svh] w-full overflow-hidden bg-ink text-white">
         <div className="absolute inset-0 overflow-hidden bg-ink">
           <div aria-hidden className="pointer-events-none absolute -right-[120px] -top-[180px] h-[560px] w-[560px] rounded-full bg-[rgba(225,27,34,0.22)] blur-[150px]" />
@@ -118,81 +101,58 @@ export function ScaleOffersSection() {
         <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: "linear-gradient(135deg, #b30000 0%, #fd0000 100%)", mixBlendMode: "multiply" }} />
 
         <div
-          className="pointer-events-none absolute inset-0 z-[5] flex items-center justify-center px-5 transition-opacity duration-200 md:px-10"
-          style={{
-            transform: `translate3d(0, -${settleProgress * 100}vh, 0)`,
-            opacity: 1 - settleProgress * 0.35,
-          }}
+          className="pointer-events-none absolute inset-x-0 top-20 z-[5] flex h-[calc(50svh-5rem)] items-end px-5 pb-10 md:px-10 lg:px-[4.5vw]"
         >
-          <p
-            aria-label={statementLines.join(" ")}
-            className="text-center font-display text-[clamp(1.05rem,4.8vw,5.8rem)] font-semibold leading-[1.02] tracking-[-0.052em]"
-          >
-            {statementLines.map((line, index) => {
-              const lineProgress = Math.min(1, Math.max(0, (fillProgress - index * 0.08) / 0.55));
-              const stop = lineProgress * 100;
-              return (
-                <span
-                  key={line}
-                  aria-hidden="true"
-                  className="mx-auto block w-fit whitespace-nowrap text-transparent"
-                  style={{
-                    backgroundImage: `linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 255, 255) ${stop}%, rgba(255, 255, 255, 0.2) ${stop}%, rgba(255, 255, 255, 0.2) 100%)`,
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                  }}
-                >
-                  {line}
-                </span>
-              );
-            })}
-          </p>
+          <div className="max-w-xl text-left">
+            <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/45">
+              Why brands choose SMG
+            </div>
+            <h2 className="mt-3 font-display text-[clamp(1.8rem,2.6vw,3rem)] font-medium leading-none tracking-[-0.04em]">
+              Built for scale.
+            </h2>
+            <p className="mt-3 max-w-[48ch] text-sm leading-relaxed text-white/55 md:text-[15px]">
+              Nationwide reach, established retail relationships and the operating strength to carry growth.
+            </p>
+          </div>
         </div>
 
         <div
-          className="relative z-10 flex h-full will-change-transform"
+          className="absolute inset-x-0 bottom-0 z-10 flex h-[50svh] will-change-transform"
           style={{
             width: `${offers.length * 100}vw`,
             transform: `translate3d(-${horizontalProgress * (offers.length - 1) * 100}vw, 0, 0)`,
           }}
         >
-          {offers.map((offer, offerIndex) => {
+          {offers.map((offer) => {
             const Icon = offer.icon;
-            const isFirst = offerIndex === 0;
             return (
               <article key={offer.index} className="grid h-full w-screen flex-none grid-cols-2">
                 <div
-                  className="relative z-10 flex min-w-0 flex-col bg-[#f6f4ef] px-5 pb-8 pt-24 text-ink will-change-transform md:px-10 md:pb-10 md:pt-28 lg:px-[4.5vw] lg:pb-12"
-                  style={isFirst ? {
-                    transformOrigin: "100% 100%",
-                    transform: `translate3d(${(1 - settleProgress) * 50}vw, 0, 0) scale(${cardScale})`,
-                  } : undefined}
+                  className="relative z-10 flex min-w-0 flex-col bg-[#f6f4ef] px-5 py-5 text-ink will-change-transform md:px-10 md:py-7 lg:px-[4.5vw]"
                 >
-                  <p className="max-w-[31ch] text-sm leading-[1.5] tracking-[-0.015em] md:text-[clamp(1rem,1.35vw,1.45rem)]">{offer.description}</p>
-                  <div className="mt-auto pt-10">
+                  <div className="text-[10px] font-medium tracking-[0.2em] text-ink/35 md:text-xs">
+                    {offer.index}
+                  </div>
+                  <div className="mt-auto">
                     <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/55 md:text-xs">{offer.eyebrow}</div>
-                    <h3 className="max-w-[11ch] font-display text-[clamp(2.25rem,5.4vw,6.25rem)] font-semibold leading-[0.86] tracking-[-0.06em]">{offer.title} <span className="text-[#fd0000]">{offer.accent}</span></h3>
-                    <Link href={offer.href} className="mt-5 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors hover:text-[#fd0000] md:mt-7 md:text-xs">Explore <ArrowUpRight className="h-4 w-4" /></Link>
+                    <h3 className="max-w-[12ch] font-display text-[clamp(1.8rem,3.5vw,4.25rem)] font-semibold leading-[0.88] tracking-[-0.055em]">{offer.title} <span className="text-[#fd0000]">{offer.accent}</span></h3>
+                    <Link href={offer.href} className="mt-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors hover:text-[#fd0000] md:text-xs">Explore <ArrowUpRight className="h-4 w-4" /></Link>
                   </div>
                 </div>
 
                 <div className="relative overflow-hidden">
-                  <div
-                    className="absolute inset-0 transition-opacity duration-300"
-                    style={{ opacity: isFirst ? firstProofProgress : 1 }}
-                  >
+                  <div className="absolute inset-0">
                   <div className="absolute inset-0 grid place-items-center">
-                    <div className="relative grid h-[clamp(120px,25vw,340px)] w-[clamp(120px,25vw,340px)] -translate-y-[8%] place-items-center rounded-full border border-white/25">
+                    <div className="relative grid h-[clamp(100px,18vw,220px)] w-[clamp(100px,18vw,220px)] -translate-y-[8%] place-items-center rounded-full border border-white/25">
                       <div className="absolute inset-[12%] rotate-45 rounded-[20%] border border-white/20" />
                       <div className="absolute h-px w-[140%] rotate-[-32deg] bg-white/20" />
                       <div className="absolute h-[140%] w-px rotate-[32deg] bg-white/15" />
                       <div className="relative grid h-[44%] w-[44%] place-items-center rounded-full border border-white/35 bg-black/15 backdrop-blur-sm"><Icon className="h-[30%] w-[30%] text-white" strokeWidth={1.35} /></div>
                     </div>
                   </div>
-                  <div className="absolute bottom-8 left-5 right-5 md:bottom-10 md:left-10 md:right-10">
-                    <div className="font-display text-[clamp(1.8rem,4.2vw,4.5rem)] font-semibold leading-none tracking-[-0.055em]">{offer.stat}</div>
+                  <div className="absolute bottom-5 left-5 right-5 md:bottom-7 md:left-10 md:right-10">
+                    <div className="font-display text-[clamp(1.5rem,3vw,3.25rem)] font-semibold leading-none tracking-[-0.055em]">{offer.stat}</div>
                     <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/65 md:text-xs">{offer.statLabel}</div>
-                    <div className="mt-4 border-t border-white/20 pt-3 text-[10px] text-white/55 md:text-xs">{offer.note}</div>
                   </div>
                   </div>
                 </div>
