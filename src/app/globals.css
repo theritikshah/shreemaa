@@ -226,3 +226,59 @@
     animation: none;
   }
 }
+
+/* About · code-drawn belief loops */
+.belief-dot {
+  fill: transparent;
+  stroke: #24211f;
+  stroke-width: 1.5;
+}
+.belief-line,
+.belief-line-dark,
+.belief-stack-layer,
+.belief-tick,
+.belief-tick-accent {
+  fill: none;
+  stroke: #77736e;
+  stroke-width: 1.4;
+}
+.belief-line-dark,
+.belief-stack-layer {
+  stroke: #24211f;
+}
+.belief-stack-layer {
+  animation: belief-stack-breathe 3.4s ease-in-out infinite;
+}
+.belief-stack-accent,
+.belief-tick-accent {
+  stroke: #e6533f;
+}
+.belief-orbit {
+  animation: belief-orbit-spin 14s linear infinite;
+}
+.belief-signal {
+  fill: #373432;
+  animation: belief-signal-pulse 2.4s ease-in-out infinite;
+}
+.belief-signal-accent {
+  fill: #e6533f;
+}
+@keyframes belief-stack-breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes belief-orbit-spin {
+  to { transform: rotate(1turn); }
+}
+@keyframes belief-signal-pulse {
+  0%, 100% { transform: scaleY(0.48); }
+  50% { transform: scaleY(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .belief-dot,
+  .belief-stack-layer,
+  .belief-orbit,
+  .belief-signal {
+    animation: none;
+  }
+}
