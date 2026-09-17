@@ -2,16 +2,13 @@
 import Image from "next/image";
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import life1 from "@/assets/life-1.jpeg";
-import life2 from "@/assets/life-2.jpeg";
-import life3 from "@/assets/life-3.jpeg";
 // Placeholder profiles: replace these names, roles, stories and portraits with
 // approved founder content when it is available.
 const PEOPLE_STORIES = [
   {
     name: "Aarav Mehta",
     role: "Founder & Group Chairman",
-    image: life1.src,
+    image: "https://api.dicebear.com/10.x/notionists/svg?seed=Aarav%20Mehta&backgroundColor=eee8df",
     headline: "From one market to a nationwide network.",
     story:
       "What began as a small distribution operation grew through patient relationship-building, close attention to retailers and an instinct for where commerce was heading next. Aarav's journey represents the entrepreneurial foundation behind SMG: stay close to the market, earn trust over time and build the infrastructure before chasing scale.",
@@ -19,7 +16,7 @@ const PEOPLE_STORIES = [
   {
     name: "Meera Shah",
     role: "Co-founder & Director",
-    image: life2.src,
+    image: "https://api.dicebear.com/10.x/notionists/svg?seed=Meera%20Shah&backgroundColor=f1e5e5",
     headline: "Relationships first. Growth followed.",
     story:
       "Meera helped turn long-standing manufacturer and retailer relationships into an operating system for growth. Her story is one of disciplined execution—bringing people, processes and partners together so that every new category could scale without losing the responsiveness of a family-built business.",
@@ -27,7 +24,7 @@ const PEOPLE_STORIES = [
   {
     name: "Kabir Malhotra",
     role: "Co-founder & Managing Director",
-    image: life3.src,
+    image: "https://api.dicebear.com/10.x/notionists/svg?seed=Kabir%20Malhotra&backgroundColor=e5e9e3",
     headline: "Rebuilding the business for every new era.",
     story:
       "From traditional distribution to marketplaces and cross-border trade, Kabir's focus has been adaptation. By combining on-ground commercial experience with technology and new operating models, he helped extend SMG's reach while keeping the group anchored in practical, measurable outcomes for its partners.",
@@ -57,59 +54,84 @@ export function PeopleStories() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 border border-line bg-white rounded-3xl overflow-hidden min-h-[560px]">
-            <div className="lg:col-span-5 relative min-h-[420px] lg:min-h-full bg-surface-2 overflow-hidden">
-              <Image
-                key={story.image} fill sizes="(min-width: 1024px) 42vw, 100vw"
-                src={story.image}
-                alt={`Placeholder portrait for ${story.name}`}
-                className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-transparent" />
-              <div className="absolute left-6 top-6 rounded-full bg-white/90 backdrop-blur px-3 py-1.5 text-[10px] uppercase tracking-[0.2em] text-ink">
-                Placeholder profile
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+            <div className="flex flex-col gap-4 lg:col-span-3">
+              <div className="relative aspect-[4/4.15] overflow-hidden rounded-[24px] border border-line bg-surface-2">
+                <Image
+                  key={story.image}
+                  fill
+                  sizes="(min-width: 1024px) 25vw, 100vw"
+                  src={story.image}
+                  alt={`Generated portrait of ${story.name}`}
+                  unoptimized
+                  className="object-cover transition-opacity duration-500"
+                />
+                <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-[9px] uppercase tracking-[0.18em] text-ink backdrop-blur">
+                  Generated profile
+                </div>
               </div>
-              <div className="absolute bottom-7 left-7 right-7 text-white">
-                <div className="text-2xl md:text-3xl font-semibold tracking-tight">{story.name}</div>
-                <div className="mt-2 text-xs uppercase tracking-[0.2em] text-white/70">{story.role}</div>
+
+              <div className="flex min-h-[220px] flex-col justify-between rounded-[24px] bg-ink p-7 text-white md:p-8">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-white/40">
+                  Founding leadership · {String(activeStory + 1).padStart(2, "0")}
+                </div>
+                <div>
+                  <div className="font-display text-3xl font-semibold leading-[1.04] tracking-[-0.035em] md:text-4xl">
+                    {story.name}
+                  </div>
+                  <div className="mt-4 text-sm leading-relaxed text-white/60">{story.role}</div>
+                </div>
               </div>
             </div>
 
-            <div className="lg:col-span-7 p-8 sm:p-12 md:p-16 flex flex-col justify-between">
-              <div>
-                <div className="font-serif-display text-7xl md:text-8xl leading-none text-brand/20">“</div>
-                <h3 className="-mt-5 text-3xl md:text-5xl font-bold tracking-tight leading-[1.08] max-w-[15ch]">
+            <div className="flex min-h-[580px] flex-col rounded-[24px] border border-line bg-surface-2 p-7 sm:p-10 md:p-12 lg:col-span-9 lg:p-14">
+              <div className="flex items-center justify-between gap-5">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-soft">
+                  Shri Maa Group
+                </div>
+                <div className="text-xs tabular-nums text-ink-soft">
+                  {String(activeStory + 1).padStart(2, "0")} / {String(PEOPLE_STORIES.length).padStart(2, "0")}
+                </div>
+              </div>
+
+              <div className="mt-12 md:mt-16">
+                <h3 className="max-w-[22ch] font-display text-3xl font-medium leading-[1.08] tracking-[-0.04em] md:text-5xl">
                   {story.headline}
                 </h3>
-                <p className="mt-7 text-base md:text-lg leading-relaxed text-ink-soft max-w-2xl">
+                <p className="mt-7 max-w-3xl text-base leading-relaxed text-ink-soft md:text-lg">
                   {story.story}
                 </p>
               </div>
 
-              <div className="mt-12 pt-7 border-t border-line flex flex-wrap items-center justify-between gap-6">
-                <div className="flex items-center gap-2" aria-label="Select a people story">
-                  {PEOPLE_STORIES.map((person, i) => (
-                    <button
-                      key={person.name}
-                      type="button"
-                      onClick={() => setActiveStory(i)}
-                      aria-label={`Show ${person.name}'s story`}
-                      aria-current={i === activeStory ? "true" : undefined}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        i === activeStory ? "w-10 bg-brand" : "w-4 bg-ink/15 hover:bg-ink/35"
-                      }`}
-                    />
-                  ))}
+              <div className="mt-auto flex flex-wrap items-end justify-between gap-6 border-t border-line pt-7">
+                <div>
+                  <div className="font-display text-5xl font-medium tracking-[-0.05em] text-ink md:text-6xl">
+                    {String(activeStory + 1).padStart(2, "0")}
+                  </div>
+                  <div className="mt-2 text-[10px] uppercase tracking-[0.2em] text-ink-soft">
+                    A story behind the group
+                  </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="mr-2 text-xs uppercase tracking-[0.18em] text-ink-soft tabular-nums">
-                    {String(activeStory + 1).padStart(2, "0")} / {String(PEOPLE_STORIES.length).padStart(2, "0")}
-                  </span>
+                  <div className="mr-3 flex items-center gap-2" aria-label="Select a people story">
+                    {PEOPLE_STORIES.map((person, i) => (
+                      <button
+                        key={person.name}
+                        type="button"
+                        onClick={() => setActiveStory(i)}
+                        aria-label={`Show ${person.name}'s story`}
+                        aria-current={i === activeStory ? "true" : undefined}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          i === activeStory ? "w-10 bg-brand" : "w-4 bg-ink/15 hover:bg-ink/35"
+                        }`}
+                      />
+                    ))}
+                  </div>
                   <button
                     type="button"
                     onClick={() => setActiveStory((i) => (i - 1 + PEOPLE_STORIES.length) % PEOPLE_STORIES.length)}
-                    className="h-11 w-11 rounded-full border border-line flex items-center justify-center hover:bg-ink hover:text-white transition-colors"
+                    className="flex h-11 w-11 items-center justify-center rounded-full border border-line transition-colors hover:bg-ink hover:text-white"
                     aria-label="Previous story"
                   >
                     <ChevronLeft className="h-4 w-4" />
@@ -117,7 +139,7 @@ export function PeopleStories() {
                   <button
                     type="button"
                     onClick={() => setActiveStory((i) => (i + 1) % PEOPLE_STORIES.length)}
-                    className="h-11 w-11 rounded-full bg-ink text-white flex items-center justify-center hover:bg-brand transition-colors"
+                    className="flex h-11 w-11 items-center justify-center rounded-full bg-ink text-white transition-colors hover:bg-brand"
                     aria-label="Next story"
                   >
                     <ChevronRight className="h-4 w-4" />
