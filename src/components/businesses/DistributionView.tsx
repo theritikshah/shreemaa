@@ -14,15 +14,17 @@ import {
   Truck,
   Network,
   ShieldCheck,
+  Handshake,
+  Factory,
 } from "lucide-react";
 import { Counter } from "@/components/Counter";
-import hero from "@/assets/infra-warehouse.jpg";
+import { HeroTrafficBackground } from "@/components/hero-traffic/HeroTrafficBackground";
 import accent from "@/assets/infra-warehouse-interior.jpg";
 
 const stats = [
-  { value: 90, suffix: "K+", label: "Retailers" },
-  { value: 800, suffix: "+", label: "Distributors" },
-  { value: 100, suffix: "+", label: "Manufacturers" },
+  { icon: Store, value: 90, suffix: "K+", label: "Retailers" },
+  { icon: Handshake, value: 800, suffix: "+", label: "Distributors" },
+  { icon: Factory, value: 100, suffix: "+", label: "Manufacturers" },
 ];
 
 const capabilities = [
@@ -62,24 +64,21 @@ export function DistributionView() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-ink text-white">
-        <div className="absolute inset-0">
-          <Image src={hero} alt="" fill sizes="100vw" className="object-cover opacity-30" priority />
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-ink/85 to-brand/40" />
-          <div className="absolute -top-32 -right-20 h-[520px] w-[520px] rounded-full bg-brand/30 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-24 md:pt-36 md:pb-32">
+      {/* Light ground and dark copy, matching the About hero. */}
+      <section className="relative isolate overflow-hidden bg-surface text-ink">
+        <HeroTrafficBackground config={{ theme: "light" }} copyScrim="left" />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-24 md:pt-36 md:pb-32">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-[11px] uppercase tracking-[0.18em] font-medium">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink/[0.06] text-ink-soft text-[11px] uppercase tracking-[0.18em] font-medium">
               <Network className="h-3 w-3" /> Distribution Network
             </div>
             <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight leading-[1.02]">
               India&apos;s most trusted{" "}
-              <span className="italic font-display text-white/90">
+              <span className="italic font-display text-brand">
                 route to retail.
               </span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-ink/85 max-w-2xl leading-relaxed">
               90,000+ retailers, 800+ distributor partners and a trained field
               force, working as one engine to put brands on every shelf that
               matters.
@@ -87,14 +86,14 @@ export function DistributionView() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-white text-ink px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white/90 transition"
+                className="inline-flex items-center gap-2 bg-ink text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-ink/85 transition"
               >
                 Talk to our distribution team{" "}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#capabilities"
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/25 px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white/20 transition"
+                className="inline-flex items-center gap-2 border border-ink/15 text-ink px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-ink hover:text-white transition"
               >
                 See what we do
               </a>
@@ -104,25 +103,27 @@ export function DistributionView() {
       </section>
 
       {/* STATS STRIP */}
-      <section className="bg-surface-2 py-20">
-        <div className="mx-auto max-w-5xl px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-3 gap-10 text-center sm:text-left">
+      <section className="bg-surface-2 py-12 md:py-14">
+        <ul className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-10 gap-y-5 px-6 lg:px-10">
           {stats.map((s, i) => (
-            <motion.div
+            <li
               key={s.label}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className={`flex items-center gap-3.5 text-lg md:text-xl text-ink-soft ${
+                i > 0 ? "sm:border-l sm:border-ink/10 sm:pl-10" : ""
+              }`}
             >
-              <div className="text-5xl md:text-6xl font-bold font-display tracking-tight text-brand-gradient">
-                <Counter to={s.value} suffix={s.suffix} />
-              </div>
-              <div className="mt-2 text-sm text-ink-soft leading-snug">
+              <span className="flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+                <s.icon className="h-5 w-5 md:h-[22px] md:w-[22px]" strokeWidth={2} />
+              </span>
+              <span>
+                <span className="font-semibold text-ink">
+                  <Counter to={s.value} suffix={s.suffix} />
+                </span>{" "}
                 {s.label}
-              </div>
-            </motion.div>
+              </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* CAPABILITIES */}
