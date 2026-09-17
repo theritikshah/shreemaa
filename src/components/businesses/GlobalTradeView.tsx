@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -14,7 +13,7 @@ import {
   FileCheck2,
   Zap,
 } from "lucide-react";
-import hero from "@/assets/infra-electronics.jpg";
+import { ParticleGlobeBackground } from "@/components/particle-globe/ParticleGlobeBackground";
 
 const categories = [
   { icon: Smartphone, label: "Smartphones", note: "Apple, Samsung, Xiaomi, OPPO, vivo, realme & more" },
@@ -45,20 +44,11 @@ export function GlobalTradeView() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden bg-ink text-white">
-        <div className="absolute inset-0">
-          <Image
-            src={hero}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover opacity-25"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-ink/90 to-brand/30" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 md:pt-36 md:pb-28">
-          <div className="max-w-3xl">
+      <section className="relative isolate overflow-hidden bg-ink text-white">
+        <ParticleGlobeBackground copyScrim="left" config={{ interaction: "drag" }} />
+        {/* Pass-through outside the copy, so the globe behind can be dragged. */}
+        <div className="pointer-events-none relative z-10 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 md:pt-36 md:pb-28">
+          <div className="pointer-events-auto max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-[11px] uppercase tracking-[0.18em] font-medium">
               <Globe2 className="h-3 w-3" /> Rio World · Global Trade
             </div>
