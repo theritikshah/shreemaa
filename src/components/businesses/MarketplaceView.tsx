@@ -21,7 +21,9 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Counter } from "@/components/Counter";
-import heroMarketplace from "@/assets/hero-marketplace.jpg";
+import { CommandHeroExperience } from "@/components/command-hero/CommandHeroExperience";
+import { HeroCopy } from "@/components/command-hero/HeroCopy";
+import { MARKETPLACE_COPY } from "@/components/command-hero/config";
 import amazonLogo from "@/assets/marketplace-logos/amazon-horizontal.svg";
 import blinkitLogo from "@/assets/marketplace-logos/blinkit-horizontal.png";
 import flipkartLogo from "@/assets/marketplace-logos/flipkart-horizontal.png";
@@ -78,42 +80,46 @@ const categories = [
 export function MarketplaceView() {
   return (
     <>
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-ink text-white">
-        <div className="absolute inset-0">
-          <Image src={heroMarketplace} alt="" fill sizes="100vw" className="object-cover opacity-30" priority />
-          <div className="absolute inset-0 bg-gradient-to-br from-ink via-ink/85 to-brand/40" />
-          <div className="absolute -top-32 -right-20 h-[520px] w-[520px] rounded-full bg-brand/30 blur-3xl" />
-        </div>
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-24 md:pt-36 md:pb-32">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-[11px] uppercase tracking-[0.18em] font-medium">
-              <ShoppingBag className="h-3 w-3" /> Marketplace Operations
-            </div>
-            <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight leading-[1.02]">
-              Win every aisle of India&apos;s <span className="italic font-display text-white/90">digital shelf.</span>
-            </h1>
-            <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl leading-relaxed">
-              We operate as a trusted seller partner on India&apos;s largest marketplaces, owning catalog,
-              ads, fulfillment and customer experience so brands can focus on the product.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-white text-ink px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white/90 transition"
-              >
-                Talk to our marketplace team <ArrowRight className="h-4 w-4" />
-              </Link>
-              <a
-                href="#capabilities"
-                className="inline-flex items-center gap-2 bg-white/10 backdrop-blur border border-white/25 px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-white/20 transition"
-              >
-                See what we do
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* HERO: particles → rings → "Every marketplace, on command." */}
+      <CommandHeroExperience
+        copy={MARKETPLACE_COPY}
+        hero={
+          <HeroCopy
+            eyebrow={
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] backdrop-blur">
+                <ShoppingBag className="h-3 w-3" /> Marketplace Operations
+              </div>
+            }
+            title={
+              <>
+                Win every aisle of India&apos;s <span className="font-display italic text-white/90">digital shelf.</span>
+              </>
+            }
+            description={
+              <>
+                We operate as a trusted seller partner on India&apos;s largest marketplaces, owning catalog, ads,
+                fulfillment and customer experience so brands can focus on the product.
+              </>
+            }
+            actions={
+              <>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white/90"
+                >
+                  Talk to our marketplace team <ArrowRight className="h-4 w-4" />
+                </Link>
+                <a
+                  href="#capabilities"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold backdrop-blur transition hover:bg-white/20"
+                >
+                  See what we do
+                </a>
+              </>
+            }
+          />
+        }
+      />
 
       {/* MARKETPLACE NETWORK + LIVE OPERATING NUMBERS */}
       <section className="overflow-hidden border-b border-line bg-[#FAFBFD] py-20 md:py-24">
