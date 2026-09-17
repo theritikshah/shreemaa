@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { ArrowUpRight, Handshake, Landmark, MapPin, ShoppingBag, Truck, Warehouse, type LucideIcon } from "lucide-react";
 import UnicornScene from "unicornstudio-react/next";
 
@@ -17,152 +17,104 @@ const offers: Offer[] = [
 ];
 
 export function ScaleOffersSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const section = sectionRef.current;
-      if (!section) return;
-      const rect = section.getBoundingClientRect();
-      const distance = section.offsetHeight - window.innerHeight;
-      const next = distance > 0 ? Math.min(1, Math.max(0, -rect.top / distance)) : 0;
-      setProgress((current) => (Math.abs(current - next) > 0.0005 ? next : current));
-    };
-    const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (frame) cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  const settleEnd = 0.22;
-  const horizontalProgress = Math.min(1, Math.max(0, (progress - settleEnd) / (1 - settleEnd)));
-
   return (
-    <>
-    <section className="bg-[#f6f4ef] py-16 md:hidden" aria-label="Why brands choose SMG">
-      <div className="px-5">
-        <p className="font-display text-[clamp(2.1rem,10vw,3.5rem)] font-semibold leading-[0.98] tracking-[-0.052em] text-ink">
-          Built for <span className="text-[#fd0000]">serious scale.</span>
-        </p>
-        <p className="mt-5 max-w-[34ch] text-sm leading-6 text-ink/60">
-          Nationwide reach, three decades of retail relationships and the capital strength to carry a brand&apos;s growth.
-        </p>
-      </div>
-
-      <div className="mt-10 flex flex-col gap-4 px-3">
-        {offers.map((offer) => {
-          const Icon = offer.icon;
-          return (
-            <Link key={offer.index} href={offer.href} target={offer.href.startsWith("http") ? "_blank" : undefined} rel={offer.href.startsWith("http") ? "noopener noreferrer" : undefined} className="overflow-hidden rounded-[22px] bg-white text-ink shadow-[0_18px_45px_-30px_rgba(20,18,16,0.4)]">
-              <div className="p-6 pb-7">
-                <div className="flex items-center justify-between gap-4">
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/45">{offer.eyebrow}</span>
-                  <ArrowUpRight className="h-4 w-4" />
-                </div>
-                <h3 className="mt-10 max-w-[11ch] font-display text-[clamp(2.35rem,12vw,4rem)] font-semibold leading-[0.86] tracking-[-0.06em]">
-                  {offer.title} <span className="text-[#fd0000]">{offer.accent}</span>
-                </h3>
-                <p className="mt-5 text-sm leading-6 text-ink/60">{offer.description}</p>
-              </div>
-              <div className="relative overflow-hidden bg-ink px-6 py-7 text-white">
-                <div aria-hidden className="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-[rgba(225,27,34,0.3)] blur-[55px]" />
-                <div className="relative flex items-end justify-between gap-5">
-                  <div>
-                    <div className="font-display text-4xl font-semibold tracking-[-0.05em]">{offer.stat}</div>
-                    <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/55">{offer.statLabel}</div>
-                    <div className="mt-3 text-[10px] text-white/45">{offer.note}</div>
-                  </div>
-                  <div className="grid h-14 w-14 flex-none place-items-center rounded-full border border-white/20"><Icon className="h-5 w-5" strokeWidth={1.4} /></div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
-      </div>
-    </section>
-
-    <section ref={sectionRef} className="relative hidden h-[350svh] bg-ink md:block" aria-label="Why brands choose SMG — horizontal story">
-      <div className="sticky top-0 h-[100svh] w-full overflow-hidden bg-ink text-white">
-        <div className="absolute inset-0 overflow-hidden bg-ink">
-          <div aria-hidden className="pointer-events-none absolute -right-[120px] -top-[180px] h-[560px] w-[560px] rounded-full bg-[rgba(225,27,34,0.22)] blur-[150px]" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-[200px] -left-[100px] h-[520px] w-[520px] rounded-full bg-[rgba(255,122,69,0.14)] blur-[160px]" />
-          <div className="absolute inset-0">
-            <UnicornScene projectId="tnAhw4e67txvvqrBP7oz" width="100%" height="100%" scale={1} dpi={1.25} lazyLoad ariaLabel="Animated SMG growth network" placeholderClassName="h-full w-full bg-transparent" />
-          </div>
+    <section className="relative bg-ink py-20 text-white md:py-32" aria-label="Why brands choose SMG — Built for scale">
+      {/* Ambient background scene */}
+      <div className="absolute inset-0 overflow-hidden bg-ink">
+        <div aria-hidden className="pointer-events-none absolute -right-[120px] -top-[180px] h-[560px] w-[560px] rounded-full bg-[rgba(225,27,34,0.22)] blur-[150px]" />
+        <div aria-hidden className="pointer-events-none absolute -bottom-[200px] -left-[100px] h-[520px] w-[520px] rounded-full bg-[rgba(255,122,69,0.14)] blur-[160px]" />
+        <div className="absolute inset-0">
+          <UnicornScene projectId="tnAhw4e67txvvqrBP7oz" width="100%" height="100%" scale={1} dpi={1.25} lazyLoad ariaLabel="Animated SMG growth network" placeholderClassName="h-full w-full bg-transparent" />
         </div>
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: "linear-gradient(135deg, #b30000 0%, #fd0000 100%)", mixBlendMode: "multiply" }} />
+      </div>
+      <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: "linear-gradient(135deg, #b30000 0%, #fd0000 100%)", mixBlendMode: "multiply" }} />
 
-        <div
-          className="pointer-events-none absolute inset-x-0 top-20 z-[5] flex h-[calc(50svh-5rem)] items-end px-5 pb-10 md:px-10 lg:px-[4.5vw]"
-        >
-          <div className="max-w-xl text-left">
-            <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/45">
+      {/* Content Grid */}
+      <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-10 lg:px-[4.5vw]">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-16 items-start">
+          
+          {/* Sticky Left Header */}
+          <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start text-left">
+            <div className="text-xs font-semibold uppercase tracking-[0.24em] text-white/50">
               Why brands choose SMG
             </div>
-            <h2 className="mt-3 font-display text-[clamp(1.8rem,2.6vw,3rem)] font-medium leading-none tracking-[-0.04em]">
-              Built for scale.
+            <h2 className="mt-3 font-display text-[clamp(2.2rem,3.8vw,4.25rem)] font-semibold leading-[0.96] tracking-[-0.04em]">
+              Built for <br className="hidden lg:block" /><span className="text-[#fd0000]">serious scale.</span>
             </h2>
-            <p className="mt-3 max-w-[48ch] text-sm leading-relaxed text-white/55 md:text-[15px]">
-              Nationwide reach, established retail relationships and the operating strength to carry growth.
+            <p className="mt-5 text-sm leading-relaxed text-white/65 md:text-base max-w-[40ch]">
+              Nationwide reach, three decades of retail relationships and the operating strength to carry growth.
             </p>
+            <div className="mt-8 hidden lg:block">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition-all hover:border-[#fd0000] hover:bg-[#fd0000] hover:text-white"
+              >
+                Partner with SMG <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
           </div>
-        </div>
 
-        <div
-          className="absolute inset-x-0 bottom-0 z-10 flex h-[50svh] will-change-transform"
-          style={{
-            width: `${offers.length * 100}vw`,
-            transform: `translate3d(-${horizontalProgress * (offers.length - 1) * 100}vw, 0, 0)`,
-          }}
-        >
-          {offers.map((offer) => {
-            const Icon = offer.icon;
-            return (
-              <article key={offer.index} className="grid h-full w-screen flex-none grid-cols-2">
-                <div
-                  className="relative z-10 flex min-w-0 flex-col bg-[#f6f4ef] px-5 py-5 text-ink will-change-transform md:px-10 md:py-7 lg:px-[4.5vw]"
+          {/* Right Column: Cards Scrolling Vertically */}
+          <div className="lg:col-span-7 flex flex-col gap-6 lg:gap-8">
+            {offers.map((offer) => {
+              const Icon = offer.icon;
+              return (
+                <article
+                  key={offer.index}
+                  className="group flex flex-col overflow-hidden rounded-3xl border border-white/15 bg-[#f6f4ef] text-ink shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-white/30"
                 >
-                  <div className="text-[10px] font-medium tracking-[0.2em] text-ink/35 md:text-xs">
-                    {offer.index}
-                  </div>
-                  <div className="mt-auto">
-                    <div className="mb-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-ink/55 md:text-xs">{offer.eyebrow}</div>
-                    <h3 className="max-w-[12ch] font-display text-[clamp(1.8rem,3.5vw,4.25rem)] font-semibold leading-[0.88] tracking-[-0.055em]">{offer.title} <span className="text-[#fd0000]">{offer.accent}</span></h3>
-                    <Link href={offer.href} className="mt-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors hover:text-[#fd0000] md:text-xs">Explore <ArrowUpRight className="h-4 w-4" /></Link>
-                  </div>
-                </div>
-
-                <div className="relative overflow-hidden">
-                  <div className="absolute inset-0">
-                  <div className="absolute inset-0 grid place-items-center">
-                    <div className="relative grid h-[clamp(100px,18vw,220px)] w-[clamp(100px,18vw,220px)] -translate-y-[8%] place-items-center rounded-full border border-white/25">
-                      <div className="absolute inset-[12%] rotate-45 rounded-[20%] border border-white/20" />
-                      <div className="absolute h-px w-[140%] rotate-[-32deg] bg-white/20" />
-                      <div className="absolute h-[140%] w-px rotate-[32deg] bg-white/15" />
-                      <div className="relative grid h-[44%] w-[44%] place-items-center rounded-full border border-white/35 bg-black/15 backdrop-blur-sm"><Icon className="h-[30%] w-[30%] text-white" strokeWidth={1.35} /></div>
+                  {/* Card Details */}
+                  <div className="flex flex-col justify-between bg-[#f6f4ef] p-6 text-ink md:p-8 lg:p-9">
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-ink/40">
+                          {offer.index} · {offer.eyebrow}
+                        </span>
+                        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-ink/5 text-ink transition-colors group-hover:bg-[#fd0000] group-hover:text-white">
+                          <Icon className="h-4 w-4" strokeWidth={1.5} />
+                        </span>
+                      </div>
+                      <h3 className="mt-5 font-display text-[clamp(1.8rem,2.8vw,3rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
+                        {offer.title} <span className="text-[#fd0000]">{offer.accent}</span>
+                      </h3>
+                      <p className="mt-3 text-xs leading-relaxed text-ink/65 md:text-sm max-w-[44ch]">
+                        {offer.description}
+                      </p>
+                    </div>
+                    <div className="mt-6">
+                      <Link
+                        href={offer.href}
+                        target={offer.href.startsWith("http") ? "_blank" : undefined}
+                        rel={offer.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors group-hover:text-[#fd0000]"
+                      >
+                        Explore capability <ArrowUpRight className="h-4 w-4 text-[#fd0000] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </Link>
                     </div>
                   </div>
-                  <div className="absolute bottom-5 left-5 right-5 md:bottom-7 md:left-10 md:right-10">
-                    <div className="font-display text-[clamp(1.5rem,3vw,3.25rem)] font-semibold leading-none tracking-[-0.055em]">{offer.stat}</div>
-                    <div className="mt-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/65 md:text-xs">{offer.statLabel}</div>
-                  </div>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
 
+                  {/* Card Stat Footer */}
+                  <div className="relative overflow-hidden bg-ink p-6 text-white md:p-7 flex items-end justify-between gap-4 border-t border-white/10">
+                    <div aria-hidden className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-[rgba(225,27,34,0.3)] blur-[60px]" />
+                    <div className="relative z-10">
+                      <div className="font-display text-3xl md:text-4xl font-semibold leading-none tracking-[-0.055em]">
+                        {offer.stat}
+                      </div>
+                      <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/60 md:text-xs">
+                        {offer.statLabel}
+                      </div>
+                    </div>
+                    <div className="relative z-10 text-right text-[10px] text-white/45 md:text-xs">
+                      {offer.note}
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+        </div>
       </div>
     </section>
-    </>
   );
 }
