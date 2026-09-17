@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -26,26 +26,39 @@ import { HeroCopy } from "@/components/command-hero/HeroCopy";
 import { MARKETPLACE_COPY } from "@/components/command-hero/config";
 import amazonLogo from "@/assets/marketplace-logos/amazon-horizontal.svg";
 import blinkitLogo from "@/assets/marketplace-logos/blinkit-horizontal.png";
-import flipkartLogo from "@/assets/marketplace-logos/flipkart-horizontal.png";
+import flipkartLogo from "@/assets/marketplace-logos/flipkart-horizontal.svg";
 import jiomartLogo from "@/assets/marketplace-logos/jiomart-horizontal.svg";
 import solvLogo from "@/assets/marketplace-logos/solv-horizontal.svg";
 import swiggyLogo from "@/assets/marketplace-logos/swiggy-horizontal.png";
 
 import amazonAppLogo from "@/assets/marketplace-logos/amazon-app.svg";
 import blinkitAppLogo from "@/assets/marketplace-logos/blinkit-app.png";
-import flipkartAppLogo from "@/assets/marketplace-logos/flipkart-app.svg";
+import flipkartAppLogo from "@/assets/marketplace-logos/flipkart-app.png";
 import jiomartAppLogo from "@/assets/marketplace-logos/jiomart-app.svg";
 import solvAppLogo from "@/assets/marketplace-logos/solv-app.png";
 import swiggyAppLogo from "@/assets/marketplace-logos/swiggy-app.png";
 import { IndiaFCMap } from "@/components/site/IndiaFCMap";
 
-const leftMarketplaces = [
+interface Marketplace {
+  name: string;
+  /** Wordmark for the logo strip. */
+  logo: StaticImageData;
+  /** Square icon for the network cards. */
+  appLogo: StaticImageData;
+  /** The icon is a full-bleed tile: crop it to fill its slot, unpadded. */
+  appLogoFill?: boolean;
+  subtitle: string;
+}
+
+const leftMarketplaces: Marketplace[] = [
   { name: "Amazon", logo: amazonLogo, appLogo: amazonAppLogo, subtitle: "FBA & Seller Flex" },
-  { name: "Flipkart", logo: flipkartLogo, appLogo: flipkartAppLogo, subtitle: "FBF & Assured" },
+  // Flipkart's icon is a full-bleed yellow tile, so it is cropped to fill its
+  // slot rather than sitting inside the padded box the others use.
+  { name: "Flipkart", logo: flipkartLogo, appLogo: flipkartAppLogo, appLogoFill: true, subtitle: "FBF & Assured" },
   { name: "Blinkit", logo: blinkitLogo, appLogo: blinkitAppLogo, subtitle: "Quick Commerce" },
 ];
 
-const rightMarketplaces = [
+const rightMarketplaces: Marketplace[] = [
   { name: "JioMart", logo: jiomartLogo, appLogo: jiomartAppLogo, subtitle: "Omnichannel" },
   { name: "SOLV", logo: solvLogo, appLogo: solvAppLogo, subtitle: "B2B Wholesale" },
   { name: "Swiggy", logo: swiggyLogo, appLogo: swiggyAppLogo, subtitle: "Instamart Network" },
@@ -188,8 +201,12 @@ export function MarketplaceView() {
                   whileHover={{ scale: 1.05, x: 3 }}
                   className="flex items-center gap-2.5 rounded-xl border border-slate-200/90 bg-white p-2 shadow-[0_6px_20px_-4px_rgba(15,23,42,0.06)] transition-all hover:border-brand/40 hover:shadow-md cursor-pointer"
                 >
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-50 border border-slate-100 p-1">
-                    <Image src={m.appLogo} alt={m.name} className="h-5 w-5 object-contain" />
+                  <div className={`flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-100 bg-slate-50 ${m.appLogoFill ? "" : "p-1"}`}>
+                    <Image
+                      src={m.appLogo}
+                      alt={m.name}
+                      className={m.appLogoFill ? "h-full w-full object-cover" : "h-5 w-5 object-contain"}
+                    />
                   </div>
                   <div className="overflow-hidden">
                     <div className="text-xs font-bold text-slate-800 leading-tight truncate">{m.name}</div>
@@ -331,7 +348,11 @@ export function MarketplaceView() {
                   key={m.name}
                   className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-2xs"
                 >
-                  <Image src={m.appLogo} alt={m.name} className="h-6 w-6 object-contain" />
+                  <Image
+                    src={m.appLogo}
+                    alt={m.name}
+                    className={`h-6 w-6 shrink-0 ${m.appLogoFill ? "overflow-hidden rounded-md object-cover" : "object-contain"}`}
+                  />
                   <div>
                     <div className="text-xs font-bold text-slate-800">{m.name}</div>
                     <div className="text-[10px] text-slate-400">{m.subtitle}</div>
