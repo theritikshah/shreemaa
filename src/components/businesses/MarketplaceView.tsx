@@ -93,7 +93,7 @@ const categories = [
 export function MarketplaceView() {
   return (
     <>
-      {/* HERO: particles → rings → "Every marketplace, on command." */}
+      {/* HERO: particles → rings → "Every marketplace, one team." */}
       <CommandHeroExperience
         copy={MARKETPLACE_COPY}
         hero={

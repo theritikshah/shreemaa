@@ -328,5 +328,5 @@ export const MARKETPLACE_COPY: CommandCopy = {
   labels: ["List products", "Run ads", "Plan inventory", "Ship orders", "Handle returns"],
   labelsDescription:
     "We list products, run ads, plan inventory, ship orders and handle returns across every marketplace.",
-  heading: "Every marketplace, on command.",
+  heading: "Every marketplace, one team.",
 };
