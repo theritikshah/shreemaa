@@ -64,21 +64,31 @@ export function DistributionView() {
   return (
     <>
       {/* HERO */}
-      {/* Light ground and dark copy, matching the About hero. */}
-      <section className="relative isolate overflow-hidden bg-surface text-ink">
-        <HeroTrafficBackground config={{ theme: "light" }} copyScrim="left" />
+      {/* Dark traffic field, matching the Marketplace Operations atmosphere. */}
+      <section className="relative isolate overflow-hidden bg-ink text-white">
+        <HeroTrafficBackground
+          config={{
+            theme: "dark",
+            foreground: "#ffffff",
+            accent: "#fe0000",
+            gridOpacity: 0.12,
+            particleOpacity: 0.82,
+            accentOpacity: 1,
+          }}
+          copyScrim="left"
+        />
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-24 md:pt-36 md:pb-32">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-ink/[0.06] text-ink-soft text-[11px] uppercase tracking-[0.18em] font-medium">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/70 backdrop-blur">
               <Network className="h-3 w-3" /> Distribution Network
             </div>
             <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight leading-[1.02]">
               India&apos;s most trusted{" "}
-              <span className="italic font-display text-brand">
+              <span className="italic font-display text-white/90">
                 route to retail.
               </span>
             </h1>
-            <p className="mt-6 text-lg md:text-xl text-ink/85 max-w-2xl leading-relaxed">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 md:text-xl">
               90,000+ retailers, 800+ distributor partners and a trained field
               force, working as one engine to put brands on every shelf that
               matters.
@@ -86,14 +96,14 @@ export function DistributionView() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-ink text-white px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-ink/85 transition"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white/90"
               >
                 Talk to our distribution team{" "}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#capabilities"
-                className="inline-flex items-center gap-2 border border-ink/15 text-ink px-6 py-3.5 rounded-full text-sm font-semibold hover:bg-ink hover:text-white transition"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white hover:text-ink"
               >
                 See what we do
               </a>
