@@ -67,9 +67,10 @@ export function ParticleGlobeBackground({ config: input, copyScrim = "none", cla
 
   // Fades are painted in the background colour, so they blend seamlessly over
   // both the canvas and the static fallback.
+  const bgHex = config.background === "transparent" ? "#130e0b" : config.background;
   const style = {
     backgroundColor: config.background,
-    "--globe-bg": hexToRgbChannels(config.background),
+    "--globe-bg": hexToRgbChannels(bgHex),
     "--globe-vignette": config.vignetteOpacity,
   } as CSSProperties;
 

@@ -101,12 +101,12 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
 
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "default" });
+    renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: "default" });
   } catch {
     canvas.remove();
     return null;
   }
-  renderer.setClearColor(new Color(config.background), 1);
+  renderer.setClearColor(0x000000, 0);
 
   const scene = new Scene();
   const camera = new PerspectiveCamera(FOV, 1, 0.1, 50);

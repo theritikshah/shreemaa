@@ -44,8 +44,23 @@ export function GlobalTradeView() {
   return (
     <>
       {/* HERO */}
-      <section className="relative isolate overflow-hidden bg-ink text-white">
-        <ParticleGlobeBackground copyScrim="left" config={{ interaction: "drag" }} />
+      <section className="relative isolate overflow-hidden bg-[#130e0b] text-white">
+        {/* Diagonal background gradient matching Marketplace Operations hero */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{ background: "linear-gradient(135deg, #2b1c18 0%, #1a1210 50%, #130e0b 100%)" }}
+        />
+        {/* Soft red brand glow matching Marketplace Operations hero */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-0"
+          style={{
+            background: "radial-gradient(68% 68% at 11% 4%, #e11b22 0%, transparent 70%)",
+            opacity: 0.1,
+          }}
+        />
+        <ParticleGlobeBackground copyScrim="left" config={{ background: "transparent", interaction: "drag" }} />
         {/* Pass-through outside the copy, so the globe behind can be dragged. */}
         <div className="pointer-events-none relative z-10 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 md:pt-36 md:pb-28">
           <div className="pointer-events-auto max-w-3xl">
