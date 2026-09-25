@@ -40,7 +40,7 @@ const capabilities = [
   {
     icon: Wallet,
     title: "Inventory financing",
-    body: "Working capital firepower that lets us hold the right stock at the right time, without breaking the chain.",
+    body: "The right stock at the right moment takes capital. We carry inventory through launches and seasonal peaks so our partners can sell without gaps.",
   },
   {
     icon: Radar,
@@ -55,7 +55,7 @@ const capabilities = [
   {
     icon: Handshake,
     title: "Manufacturer partnerships",
-    body: "100+ Tier-1 brand relationships built over years of consistent, on-time, on-spec execution. We also deploy capital selectively into commodities including plastic granules, applying the same discipline to a smaller book.",
+    body: "Our electronics trading is backed by long-standing brand and supplier relationships. In a separate business, Shri Maa Marketing supplies polymer granules to manufacturers in Madhya Pradesh.",
   },
 ];
 
@@ -200,9 +200,9 @@ export function CommerceTradingView() {
                 Allocation power on flagship SKUs
               </h3>
               <p className="mt-3 text-sm text-white/70 leading-relaxed">
-                The smartphone and consumer electronics volume we move gives us
-                first call on limited inventory, launch-day stock and the SKUs
-                that sell out fastest.
+                Launches can turn on a few high-demand models. Our sourcing
+                relationships and buying capacity help us secure stock and
+                allocate it where demand is strongest.
               </p>
             </div>
             <div className="relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur p-8">
@@ -210,9 +210,9 @@ export function CommerceTradingView() {
                 Capital across the cycle
               </h3>
               <p className="mt-3 text-sm text-white/70 leading-relaxed">
-                Working capital depth to hold electronics stock through launches,
-                seasonality and supply shocks — with selective deployment into
-                commodities like plastic granules where we see clear upside.
+                Launches and festive demand do not wait for cash cycles. Our
+                working capital allows us to buy, hold and move electronics
+                inventory when the market needs it.
               </p>
             </div>
             <div className="relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur p-8">
