@@ -6,7 +6,6 @@ import { geoNaturalEarth1, geoPath, geoInterpolate } from "d3-geo";
 import { feature } from "topojson-client";
 import type { FeatureCollection } from "geojson";
 import { Counter } from "@/components/Counter";
-import { PeopleStories } from "./PeopleStories";
 
 type Office = {
   city: string;
@@ -73,7 +72,7 @@ export function AboutView() {
           <div className="mt-16 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-16">
             <div className="md:col-span-5 text-sm uppercase tracking-[0.18em] text-ink-soft">
               <div className="h-px w-full bg-ink/20 mb-4" />
-              Est. 1997. A commerce company headquartered in Gurgaon, with offices across India, the Middle East, Asia Pacific, the Americas and Africa.
+              Est. 1997. Headquartered in Bhopal, with a corporate office in Gurgaon and teams connecting India with markets across Asia, Africa and the Americas.
             </div>
             <p className="md:col-span-7 text-lg md:text-2xl leading-snug text-ink/85">
               Shri Maa Group is a global commerce, distribution and trade company. For nearly three decades we have built the infrastructure, technology and networks that move products from the world&apos;s leading brands into the hands of millions of consumers.
@@ -110,7 +109,9 @@ export function AboutView() {
         </div>
       </section>
 
-      <PeopleStories />
+      {/* Founding leadership: the sample profiles and generated portraits are not
+          published. Restore <PeopleStories /> once approved stories and photographs
+          of SMG's leadership are ready. */}
 
       {/* GLOBAL PRESENCE */}
       <section className="bg-surface-2 py-28 md:py-36">
