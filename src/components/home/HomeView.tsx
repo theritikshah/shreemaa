@@ -177,10 +177,10 @@ export function HomeView() {
 
 const eras = [
   {
-    year: "1996",
+    year: "1997",
     tag: "Foundations",
     title: "A trading house is born.",
-    body: "SMG begins as a regional distributor in Bhopal, building the relationships and rigor that still anchor the group today.",
+    body: "SMG begins in Bhopal, building the retailer and supplier relationships that still anchor the group today.",
     metric: "Year one",
   },
   {
@@ -333,7 +333,7 @@ function WhoWeAre() {
             </h2>
           </div>
           <p className="md:max-w-xs text-white/65 leading-relaxed">
-            Since 1996, SMG has helped leading brands launch, scale and operate across India. Today the group spans e-commerce, distribution, trading, exports and sustainability.
+            From one distribution business in Bhopal to five businesses connecting brands and markets, SMG has grown with the way India buys and sells. Founded in 1997, the group now spans e-commerce, distribution, trading, exports and sustainability.
           </p>
         </div>
 

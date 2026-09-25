@@ -45,7 +45,7 @@ const cards: Card[] = [
         Launchpad for <span className="text-[#fd0000]">digital shelf space</span>.
       </>
     ),
-    body: "Full-stack marketplace operations across Amazon, Flipkart and Meesho.",
+    body: "From launch-day listings to daily pricing, stock and fulfilment, we run the marketplace operation behind brand growth.",
     features: ["Catalog & content", "Inventory sync", "SLA governance"],
     collage: marketplaceImg,
     collageAlt: "Marketplace collage",
@@ -82,10 +82,10 @@ const cards: Card[] = [
     statLabel: "Traded annually",
     headline: (
       <>
-        Polymers to <span className="text-[#fd0000]">institutional steel</span>.
+        From smartphones to polymers. <span className="text-[#fd0000]">Trading built for scale.</span>
       </>
     ),
-    body: "Procurement, trading and OEM manufacturing at industrial scale.",
+    body: "High-volume sourcing and trading across electronics and industrial polymers, connecting supply with demand nationwide.",
     features: ["HPCL-Mittal partner", "450+ manufacturers", "45+ product lines"],
     collage: tradingImg,
     collageAlt: "Trading collage",
@@ -105,7 +105,7 @@ const cards: Card[] = [
         Sourcing the world. <span className="text-[#fd0000]">Exporting India.</span>
       </>
     ),
-    body: "Cross-border trading and procurement, port to shelf.",
+    body: "Rio World sources smartphones and consumer electronics from multiple channels and supplies buyers across international markets.",
     features: ["Import & sourcing", "Export enablement", "Customs & settlement"],
     collage: exportImg,
     collageAlt: "Global trade collage",
@@ -126,7 +126,7 @@ const cards: Card[] = [
         Verified climate impact, <span className="text-[#fd0000]">at scale</span>.
       </>
     ),
-    body: "Carbon projects with community execution and digital MRV.",
+    body: "From tree planting to cleaner cooking and plastic recovery, OYU Green develops projects designed to deliver measurable environmental results.",
     features: ["Nature-based removal", "Cookstoves & water", "Satellite dMRV"],
     collage: oyuImg,
     collageAlt: "Sustainability collage",
@@ -249,8 +249,9 @@ export function OurBusinessesSection() {
               One commerce engine.
             </h2>
             <p className="md:col-span-7 text-sm md:text-[15px] leading-[1.65] text-ink-soft max-w-[56ch]">
-              From marketplace operations to global trade, every business is built to give partner
-              brands deeper reach, faster scale and stronger execution in India.
+              Five businesses, each built for a different route to market. Together, they connect
+              brands with customers through marketplaces, retail distribution, trading, global trade
+              and sustainability.
             </p>
           </div>
         </div>

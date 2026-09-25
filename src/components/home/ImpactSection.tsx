@@ -55,9 +55,9 @@ export function ImpactSection() {
           </div>
           <div className="lg:col-span-6 lg:pt-2">
             <p className="text-[17px] leading-[1.7] text-ink-soft max-w-[46ch]">
-              For nearly three decades SMG has built one of India&apos;s most powerful commerce
-              networks. Not a marketplace of intermediaries — owned infrastructure, contracted
-              partners and measurable coverage in every lane we operate.
+              Since 1997, SMG has built the reach to move products across India and the operating
+              strength to back it up. From marketplaces to retail distribution and global trade, our
+              businesses turn demand into sales at scale.
             </p>
             <div className="mt-8 flex flex-wrap gap-2.5">
               <Link
