@@ -20,6 +20,7 @@ import {
   WebGLRenderTarget,
   WebGLRenderer,
 } from "three";
+import { createWebGL2Context } from "@/lib/webgl";
 import type { CommandPalette, CommandSceneConfig } from "./config";
 import {
   compositeFragmentShader,
@@ -92,9 +93,18 @@ export function createCommandScene(options: CommandSceneOptions): CommandSceneCo
   });
   mount.appendChild(canvas);
 
+  // Ask for the context first: a browser that refuses one (acceleration off,
+  // blocklisted driver, GPU process down) leaves the static gradient, and that
+  // is not an error worth reporting.
+  const context = createWebGL2Context(canvas, { powerPreference: "high-performance" });
+  if (!context) {
+    canvas.remove();
+    return null;
+  }
+
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "high-performance" });
+    renderer = new WebGLRenderer({ canvas, context, antialias: false, alpha: false, powerPreference: "high-performance" });
   } catch {
     canvas.remove();
     return null;

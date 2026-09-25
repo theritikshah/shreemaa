@@ -20,6 +20,7 @@ import {
   Scene,
   WebGLRenderer,
 } from "three";
+import { createWebGL2Context } from "@/lib/webgl";
 import type { TrafficConfig } from "./config";
 import { createTrafficSimulation } from "./trafficSimulation";
 
@@ -63,11 +64,19 @@ export function createTrafficScene({ mount, container, config }: CreateOptions):
   });
   mount.appendChild(canvas);
 
+  // Ask for the context first: browsers refuse one for their own reasons
+  // (acceleration off, blocklisted driver, GPU process down), and that is not
+  // an error here — the static background simply stays.
+  const context = createWebGL2Context(canvas, { antialias: true, powerPreference: "low-power" });
+  if (!context) {
+    canvas.remove();
+    return null;
+  }
+
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "low-power" });
+    renderer = new WebGLRenderer({ canvas, context, antialias: true, alpha: false, powerPreference: "low-power" });
   } catch {
-    // No usable WebGL context. Three has already logged why; leave the fallback.
     canvas.remove();
     return null;
   }

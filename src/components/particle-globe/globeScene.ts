@@ -14,6 +14,7 @@ import {
   WebGLRenderer,
   type Blending,
 } from "three";
+import { createWebGL2Context } from "@/lib/webgl";
 import type { GlobeConfig, GlobeLayout } from "./config";
 import {
   buildArcBuffers,
@@ -99,9 +100,18 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
   });
   mount.appendChild(canvas);
 
+  // Ask for the context first: a browser that refuses one (acceleration off,
+  // blocklisted driver, GPU process down) leaves the static background, and
+  // that is not an error worth reporting.
+  const context = createWebGL2Context(canvas, { powerPreference: "default" });
+  if (!context) {
+    canvas.remove();
+    return null;
+  }
+
   let renderer: WebGLRenderer;
   try {
-    renderer = new WebGLRenderer({ canvas, antialias: false, alpha: true, powerPreference: "default" });
+    renderer = new WebGLRenderer({ canvas, context, antialias: false, alpha: true, powerPreference: "default" });
   } catch {
     canvas.remove();
     return null;
