@@ -84,10 +84,10 @@ const journey = [
 ];
 
 const categories = [
-  { title: "Smartphones & accessories", body: "Tight brand relationships and sharp pricing keep us near the top of search on every marketplace." },
-  { title: "Large appliances", body: "TVs, refrigerators, washing machines, ACs. Heavy boxes, installation, and white glove handled end to end." },
+  { title: "Smartphones & accessories", body: "Smartphones move fast. We pair launch planning, sharp pricing and strong availability to compete for every search and every sale." },
+  { title: "Large appliances", body: "TVs, refrigerators, washing machines and ACs demand careful delivery and service coordination. We manage the marketplace work behind each sale." },
   { title: "Small appliances & personal tech", body: "Kitchen, audio, wearables, laptops and tablets. High volume SKUs that need pricing, stock and content watched daily." },
-  { title: "Marketplace operations", body: "Catalog, ads, inventory, and fulfillment. The full stack run under one roof so nothing falls between the cracks." },
+  { title: "Marketplace operations", body: "One team owns the details that decide growth: listings, ads, prices, stock and fulfilment." },
 ];
 
 export function MarketplaceView() {
@@ -422,8 +422,8 @@ export function MarketplaceView() {
               </h2>
             </div>
             <p className="lg:col-span-5 text-ink-soft leading-relaxed">
-              From the first listing to the millionth order, every function sits under one roof. No agencies,
-              no handoffs, no finger pointing when something needs to move.
+              From the first listing to high-volume orders, one team handles the critical work under one
+              roof. Brands get clear ownership across content, campaigns, stock and fulfilment.
             </p>
           </div>
 
