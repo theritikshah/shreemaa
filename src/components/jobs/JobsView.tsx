@@ -20,17 +20,11 @@ const departments = ["All", "Sales", "Operations", "Supply Chain", "Finance", "M
 
 const heroPhrases = [
   "problem solvers",
+  "category builders",
+  "commercial thinkers",
+  "hands-on operators",
   "curious minds",
-  "farming gurus",
-  "niche experts",
-  "boundary pushers",
-  "intelligent executors",
-  "ruthless prioritisers",
-  "skilled generalists",
-  "impact driven",
-  "compassionate humans",
-  "challenge seekers",
-  "first-principle thinkers",
+  "people who deliver",
 ];
 
 export function JobsView() {
