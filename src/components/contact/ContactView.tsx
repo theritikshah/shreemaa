@@ -10,9 +10,7 @@ import {
   Handshake,
   Users,
   CheckCircle2,
-  Globe,
 } from "lucide-react";
-import { LinkedinIcon, InstagramIcon } from "@/components/icons/BrandIcons";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -149,12 +147,6 @@ export function ContactView() {
                     <span className="text-ink-soft uppercase tracking-[0.18em] text-[10px]">Email</span>
                     <span className="font-medium group-hover:text-brand transition-colors flex items-center gap-1">
                       contact@shrimaa.com <ArrowUpRight className="h-3.5 w-3.5" />
-                    </span>
-                  </a>
-                  <a href="tel:+912200000000" className="flex items-center justify-between group">
-                    <span className="text-ink-soft uppercase tracking-[0.18em] text-[10px]">Phone</span>
-                    <span className="font-medium group-hover:text-brand transition-colors flex items-center gap-1">
-                      +91 22 0000 0000 <ArrowUpRight className="h-3.5 w-3.5" />
                     </span>
                   </a>
                   <div className="flex items-center justify-between">
@@ -461,9 +453,6 @@ export function ContactView() {
           </div>
           <div className="flex gap-2">
             {[
-              { Icon: LinkedinIcon, href: "#", label: "LinkedIn" },
-              { Icon: InstagramIcon, href: "#", label: "Instagram" },
-              { Icon: Globe, href: "#", label: "Website" },
               { Icon: Mail, href: "mailto:contact@shrimaa.com", label: "Email" },
             ].map(({ Icon, href, label }) => (
               <a

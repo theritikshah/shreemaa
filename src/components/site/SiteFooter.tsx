@@ -3,19 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ArrowUpRight, Globe, Mail } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 import { toast } from "sonner";
-import { LinkedinIcon, InstagramIcon } from "@/components/icons/BrandIcons";
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-ink";
 
-const socials = [
-  { Icon: LinkedinIcon, label: "LinkedIn", href: "#" },
-  { Icon: InstagramIcon, label: "Instagram", href: "#" },
-  { Icon: Globe, label: "Website", href: "#" },
-  { Icon: Mail, label: "Email", href: "mailto:contact@shrimaa.com" },
-];
+// LinkedIn, Instagram and the website link are held back until their official
+// URLs exist; dead links are worse than none.
+const socials = [{ Icon: Mail, label: "Email", href: "mailto:contact@shrimaa.com" }];
 
 const columns: { title: string; links: { label: string; href: string; external?: boolean }[] }[] = [
   {
