@@ -142,7 +142,7 @@ export function ContactView() {
 
               <div className="mt-12 grid grid-cols-12 gap-6">
                 <p className="col-span-12 md:col-span-7 text-base md:text-lg text-ink-soft leading-relaxed max-w-2xl">
-                  Pick up the phone, drop in for a coffee, or send a note below. Whatever the shape of your idea, a real person on our team will read it and write back within one business day.
+                  A brand looking to grow? A distributor ready for a new category? A buyer looking for reliable supply? Tell us what you need and the right SMG team will be in touch.
                 </p>
                 <div className="col-span-12 md:col-span-5 md:border-l md:border-ink/10 md:pl-6 space-y-3 text-sm">
                   <a href="mailto:contact@shrimaa.com" className="flex items-center justify-between group">
