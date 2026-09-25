@@ -74,9 +74,9 @@ export function GlobalTradeView() {
               </span>
             </h1>
             <p className="mt-5 text-lg text-white/80 max-w-2xl leading-relaxed">
-              Rio World is SMG&apos;s export arm. We ship premium smartphones, gadgets
-              and consumer electronics to buyers across Asia, the Middle East,
-              Europe and beyond — competitive pricing, reliable fulfilment.
+              Rio World connects electronics supply with international demand. We source premium
+              smartphones and consumer electronics through multiple channels and supply distributors,
+              wholesalers and retail chains across the UAE, Africa and Russia and CIS markets.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -146,9 +146,9 @@ export function GlobalTradeView() {
               How it works
             </div>
             <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight">
-              From order to{" "}
+              From sourcing to{" "}
               <span className="italic font-display text-white/90">
-                out for delivery.
+                the global shelf.
               </span>
             </h2>
           </div>
