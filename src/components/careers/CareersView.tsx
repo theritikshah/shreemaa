@@ -56,9 +56,9 @@ const avatarRing = [
 ];
 
 const pillars = [
-  { n: "01", t: "People first, always", d: "Twenty-eight years in, we still know everyone by name. Birthdays, weddings, festivals — we show up for each other." },
-  { n: "02", t: "Real ownership", d: "Flat structure. Your work ships to millions of customers across India, not into a slide deck nobody reads." },
-  { n: "03", t: "Learn by doing", d: "Sit beside category heads, trade ops, marketplace leads. Pick up in months what takes years at bigger places." },
+  { n: "01", t: "People first, always", d: "Even as SMG grows, colleagues know the people they work with. We make time for the moments that matter to each other." },
+  { n: "02", t: "Real ownership", d: "Your decisions move real stock, reach real retailers and shape what customers can buy." },
+  { n: "03", t: "Learn by doing", d: "Work alongside the teams that run marketplace categories, trading desks and field distribution. Learn by solving live business problems." },
   { n: "04", t: "Celebrate everything", d: "Diwali, Christmas, Holi, ethnic days, birthdays, milestone wins. There's almost always something happening." },
 ];
 
@@ -245,7 +245,7 @@ export function CareersView() {
             </div>
             <div className="lg:col-span-5 lg:col-start-8 flex items-end">
               <p className="text-lg text-ink-soft leading-relaxed">
-                Group photos in indigo. Pink-day kurta sessions. Diwali rangoli mornings. Cricket trophies. Christmas hampers. Tap any image to open the full story.
+                From launch wins to Diwali celebrations, these are the people behind the business. Explore moments from life across our teams.
               </p>
             </div>
           </div>
