@@ -6,16 +6,14 @@ const statRail = [
   { value: <Counter to={80000} suffix="+" />, label: "Retailers in network" },
   { value: <Counter to={600} suffix="+" />, label: "Distribution partners" },
   { value: <Counter to={100} suffix="+" />, label: "Manufacturers" },
-  { value: <Counter prefix="₹" to={4000} suffix="+ Cr" />, label: "Annual revenue" },
   { value: <Counter to={150} suffix="K sq ft" />, label: "Infrastructure" },
 ];
 
 const cellBorders = [
-  "border-r border-b lg:border-b-0 lg:border-r",
+  "border-r border-b lg:border-b-0",
   "border-b lg:border-b-0 lg:border-r",
-  "border-r border-b lg:border-b-0 lg:border-r",
-  "border-b lg:border-b-0 lg:border-r",
-  "col-span-2 lg:col-span-1",
+  "border-r lg:border-r",
+  "",
 ];
 
 export function ImpactSection() {
@@ -108,7 +106,7 @@ export function ImpactSection() {
         </div>
 
         {/* Band 3 — Stat rail */}
-        <div className="relative mt-14 lg:mt-20 grid grid-cols-2 lg:grid-cols-5 border-t border-[oklch(0.88_0.012_75)]">
+        <div className="relative mt-14 lg:mt-20 grid grid-cols-2 lg:grid-cols-4 border-t border-[oklch(0.88_0.012_75)]">
           {statRail.map((s, i) => (
             <div
               key={s.label}
