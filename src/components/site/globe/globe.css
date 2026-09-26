@@ -1,0 +1,344 @@
+.commerce-globe {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #130e0b;
+  --ink: var(--globe-text, #f7f6f3);
+  --ink-soft: var(--globe-muted, rgba(247, 246, 243, 0.72));
+  --line: rgba(255, 255, 255, 0.2);
+  color: var(--ink);
+  padding: 76px max(24px, calc((100vw - 1200px) / 2)) 32px;
+}
+.commerce-globe__heading {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+  max-width: 760px;
+}
+.commerce-globe__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.commerce-globe__eyebrow > span {
+  width: 28px;
+  height: 1px;
+  background: var(--ink-soft);
+}
+.commerce-globe h2 {
+  font-size: clamp(36px, 4.6vw, 68px);
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+  font-weight: 500;
+  margin: 24px 0 18px;
+}
+.commerce-globe h2 em {
+  font-family: var(--font-serif-display, Georgia, serif);
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+}
+.commerce-globe__heading > p {
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 385px;
+  color: var(--ink-soft);
+}
+.commerce-globe__visual {
+  position: relative;
+  height: 660px;
+  margin: -170px -60px 0;
+}
+.commerce-globe__canvas {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.commerce-globe__canvas:active {
+  cursor: grabbing;
+}
+.commerce-globe__fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+@media (pointer: coarse) {
+  .commerce-globe__drag-hint {
+    display: none;
+  }
+}
+.commerce-globe__canvas canvas,
+.commerce-globe__canvas img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.commerce-globe__crosshair {
+  position: absolute;
+  background: var(--ink-soft);
+  opacity: 0.17;
+  pointer-events: none;
+  z-index: 1;
+}
+.commerce-globe__crosshair--h {
+  height: 1px;
+  left: -30vw;
+  right: -30vw;
+  top: 52%;
+}
+.commerce-globe__crosshair--v {
+  width: 1px;
+  top: 15%;
+  bottom: 12%;
+  left: 58%;
+}
+.commerce-globe__axis {
+  position: absolute;
+  right: 30px;
+  top: 49%;
+  z-index: 2;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: var(--ink-soft);
+}
+.commerce-globe__markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.commerce-globe__marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #211614;
+  color: #fff;
+  border: 1px solid #ffffff65;
+  box-shadow: 0 2px 12px color-mix(in oklch, var(--ink) 8%, transparent);
+  padding: 0 7px;
+  height: 25px;
+  cursor: pointer;
+}
+.commerce-globe__marker > span:first-child {
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1;
+}
+.commerce-globe__marker-label {
+  max-width: 0;
+  overflow: hidden;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  transition: max-width 0.25s;
+}
+.commerce-globe__marker:hover,
+.commerce-globe__marker:focus-visible,
+.commerce-globe__marker.is-active {
+  background: var(--brand);
+  z-index: 4;
+}
+.commerce-globe__marker:hover .commerce-globe__marker-label,
+.commerce-globe__marker:focus-visible .commerce-globe__marker-label,
+.commerce-globe__marker.is-active .commerce-globe__marker-label {
+  max-width: 110px;
+}
+.commerce-globe__tools {
+  position: absolute;
+  bottom: 26px;
+  left: 60px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ink-soft);
+  z-index: 4;
+}
+.commerce-globe__tools > span {
+  font-size: 9px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+.commerce-globe__tools button {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.commerce-globe__tools button:hover {
+  background: var(--surface-2);
+}
+.commerce-globe__loading {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+.commerce-globe__loading span {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+}
+.commerce-globe__footer {
+  position: relative;
+  z-index: 4;
+  border-top: 1px solid var(--line);
+  padding-top: 26px;
+  display: grid;
+  grid-template-columns: 240px 1fr auto;
+  align-items: center;
+  gap: 35px;
+}
+.commerce-globe__office h3 {
+  font-size: 24px;
+  letter-spacing: -0.04em;
+  margin: 9px 0 2px;
+}
+.commerce-globe__office h3 span {
+  font-size: 12px;
+  letter-spacing: 0;
+  margin-left: 10px;
+  color: var(--ink-soft);
+}
+.commerce-globe__office p {
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+.commerce-globe__locations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+  max-width: 440px;
+}
+.commerce-globe__locations button {
+  font-size: 11px;
+  cursor: pointer;
+  color: var(--ink-soft);
+  padding: 4px 0;
+  border-bottom: 1px solid transparent;
+}
+.commerce-globe__locations button[aria-pressed="true"] {
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+.commerce-globe__link {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  font-size: 11px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.commerce-globe button:focus-visible,
+.commerce-globe a:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 5px;
+}
+@media (min-width: 1600px) {
+  .commerce-globe__visual {
+    height: 740px;
+  }
+}
+@media (max-width: 900px) {
+  .commerce-globe {
+    padding-top: 56px;
+  }
+  .commerce-globe__visual {
+    margin: -40px -24px 0;
+    height: 540px;
+  }
+  .commerce-globe__footer {
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  .commerce-globe__link {
+    justify-self: start;
+  }
+  .commerce-globe__axis {
+    right: 16px;
+  }
+  .commerce-globe__crosshair--v {
+    left: 50%;
+  }
+}
+@media (max-width: 600px) {
+  .commerce-globe {
+    padding-top: 44px;
+    padding-bottom: 28px;
+  }
+  .commerce-globe h2 {
+    font-size: 38px;
+  }
+  .commerce-globe__heading > p {
+    font-size: 13px;
+    max-width: 300px;
+  }
+  .commerce-globe__visual {
+    height: 440px;
+    margin: 0 -24px;
+  }
+  .commerce-globe__tools {
+    left: 12px;
+    right: 12px;
+    bottom: 18px;
+  }
+  .commerce-globe__tools > span {
+    font-size: 8px;
+    letter-spacing: 0.07em;
+  }
+  .commerce-globe__footer {
+    grid-template-columns: 1fr;
+  }
+  .commerce-globe__locations {
+    gap: 7px 17px;
+  }
+  .commerce-globe__axis {
+    font-size: 8px;
+    top: 45%;
+  }
+  .commerce-globe__marker {
+    height: 24px;
+  }
+  .commerce-globe__marker-label {
+    font-size: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .commerce-globe * {
+    transition: none !important;
+  }
+}
+
+/* The same gradient and red atmospheric glow as the Marketplace hero. */
+.commerce-globe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--globe-glow);
+  opacity: var(--globe-glow-opacity, 0.1);
+}

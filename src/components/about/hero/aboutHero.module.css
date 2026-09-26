@@ -1,0 +1,59 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: max(720px, 100svh);
+  display: flex;
+  align-items: center;
+  background: var(--surface);
+  color: var(--ink);
+  padding: 148px 40px 116px;
+}
+/* Placement mirrors the bitnomial.com about hero; the extra top offset
+   accounts for this hero starting behind the fixed header. */
+.media {
+  position: absolute;
+  top: calc(-26vh + 108px);
+  left: 42vw;
+  width: 1130px;
+  height: 750px;
+  z-index: -1;
+  transform: rotate(-99.48deg);
+  pointer-events: none;
+}
+.ring { position: absolute; top: 0; right: 0; display: block; width: 100%; aspect-ratio: 1; }
+@media (max-width: 991px) {
+  .media { left: 30vw; }
+}
+@media (max-width: 600px) {
+  .media { top: 44px; left: 28vw; width: 480px; height: 300px; margin-top: 2rem; }
+}
+.content { width: 100%; max-width: 1520px; margin-inline: auto; }
+.title {
+  max-width: 17ch;
+  font-size: clamp(48px, 6.975vw, 108px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -.025em;
+}
+.title span {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -.02em;
+  color: var(--brand);
+}
+.description {
+  margin-top: 28px;
+  max-width: 52ch;
+  font-size: 18px;
+  line-height: 1.55;
+  color: color-mix(in oklch, var(--ink) 85%, transparent);
+}
+.rule { position: absolute; bottom: 20px; left: 40px; right: 40px; height: 1px; background: color-mix(in oklch, var(--ink) 20%, transparent); }
+@media (max-width: 767px) {
+  .hero { min-height: 840px; min-height: max(840px, 100svh); align-items: flex-start; padding: 154px 24px 230px; }
+  .title { font-size: clamp(35px, 8.7vw, 64px); letter-spacing: -.025em; }
+  .description { font-size: 16px; max-width: 38ch; }
+  .rule { left: 24px; right: 24px; }
+}
