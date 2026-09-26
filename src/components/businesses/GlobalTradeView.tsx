@@ -67,9 +67,10 @@ export function GlobalTradeView() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur text-[11px] uppercase tracking-[0.18em] font-medium">
               <Globe2 className="h-3 w-3" /> Rio World · Global Trade
             </div>
-            <h1 className="mt-6 text-5xl md:text-6xl font-bold tracking-tight leading-[1.05]">
-              Exporting smartphones{" "}
-              <span className="italic font-display text-white/90">
+            <h1 className="mt-6 text-5xl md:text-6xl font-bold tracking-[-0.025em] leading-[1.02]">
+              Exporting smartphones
+              <br />
+              <span className="font-serif italic font-normal tracking-[-0.02em] text-[#fe0000]">
                 and electronics to the world.
               </span>
             </h1>

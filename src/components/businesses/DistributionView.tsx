@@ -78,13 +78,14 @@ export function DistributionView() {
           copyScrim="left"
         />
         <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-24 md:pt-36 md:pb-32">
-          <div className="max-w-3xl">
+          <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-white/70 backdrop-blur">
               <Network className="h-3 w-3" /> Distribution Network
             </div>
-            <h1 className="mt-6 text-5xl md:text-7xl font-bold tracking-tight leading-[1.02]">
-              India&apos;s most trusted{" "}
-              <span className="italic font-display text-white/90">
+            <h1 className="mt-6 text-[clamp(35px,8.7vw,64px)] md:text-[clamp(48px,6.975vw,108px)] font-bold tracking-[-0.025em] leading-[1.02]">
+              India&apos;s most trusted
+              <br />
+              <span className="font-serif italic font-normal tracking-[-0.02em] text-[#fe0000]">
                 route to retail.
               </span>
             </h1>
