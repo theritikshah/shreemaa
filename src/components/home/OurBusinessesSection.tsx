@@ -4,10 +4,9 @@ import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image, { type StaticImageData } from "next/image";
-import { ArrowUpRight, ShoppingBag, Truck, Factory, Globe2, Leaf, type LucideIcon } from "lucide-react";
+import { ArrowUpRight, ShoppingBag, Truck, Globe2, Leaf, type LucideIcon } from "lucide-react";
 import marketplaceImg from "@/assets/online-shopping.png";
 import distributionImg from "@/assets/india-distribution.png";
-import tradingImg from "@/assets/electronics-returns.png";
 import exportImg from "@/assets/global-logistics.png";
 import oyuImg from "@/assets/tea-sustainability.png";
 
@@ -34,7 +33,7 @@ const cards: Card[] = [
     key: "marketplace",
     href: "/businesses/marketplace-operations",
     dark: true,
-    badge: "01/05",
+    badge: "01/04",
     name: "Marketplace Operations",
     icon: ShoppingBag,
     ghost: "01",
@@ -54,7 +53,7 @@ const cards: Card[] = [
     key: "distribution",
     href: "/businesses/distribution-network",
     dark: false,
-    badge: "02/05",
+    badge: "02/04",
     name: "Distribution Network",
     icon: Truck,
     ghost: "02",
@@ -71,33 +70,13 @@ const cards: Card[] = [
     collageAlt: "Distribution collage",
   },
   {
-    key: "trading",
-    href: "/businesses/commerce-trading",
-    dark: true,
-    badge: "03/05",
-    name: "Commerce Trading",
-    icon: Factory,
-    ghost: "03",
-    statValue: "36K+ MT",
-    statLabel: "Traded annually",
-    headline: (
-      <>
-        From smartphones to polymers. <span className="text-[#fd0000]">Trading built for scale.</span>
-      </>
-    ),
-    body: "High-volume sourcing and trading across electronics and industrial polymers, connecting supply with demand nationwide.",
-    features: ["HPCL-Mittal partner", "450+ manufacturers", "45+ product lines"],
-    collage: tradingImg,
-    collageAlt: "Trading collage",
-  },
-  {
     key: "global-trade",
     href: "/businesses/global-trade",
-    dark: false,
-    badge: "04/05",
+    dark: true,
+    badge: "03/04",
     name: "Rio World · Global Trade",
     icon: Globe2,
-    ghost: "04",
+    ghost: "03",
     statValue: "3 regions",
     statLabel: "Sourced & served",
     headline: (
@@ -114,11 +93,11 @@ const cards: Card[] = [
     key: "sustainability",
     href: "https://www.oyugreen.com",
     external: true,
-    dark: true,
-    badge: "05/05",
+    dark: false,
+    badge: "04/04",
     name: "Sustainability · OYU Green",
     icon: Leaf,
-    ghost: "05",
+    ghost: "04",
     statValue: "4 registries",
     statLabel: "Verra · GS · GCC · CDM",
     headline: (

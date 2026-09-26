@@ -12,7 +12,6 @@ type SubItem = { to?: string; href?: string; title: string; desc: string };
 const businesses: SubItem[] = [
   { to: "/businesses/marketplace-operations", title: "Marketplace Operations", desc: "Amazon, Flipkart & beyond" },
   { to: "/businesses/distribution-network", title: "Distribution Network", desc: "80,000+ retailers nationwide" },
-  { to: "/businesses/commerce-trading", title: "Commerce Trading", desc: "Electronics supply chain" },
   { to: "/businesses/global-trade", title: "Global Trade · Rio World", desc: "Cross-border commerce" },
   { href: "https://www.oyugreen.com", title: "Sustainability · OYU Green", desc: "Carbon & climate" },
 ];

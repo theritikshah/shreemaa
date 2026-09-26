@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/contact",
     "/businesses/marketplace-operations",
     "/businesses/distribution-network",
-    "/businesses/commerce-trading",
     "/businesses/global-trade",
   ];
 

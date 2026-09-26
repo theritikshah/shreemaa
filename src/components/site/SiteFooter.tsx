@@ -19,7 +19,6 @@ const columns: { title: string; links: { label: string; href: string; external?:
     links: [
       { label: "Marketplace", href: "/businesses/marketplace-operations" },
       { label: "Distribution", href: "/businesses/distribution-network" },
-      { label: "Trading", href: "/businesses/commerce-trading" },
       { label: "Global Trade", href: "/businesses/global-trade" },
       { label: "Sustainability", href: "https://www.oyugreen.com", external: true },
     ],
