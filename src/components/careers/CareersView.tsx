@@ -15,6 +15,7 @@ import life7 from "@/assets/life-7.jpeg";
 import life8 from "@/assets/life-8.jpeg";
 import life9 from "@/assets/life-9.jpeg";
 import type { StaticImageData } from "next/image";
+import { LifeCarousel } from "./LifeCarousel";
 
 type Photo = { src: StaticImageData; caption: string; tag: string };
 
@@ -29,11 +30,6 @@ const gallery: Photo[] = [
   { src: life5, caption: "Off-site dinner that ran past midnight", tag: "Off-site" },
   { src: life6, caption: "Diwali, decked up", tag: "Festivals" },
 ];
-
-// The gallery is doubled so the ring has enough slices to read as a solid
-// wall. Because backface-visibility hides the far half, the ~180° that is
-// ever visible spans nine consecutive cards — so no photo is on screen twice.
-const ring = [...gallery, ...gallery];
 
 // Circular portraits flanking the opening statement. left/top/size are
 // percentages of the stage, kept clear of the centre column so the headline
@@ -234,55 +230,36 @@ export function CareersView() {
       {/* ── LIFE AT SMG ── interactive gallery ── */}
       {/* No bottom padding: the next section's top padding already supplies
           the page's standard gap between content blocks. */}
-      <section className="pt-16 md:pt-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid gap-10 mb-4 md:mb-5 lg:grid-cols-12">
-            <div className="lg:col-span-6">
-              <div className="text-xs uppercase tracking-[0.24em] text-brand font-semibold">Life at SMG</div>
-              <h2 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.02]">
-                What it looks like<br />from the <span className="italic font-display font-normal text-brand">inside.</span>
-              </h2>
-            </div>
-            <div className="lg:col-span-5 lg:col-start-8 flex items-end">
-              <p className="text-lg text-ink-soft leading-relaxed">
-                From launch wins to Diwali celebrations, these are the people behind the business. Explore moments from life across our teams.
-              </p>
-            </div>
-          </div>
+      <section aria-labelledby="life-heading" className="overflow-hidden bg-surface pt-16 md:pt-20">
+        <h2 id="life-heading" className="sr-only">Life at SMG</h2>
 
-        </div>
-
-        {/* Rotating 3D cylinder of photos — full-bleed so the edge mask reads */}
-        <div className="life-scene">
-          <div className="life-ring" style={{ "--n": ring.length } as CSSProperties}>
-            {ring.map((p, i) => {
-              const isClone = i >= gallery.length;
-              return (
+        {/* Curved 3D ring of photos (WebGL); the grid is the no-WebGL fallback */}
+        <LifeCarousel
+          photos={gallery}
+          suspended={active !== null}
+          onOpen={setActive}
+          fallback={
+            <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-6 md:grid-cols-3 md:gap-5 lg:px-10">
+              {gallery.map((p, i) => (
                 <button
-                  key={i}
+                  key={p.caption}
                   type="button"
-                  onClick={() => setActive(i % gallery.length)}
-                  className="life-card group cursor-zoom-in bg-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                  style={{ "--i": i } as CSSProperties}
-                  // The far half of the ring is hidden by backface-visibility,
-                  // so the clones are decorative only — keep them out of the
-                  // tab order and the accessibility tree.
-                  aria-hidden={isClone}
-                  tabIndex={isClone ? -1 : 0}
+                  onClick={() => setActive(i)}
+                  className="group relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-2xl bg-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
                   aria-label={`Open photo: ${p.caption}`}
                 >
                   <Image
                     src={p.src}
-                    alt={isClone ? "" : p.caption}
+                    alt={p.caption}
                     fill
-                    sizes="(min-width: 768px) 340px, 200px"
-                    className="object-cover"
+                    sizes="(min-width: 768px) 33vw, 50vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </button>
-              );
-            })}
-          </div>
-        </div>
+              ))}
+            </div>
+          }
+        />
       </section>
 
       {/* ── PILLARS ── */}
