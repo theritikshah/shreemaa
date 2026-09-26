@@ -96,7 +96,8 @@ export const pointsVertexShader = /* glsl */ `
     // 1 facing the camera, 0 at the far side: depth without lighting.
     float front = clamp((pos.z + 1.0) * 0.5, 0.0, 1.0);
 
-    float pulse = 1.0 + aAccent * (1.0 - isPacket) * 0.3 * sin(uTime * 2.2 + aPhase * 6.2831853) * uMotion;
+    // Only full accents (hubs) pulse; 0.5 marks steady accent-coloured destinations.
+    float pulse = 1.0 + step(0.75, aAccent) * (1.0 - isPacket) * 0.3 * sin(uTime * 2.2 + aPhase * 6.2831853) * uMotion;
     float size = aSize * pulse * mix(0.72, 1.0, front);
     gl_PointSize = size * uScale * uPixelRatio / max(-mv.z, 0.001);
 
@@ -107,7 +108,7 @@ export const pointsVertexShader = /* glsl */ `
     float packetAlpha = gate * tripFade(tt) * packet.y;
 
     vAlpha = mix(globeAlpha, packetAlpha, isPacket) * mix(0.16, 1.0, front);
-    vAccent = aAccent;
+    vAccent = step(0.25, aAccent);
     gl_Position = projectionMatrix * mv;
   }
 `;

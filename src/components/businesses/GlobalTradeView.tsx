@@ -60,7 +60,7 @@ export function GlobalTradeView() {
             opacity: 0.1,
           }}
         />
-        <ParticleGlobeBackground copyScrim="left" config={{ background: "transparent", interaction: "drag" }} />
+        <ParticleGlobeBackground copyScrim="left" config={{ background: "transparent", interaction: "drag", arcColor: "#fe0000", accentColor: "#fe0000", arcOpacity: 0.55 }} />
         {/* Pass-through outside the copy, so the globe behind can be dragged. */}
         <div className="pointer-events-none relative z-10 mx-auto max-w-7xl px-6 lg:px-10 pt-28 pb-20 md:pt-36 md:pb-28">
           <div className="pointer-events-auto max-w-3xl">

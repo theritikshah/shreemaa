@@ -295,8 +295,9 @@ export function buildParticleBuffers({
   for (const location of locations) {
     writeScatter(count);
     const target = latLngToVector(location.lat, location.lng);
+    // Accent 1 = hub (accent colour, pulsing); 0.5 = destination (accent colour, steady).
     if (location.hub) push(target, 0.05, 0.02, 1, -1);
-    else push(target, sweepDelay(location.lng), 0.013, 0, -1);
+    else push(target, sweepDelay(location.lng), 0.013, 0.5, -1);
   }
 
   for (const marker of extraMarkers) {
@@ -308,7 +309,7 @@ export function buildParticleBuffers({
   // `scatter`, frequency in `delay` and cycle offset in `arcT`.
   for (const arc of arcs) {
     scatter.set(arc.b, count * 3);
-    push(arc.a, arc.frequency, 0.012, arc.accent ? 1 : 0, arc.offset);
+    push(arc.a, arc.frequency, 0.012, 1, arc.offset);
   }
 
   return {
