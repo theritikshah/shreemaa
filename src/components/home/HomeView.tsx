@@ -8,6 +8,7 @@ import { ArrowUpRight, Package, Building2, Ship, Store } from "lucide-react";
 import { ImpactSection } from "@/components/home/ImpactSection";
 import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
 import { ScaleOffersSection } from "@/components/home/ScaleOffersSection";
+import { HeroPortalGrid } from "@/components/home/hero-portal-grid/HeroPortalGrid";
 import warehouse from "@/assets/infra-warehouse.jpg";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
@@ -28,6 +29,9 @@ export function HomeView() {
         }}
         className="relative overflow-hidden bg-surface text-ink min-h-screen flex items-end pt-32 pb-16"
       >
+        {/* Mirrored Three.js perspective grids: ceiling + floor. */}
+        <HeroPortalGrid />
+
         {/* Cursor-follow spotlight */}
         <div
           aria-hidden
@@ -36,18 +40,6 @@ export function HomeView() {
             background: `radial-gradient(600px circle at ${mouse.x * 100}% ${mouse.y * 100}%, oklch(0.58 0.22 25 / 0.10), transparent 55%)`,
           }}
         />
-        {/* Hairline grid */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.35]"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, oklch(0.17 0.01 60 / 0.06) 1px, transparent 1px), linear-gradient(to bottom, oklch(0.17 0.01 60 / 0.06) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
-          }}
-        />
-
         <div className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full">
           {/* Headline */}
           <motion.h1
@@ -60,6 +52,7 @@ export function HomeView() {
             <br />
             for <span className="font-serif-display italic text-brand">global brands</span>.
           </motion.h1>
+
 
           {/* Bottom row: subtitle + CTAs */}
           <motion.div
@@ -354,16 +347,14 @@ function WhoWeAre() {
                       className="group w-full text-left py-5 flex items-center gap-6 transition-colors"
                     >
                       <span
-                        className={`text-sm font-mono tabular-nums transition-colors ${
-                          isActive ? "text-brand" : "text-white/40 group-hover:text-white/70"
-                        }`}
+                        className={`text-sm font-mono tabular-nums transition-colors ${isActive ? "text-brand" : "text-white/40 group-hover:text-white/70"
+                          }`}
                       >
                         {e.year}
                       </span>
                       <span
-                        className={`relative flex-1 text-2xl md:text-3xl font-display tracking-tight transition-all ${
-                          isActive ? "text-white translate-x-1" : "text-white/55 group-hover:text-white/85"
-                        }`}
+                        className={`relative flex-1 text-2xl md:text-3xl font-display tracking-tight transition-all ${isActive ? "text-white translate-x-1" : "text-white/55 group-hover:text-white/85"
+                          }`}
                       >
                         {e.tag}
                       </span>
