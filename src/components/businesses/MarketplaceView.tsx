@@ -18,7 +18,6 @@ import {
   Boxes,
   Sparkles,
   Database,
-  RefreshCw,
 } from "lucide-react";
 import { Counter } from "@/components/Counter";
 import { CommandHeroExperience } from "@/components/command-hero/CommandHeroExperience";
@@ -38,6 +37,7 @@ import jiomartAppLogo from "@/assets/marketplace-logos/jiomart-app.svg";
 import solvAppLogo from "@/assets/marketplace-logos/solv-app.png";
 import swiggyAppLogo from "@/assets/marketplace-logos/swiggy-app.png";
 import { IndiaFCMap } from "@/components/site/IndiaFCMap";
+import { MarketplaceNetworkDiagram } from "@/components/businesses/MarketplaceNetworkDiagram";
 
 interface Marketplace {
   name: string;
@@ -149,177 +149,7 @@ export function MarketplaceView() {
             </p>
           </div>
 
-          {/* DESKTOP NODE GRAPH DIAGRAM: MARKETPLACES (LEFT) -> DEMAND -> SHRI MAA HUB (CENTER) -> FULFILLMENT -> 22-STATE FCs (RIGHT) */}
-          <div className="relative mx-auto mt-12 hidden min-h-[520px] max-w-6xl md:block">
-            {/* SVG Connecting Path Tree */}
-            <svg
-              className="pointer-events-none absolute inset-0 h-full w-full overflow-visible"
-              viewBox="0 0 1000 480"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <linearGradient id="glow-line-left" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#E2E8F0" stopOpacity="0.4" />
-                  <stop offset="100%" stopColor="#2563EB" stopOpacity="0.7" />
-                </linearGradient>
-                <linearGradient id="glow-line-right" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#2563EB" stopOpacity="0.7" />
-                  <stop offset="100%" stopColor="#E2E8F0" stopOpacity="0.4" />
-                </linearGradient>
-              </defs>
-
-              {/* 6 Left Marketplace Paths -> Demand Junction (260, 240) */}
-              <path d="M 140 40 C 200 40, 200 240, 260 240" stroke="#CBD5E1" strokeWidth="1.5" strokeDasharray="4 4" className="animate-pulse" />
-              <path d="M 140 115 C 200 115, 200 240, 260 240" stroke="#CBD5E1" strokeWidth="1.5" />
-              <path d="M 140 190 C 200 190, 200 240, 260 240" stroke="#CBD5E1" strokeWidth="1.5" />
-              <path d="M 140 265 C 200 265, 200 240, 260 240" stroke="#CBD5E1" strokeWidth="1.5" />
-              <path d="M 140 340 C 200 340, 200 240, 260 240" stroke="#CBD5E1" strokeWidth="1.5" />
-              <path d="M 140 415 C 200 415, 200 240, 260 240" stroke="#CBD5E1" strokeWidth="1.5" strokeDasharray="4 4" className="animate-pulse" />
-
-              {/* Demand Junction (295, 240) -> Center Card Left Edge (355, 240) */}
-              <path d="M 295 240 L 355 240" stroke="url(#glow-line-left)" strokeWidth="2.5" />
-
-              {/* Center Card Right Edge (645, 240) -> Fulfillment Junction (705, 240) */}
-              <path d="M 645 240 L 705 240" stroke="url(#glow-line-right)" strokeWidth="2.5" />
-
-              {/* Fulfillment Junction (740, 240) -> 3 Right Fulfillment Nodes */}
-              <path d="M 740 240 C 800 240, 800 80, 840 80" stroke="#CBD5E1" strokeWidth="1.75" strokeDasharray="4 4" className="animate-pulse" />
-              <path d="M 740 240 L 840 240" stroke="#CBD5E1" strokeWidth="1.75" />
-              <path d="M 740 240 C 800 240, 800 400, 840 400" stroke="#CBD5E1" strokeWidth="1.75" strokeDasharray="4 4" className="animate-pulse" />
-            </svg>
-
-            {/* LEFT NODES: ALL 6 ACTIVE MARKETPLACES */}
-            <div className="absolute left-[20px] top-[15px] z-10 space-y-3.5 w-[145px]">
-              {allMarketplaces.map((m, i) => (
-                <motion.div
-                  key={m.name}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.05 }}
-                  whileHover={{ scale: 1.05, x: 3 }}
-                  className="flex items-center gap-2.5 rounded-xl border border-slate-200/90 bg-white p-2 shadow-[0_6px_20px_-4px_rgba(15,23,42,0.06)] transition-all hover:border-brand/40 hover:shadow-md cursor-pointer"
-                >
-                  <div className={`flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-100 bg-slate-50 ${m.appLogoFill ? "" : "p-1"}`}>
-                    <Image
-                      src={m.appLogo}
-                      alt={m.name}
-                      className={m.appLogoFill ? "h-full w-full object-cover" : "h-5 w-5 object-contain"}
-                    />
-                  </div>
-                  <div className="overflow-hidden">
-                    <div className="text-xs font-bold text-slate-800 leading-tight truncate">{m.name}</div>
-                    <div className="text-[9px] font-medium text-slate-400 truncate">{m.subtitle}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* LEFT JUNCTION: DEMAND BADGE */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="absolute left-[235px] top-[220px] z-20 flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-xl border border-slate-700"
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Demand</span>
-            </motion.div>
-
-            {/* CENTER FLOATING CARD: SHRI MAA GROUP MARKETPLACE OPERATIONS HUB */}
-            <motion.div
-              initial={{ opacity: 0, y: 15, scale: 0.96 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="absolute left-[355px] top-[30px] z-20 w-[290px] rounded-3xl border border-slate-200/90 bg-white/95 backdrop-blur-md p-5 shadow-[0_20px_50px_-10px_rgba(15,23,42,0.12)]"
-            >
-              {/* TOP OPERATIONAL CONTROL HEADER */}
-              <div className="flex items-center gap-2 rounded-xl bg-slate-50 border border-slate-200/80 px-3 py-2.5 text-xs text-slate-700 shadow-2xs">
-                <Sparkles className="h-4 w-4 text-brand shrink-0 animate-spin-slow" />
-                <span className="truncate font-medium text-slate-700">
-                  Shri Maa <span className="font-semibold text-ink">Operations Desk</span>
-                </span>
-              </div>
-
-              {/* SHRI MAA GROUP CORE CAPABILITIES */}
-              <div className="mt-5 space-y-2.5">
-                <div className="flex items-center justify-between rounded-xl bg-slate-100/70 px-3 py-2.5 text-[11px] font-medium text-slate-700 border border-slate-200/60 shadow-2xs">
-                  <div className="flex items-center gap-2">
-                    <Layers className="h-4 w-4 text-brand shrink-0" />
-                    <span>Catalog & A+ Content</span>
-                  </div>
-                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700">Live SEO</span>
-                </div>
-
-                <div className="flex items-center justify-between rounded-xl bg-slate-100/70 px-3 py-2.5 text-[11px] font-medium text-slate-700 border border-slate-200/60 shadow-2xs">
-                  <div className="flex items-center gap-2">
-                    <Megaphone className="h-4 w-4 text-brand shrink-0" />
-                    <span>Performance Ads & DSP</span>
-                  </div>
-                  <span className="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">Full-Funnel</span>
-                </div>
-
-                <div className="flex items-center justify-between rounded-xl bg-slate-100/70 px-3 py-2.5 text-[11px] font-medium text-slate-700 border border-slate-200/60 shadow-2xs">
-                  <div className="flex items-center gap-2">
-                    <Boxes className="h-4 w-4 text-brand shrink-0" />
-                    <span>Demand & Inventory</span>
-                  </div>
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700">22 States</span>
-                </div>
-              </div>
-
-              {/* RADAR WAVE & FULFILLMENT ENGINE GRAPHIC */}
-              <div className="relative mt-6 flex h-28 items-end justify-center overflow-hidden rounded-2xl bg-gradient-to-t from-slate-100/80 to-transparent p-2">
-                <div className="absolute bottom-2 h-32 w-32 rounded-full border border-brand/20 bg-brand/5 animate-ping opacity-30" />
-                <div className="absolute bottom-2 h-20 w-20 rounded-full border border-slate-300/80 bg-white/70 backdrop-blur" />
-                <div className="absolute bottom-2 h-12 w-12 rounded-full border border-brand/40 bg-brand/10" />
-
-                <div className="relative z-10 flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-white shadow-xl ring-4 ring-white">
-                  <Truck className="h-5 w-5 text-brand" />
-                </div>
-              </div>
-            </motion.div>
-
-            {/* RIGHT JUNCTION: FULFILLMENT BADGE */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="absolute right-[225px] top-[220px] z-20 flex items-center gap-1.5 rounded-full bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-xl border border-slate-700"
-            >
-              <RefreshCw className="h-3 w-3 text-brand animate-spin-slow" />
-              <span>Fulfillment</span>
-            </motion.div>
-
-            {/* RIGHT NODES: MULTI-STATE FULFILLMENT NETWORK */}
-            <div className="absolute right-[20px] top-[55px] z-10 space-y-[90px] w-[150px]">
-              {[
-                { title: "FBA & FBF FCs", sub: "Prime & Assured", icon: PackageCheck },
-                { title: "4x Seller Flex", sub: "Peak-event buffer", icon: Sparkles },
-                { title: "22-State APOBs", sub: "~80% Pincode SLA", icon: MapPin },
-              ].map((fn, i) => (
-                <motion.div
-                  key={fn.title}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  whileHover={{ scale: 1.05, x: -3 }}
-                  className="flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white p-2.5 shadow-[0_8px_25px_-6px_rgba(15,23,42,0.08)] transition-all hover:border-brand/40 hover:shadow-lg cursor-pointer"
-                >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 border border-brand/20 p-1.5 text-brand shadow-2xs">
-                    <fn.icon className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs font-bold text-slate-800 leading-tight">{fn.title}</div>
-                    <div className="text-[10px] font-medium text-slate-400">{fn.sub}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <MarketplaceNetworkDiagram marketplaces={allMarketplaces} />
 
           {/* MOBILE RESPONSIVE FALLBACK */}
           <div className="mt-10 space-y-6 md:hidden">

@@ -169,6 +169,24 @@
   }
 }
 
+/* Marketplace network diagram: dashes travel along each connector toward the
+   hub, then out to the fulfillment nodes. The offset equals one dash period
+   (6 + 6) so the loop is seamless. */
+@keyframes network-dash-flow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+.network-dash {
+  stroke-dasharray: 6 6;
+  animation: network-dash-flow 0.9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .network-dash {
+    animation: none;
+  }
+}
+
 /* About · code-drawn belief loops */
 .belief-dot {
   fill: transparent;
