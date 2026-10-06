@@ -18,9 +18,19 @@ export interface PortalGridController {
   dispose(): void;
 }
 
+export type PortalGridTheme = "light" | "dark";
+
+// Fog matches the section background so the grid fades into it; lines
+// contrast with it. Dark is --ink (oklch 0.17 0.01 60) in sRGB.
+const THEMES: Record<PortalGridTheme, { fog: string; line: string }> = {
+  light: { fog: "#fdf9f4", line: "#342d28" },
+  dark: { fog: "#130e0b", line: "#f3efe9" },
+};
+
 type SceneOptions = {
   mount: HTMLDivElement;
   container: HTMLElement;
+  theme?: PortalGridTheme;
 };
 
 type AnimatedPlane = {
@@ -155,9 +165,10 @@ function makeAnimatedPlane(sign: 1 | -1, lineColor: Color, accentColor: Color): 
   };
 }
 
-export function createPortalGridScene({ mount, container }: SceneOptions): PortalGridController {
+export function createPortalGridScene({ mount, container, theme = "light" }: SceneOptions): PortalGridController {
+  const colors = THEMES[theme];
   const scene = new Scene();
-  scene.fog = new Fog(new Color("#fdf9f4"), 20, 64);
+  scene.fog = new Fog(new Color(colors.fog), 20, 64);
 
   const camera = new PerspectiveCamera(44, 1, 0.1, 130);
   camera.position.set(0, 0, 17.5);
@@ -174,7 +185,7 @@ export function createPortalGridScene({ mount, container }: SceneOptions): Porta
   const world = new Group();
   scene.add(world);
 
-  const ink = new Color("#342d28");
+  const ink = new Color(colors.line);
   const brand = new Color("#fe0000");
   const ceiling = makeAnimatedPlane(1, ink, brand);
   const floor = makeAnimatedPlane(-1, ink, brand);

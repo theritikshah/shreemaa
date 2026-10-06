@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { motion } from "framer-motion";
-import { Boxes, Layers, MapPin, Megaphone, PackageCheck, RefreshCw, Sparkles, Truck } from "lucide-react";
+import { Boxes, Layers, MapPin, Megaphone, PackageCheck, RefreshCw, Sparkles } from "lucide-react";
 
 export interface NetworkMarketplace {
   name: string;
@@ -41,9 +41,9 @@ const fulfillmentNodes = [
 ];
 
 const hubRows = [
-  { icon: Layers, label: "Catalog & A+ Content", tag: "Live SEO", tagClass: "bg-emerald-100 text-emerald-700" },
-  { icon: Megaphone, label: "Performance Ads & DSP", tag: "Full-Funnel", tagClass: "bg-blue-100 text-blue-700" },
-  { icon: Boxes, label: "Demand & Inventory", tag: "22 States", tagClass: "bg-amber-100 text-amber-700" },
+  { icon: Layers, label: "Catalog & A+ Content", tag: "Live SEO", tagClass: "bg-emerald-400/15 text-emerald-300" },
+  { icon: Megaphone, label: "Performance Ads & DSP", tag: "Full-Funnel", tagClass: "bg-blue-400/15 text-blue-300" },
+  { icon: Boxes, label: "Demand & Inventory", tag: "22 States", tagClass: "bg-amber-400/15 text-amber-300" },
 ];
 
 /** Horizontal S-curve between two points, bending at the midpoint. */
@@ -91,7 +91,7 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
         >
           {/* Marketplaces → Demand */}
           {leftNodeYs.map((y) => (
-            <path key={y} d={curve(LEFT_EDGE_X, y, DEMAND_X, MID_Y)} stroke="#94A3B8" strokeWidth="1.5" className="network-dash" />
+            <path key={y} d={curve(LEFT_EDGE_X, y, DEMAND_X, MID_Y)} stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" className="network-dash" />
           ))}
           {/* Demand → hub → Fulfillment (the hub card sits over the middle) */}
           <path
@@ -103,15 +103,15 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
           />
           {/* Fulfillment → FC nodes */}
           {fulfillmentNodes.map((n) => (
-            <path key={n.title} d={curve(FULFILL_X, MID_Y, RIGHT_NODE_X, n.y)} stroke="#94A3B8" strokeWidth="1.5" className="network-dash" />
+            <path key={n.title} d={curve(FULFILL_X, MID_Y, RIGHT_NODE_X, n.y)} stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" className="network-dash" />
           ))}
 
           {/* Anchor dots where each line meets a card */}
           {leftNodeYs.map((y) => (
-            <circle key={y} cx={LEFT_EDGE_X} cy={y} r="3" fill="#FAFBFD" stroke="#94A3B8" strokeWidth="1.5" />
+            <circle key={y} cx={LEFT_EDGE_X} cy={y} r="3" fill="#130e0b" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" />
           ))}
           {fulfillmentNodes.map((n) => (
-            <circle key={n.title} cx={RIGHT_NODE_X} cy={n.y} r="3" fill="#FAFBFD" stroke="#94A3B8" strokeWidth="1.5" />
+            <circle key={n.title} cx={RIGHT_NODE_X} cy={n.y} r="3" fill="#130e0b" stroke="rgba(255,255,255,0.22)" strokeWidth="1.5" />
           ))}
           <circle cx={STAGE_W / 2 - HUB_W / 2} cy={MID_Y} r="3.5" fill="#FE0000" />
           <circle cx={STAGE_W / 2 + HUB_W / 2} cy={MID_Y} r="3.5" fill="#FE0000" />
@@ -126,10 +126,10 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
               viewport={{ once: true }}
               transition={{ duration: 0.35, delay: i * 0.05 }}
               whileHover={{ scale: 1.05, x: 3 }}
-              className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-slate-200/90 bg-white p-2 shadow-[0_6px_20px_-4px_rgba(15,23,42,0.06)] transition-colors hover:border-brand/40 hover:shadow-md"
+              className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-white/10 bg-[#1b1512] p-2 transition-colors hover:border-brand/50"
             >
               <div
-                className={`flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-100 bg-slate-50 ${m.appLogoFill ? "" : "p-1"}`}
+                className={`flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-white ${m.appLogoFill ? "" : "p-1"}`}
               >
                 <Image
                   src={m.appLogo}
@@ -138,8 +138,8 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
                 />
               </div>
               <div className="overflow-hidden">
-                <div className="truncate text-xs font-bold leading-tight text-slate-800">{m.name}</div>
-                <div className="truncate text-[9px] font-medium text-slate-400">{m.subtitle}</div>
+                <div className="truncate text-xs font-bold leading-tight text-white">{m.name}</div>
+                <div className="truncate text-[9px] font-medium text-white/50">{m.subtitle}</div>
               </div>
             </motion.div>
           </div>
@@ -151,7 +151,7 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-700 bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-xl"
+            className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-white/15 bg-[#241d19] px-3.5 py-1.5 text-xs font-semibold text-white shadow-xl"
           >
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>Demand</span>
@@ -165,13 +165,13 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="rounded-3xl border border-slate-200/90 bg-white p-5 shadow-[0_20px_50px_-10px_rgba(15,23,42,0.12)]"
+            className="rounded-3xl border border-white/10 bg-[#1b1512] p-5 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.6)]"
           >
             {/* TOP OPERATIONAL CONTROL HEADER */}
-            <div className="flex items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50 px-3 py-2.5 text-xs text-slate-700 shadow-2xs">
-              <Sparkles className="h-4 w-4 shrink-0 text-brand animate-spin-slow" />
-              <span className="truncate font-medium text-slate-700">
-                Shri Maa <span className="font-semibold text-ink">Operations Desk</span>
+            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2.5 text-xs text-white/80">
+              <Sparkles className="h-4 w-4 shrink-0 text-accent animate-spin-slow" />
+              <span className="truncate font-medium text-white/70">
+                Shri Maa <span className="font-semibold text-white">Operations Desk</span>
               </span>
             </div>
 
@@ -180,25 +180,15 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
               {hubRows.map((row) => (
                 <div
                   key={row.label}
-                  className="flex items-center justify-between rounded-xl border border-slate-200/60 bg-slate-100/70 px-3 py-2.5 text-[11px] font-medium text-slate-700 shadow-2xs"
+                  className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.05] px-3 py-2.5 text-[11px] font-medium text-white/80"
                 >
                   <div className="flex items-center gap-2">
-                    <row.icon className="h-4 w-4 shrink-0 text-brand" />
+                    <row.icon className="h-4 w-4 shrink-0 text-accent" />
                     <span>{row.label}</span>
                   </div>
                   <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${row.tagClass}`}>{row.tag}</span>
                 </div>
               ))}
-            </div>
-
-            {/* RADAR WAVE & FULFILLMENT ENGINE GRAPHIC */}
-            <div className="relative mt-6 flex h-28 items-end justify-center overflow-hidden rounded-2xl bg-gradient-to-t from-slate-100/80 to-transparent p-2">
-              <div className="absolute bottom-2 h-32 w-32 rounded-full border border-brand/20 bg-brand/5 opacity-30 animate-ping" />
-              <div className="absolute bottom-2 h-20 w-20 rounded-full border border-slate-300/80 bg-white/70 backdrop-blur" />
-              <div className="absolute bottom-2 h-12 w-12 rounded-full border border-brand/40 bg-brand/10" />
-              <div className="relative z-10 flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-white shadow-xl ring-4 ring-white">
-                <Truck className="h-5 w-5 text-brand" />
-              </div>
             </div>
           </motion.div>
         </div>
@@ -209,9 +199,9 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-700 bg-ink px-3.5 py-1.5 text-xs font-semibold text-white shadow-xl"
+            className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-white/15 bg-[#241d19] px-3.5 py-1.5 text-xs font-semibold text-white shadow-xl"
           >
-            <RefreshCw className="h-3 w-3 text-brand animate-spin-slow" />
+            <RefreshCw className="h-3 w-3 text-accent animate-spin-slow" />
             <span>Fulfillment</span>
           </motion.div>
         </div>
@@ -225,14 +215,14 @@ export function MarketplaceNetworkDiagram({ marketplaces }: { marketplaces: Netw
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.1 }}
               whileHover={{ scale: 1.05, x: -3 }}
-              className="flex cursor-pointer items-center gap-3 rounded-2xl border border-slate-200/90 bg-white p-2.5 shadow-[0_8px_25px_-6px_rgba(15,23,42,0.08)] transition-colors hover:border-brand/40 hover:shadow-lg"
+              className="flex cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-[#1b1512] p-2.5 transition-colors hover:border-brand/50"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-brand/20 bg-brand/10 p-1.5 text-brand shadow-2xs">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-brand/20 bg-brand/10 p-1.5 text-accent shadow-2xs">
                 <fn.icon className="h-5 w-5" />
               </div>
               <div>
-                <div className="text-xs font-bold leading-tight text-slate-800">{fn.title}</div>
-                <div className="text-[10px] font-medium text-slate-400">{fn.sub}</div>
+                <div className="text-xs font-bold leading-tight text-white">{fn.title}</div>
+                <div className="text-[10px] font-medium text-white/50">{fn.sub}</div>
               </div>
             </motion.div>
           </div>
