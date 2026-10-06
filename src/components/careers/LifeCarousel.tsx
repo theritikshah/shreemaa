@@ -14,11 +14,14 @@ const categories = [
   { label: "Beyond the office", tags: ["Off-site"], icon: PartyPopper },
 ];
 
-export function LifeCarousel({ photos, onOpen, fallback, suspended = false }: {
+const DEFAULT_STAGE_HEIGHT = "min(clamp(420px, 23.4375vw + 345px, 720px), calc(100dvh - clamp(24px, 2.5vw + 16px, 56px) - 48px))";
+
+export function LifeCarousel({ photos, onOpen, fallback, suspended = false, stageHeight = DEFAULT_STAGE_HEIGHT }: {
   photos: Photo[];
   onOpen: (index: number) => void;
   fallback: ReactNode;
   suspended?: boolean;
+  stageHeight?: string;
 }) {
   const host = useRef<HTMLDivElement>(null);
   const controls = useRef<CarouselScene | null>(null);
@@ -67,7 +70,7 @@ export function LifeCarousel({ photos, onOpen, fallback, suspended = false }: {
     <div role="region" aria-label="Life at SMG photo carousel" aria-roledescription="carousel"
       onFocusCapture={() => setEngaged(true)}
       onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setEngaged(false); }}>
-      <div className="relative" style={{ height: "min(clamp(420px, 23.4375vw + 345px, 720px), calc(100dvh - clamp(24px, 2.5vw + 16px, 56px) - 48px))" }}>
+      <div className="relative" style={{ height: stageHeight }}>
         {status === "loading" && <div className="absolute inset-6 mx-auto max-w-xl overflow-hidden rounded-3xl">
           <Image src={photos[0].src} alt="" fill sizes="(min-width: 768px) 560px, 90vw" className="object-cover" />
         </div>}

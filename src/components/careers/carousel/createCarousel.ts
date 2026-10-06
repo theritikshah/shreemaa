@@ -15,10 +15,12 @@ export type CarouselScene = {
 };
 
 const RADIUS = 4.3;
-const PANEL_WIDTH = 1.6;
-const SLOTS = 15;
+const CAMERA_Z = 8.6;
+const SLOTS = 15; // minimum panels; more photos widen the ring instead of thinning panels
+const PANEL_FILL = 0.96; // share of each slot's arc covered by its panel
 const TILT = THREE.MathUtils.degToRad(-13);
-const PANEL_HEIGHT = 1.6;
+const PANEL_HEIGHT = 2.2;
+const BACK_OPACITY = 0.22; // far wall stays faintly visible through the gaps
 
 const AUTO_SPEED = -0.04; // radians per second
 const SEGMENTS = 48;
@@ -67,17 +69,21 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
-/** Gently convex panels, viewed from outside the tilted ring. */
-function curvedPlane(width: number, height: number) {
+/** Gently convex panels, viewed from outside the tilted ring.
+ *  Wrapped exactly onto the ring's cylinder, so neighbours form one continuous surface. */
+function curvedPlane(width: number, height: number, radius: number) {
   const geo = new THREE.PlaneGeometry(width, height, SEGMENTS, 1);
   const pos = geo.attributes.position;
   for (let i = 0; i < pos.count; i++) {
-    const edge = pos.getX(i) / (width / 2);
-    pos.setZ(i, -0.12 * edge * edge);
+    const theta = pos.getX(i) / radius;
+    pos.setX(i, Math.sin(theta) * radius);
+    pos.setZ(i, (Math.cos(theta) - 1) * radius);
   }
   geo.computeVertexNormals();
   return geo;
 }
+
+const panelWidthFor = (radius: number, count: number) => ((Math.PI * 2) / count) * radius * PANEL_FILL;
 
 const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 
@@ -90,9 +96,14 @@ export function createCarousel(
   let disposed = false;
   let paused = false;
   let resumeAt = 0;
-  const count = SLOTS;
+  // Every photo gets its own panel. Past SLOTS the ring grows with the count,
+  // so panels keep their width, and the camera backs off by the same amount
+  // so the front panel stays the same size on screen.
+  const count = Math.max(SLOTS, urls.length);
+  const ringScale = count / SLOTS;
   const slot = (Math.PI * 2) / count;
-  const panelWidth = PANEL_WIDTH;
+  let ringRadius = RADIUS * ringScale;
+  let panelWidth = panelWidthFor(ringRadius, count);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -106,12 +117,12 @@ export function createCarousel(
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 100);
   const group = new THREE.Group();
-  camera.position.z = 8.6;
+  camera.position.z = CAMERA_Z + ringRadius - RADIUS;
   group.rotation.x = TILT;
-  group.position.y = RADIUS * Math.sin(TILT);
+  group.position.y = ringRadius * Math.sin(TILT);
   scene.add(group);
 
-  const geometry = curvedPlane(panelWidth, PANEL_HEIGHT);
+  let geometry = curvedPlane(panelWidth, PANEL_HEIGHT, ringRadius);
   const loader = new THREE.TextureLoader();
   const maxAniso = renderer.capabilities.getMaxAnisotropy();
   const panels: THREE.Mesh[] = [];
@@ -139,7 +150,7 @@ export function createCarousel(
     const mesh = new THREE.Mesh(geometry, material);
     const angle = i * slot;
     mesh.rotation.y = angle;
-    mesh.position.set(Math.sin(angle) * RADIUS, 0, Math.cos(angle) * RADIUS);
+    mesh.position.set(Math.sin(angle) * ringRadius, 0, Math.cos(angle) * ringRadius);
     mesh.userData.index = i % urls.length;
     group.add(mesh);
     panels.push(mesh);
@@ -195,8 +206,18 @@ export function createCarousel(
     canvas.style.width = `${w}px`;
     canvas.style.height = `${h}px`;
     camera.aspect = w / h;
-    camera.fov = w <= 768 ? 49 : w <= 1024 ? 40 : 24;
-    const radius = w <= 768 ? 4 : RADIUS;
+    camera.fov = w <= 768 ? 49 : w <= 1024 ? 40 : 29;
+    const baseRadius = w <= 768 ? 4 : RADIUS;
+    const radius = baseRadius * ringScale;
+    camera.position.z = CAMERA_Z + radius - baseRadius;
+    if (radius !== ringRadius) {
+      ringRadius = radius;
+      panelWidth = panelWidthFor(radius, count);
+      geometry.dispose();
+      geometry = curvedPlane(panelWidth, PANEL_HEIGHT, radius);
+      panels.forEach((panel) => { panel.geometry = geometry; });
+      materials.forEach((m) => { m.uniforms.uPlaneAspect.value = panelWidth / PANEL_HEIGHT; });
+    }
     group.position.y = radius * Math.sin(TILT);
     panels.forEach((panel, i) => panel.position.set(Math.sin(i * slot) * radius, 0, Math.cos(i * slot) * radius));
     camera.updateProjectionMatrix();
@@ -221,7 +242,9 @@ export function createCarousel(
       -((e.clientY - rect.top) / rect.height) * 2 + 1,
     );
     raycaster.setFromCamera(ndc, camera);
-    const hit = raycaster.intersectObjects(panels, false)[0];
+    // Only front-facing panels are clickable; the faint far wall is decoration.
+    const hit = raycaster.intersectObjects(panels, false)
+      .find((h) => ((h.object as THREE.Mesh).material as THREE.ShaderMaterial).uniforms.uOpacity.value > 0.5);
     return hit ? (hit.object.userData.index as number) : -1;
   };
 
@@ -309,7 +332,8 @@ export function createCarousel(
     for (let i = 0; i < count; i++) {
       materials[i].uniforms.uHover.value = 0;
       const facing = Math.cos(i * slot + rotation);
-      materials[i].uniforms.uOpacity.value = facing >= 0.5 ? 1 : Math.max(0, (facing + 1) / 1.5);
+      const fade = THREE.MathUtils.smoothstep(facing, -0.2, 0.5);
+      materials[i].uniforms.uOpacity.value = BACK_OPACITY + (1 - BACK_OPACITY) * fade;
     }
 
     emitActive();

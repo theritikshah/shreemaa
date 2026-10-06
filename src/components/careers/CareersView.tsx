@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { ArrowRight, ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
-import life1 from "@/assets/life-1.jpeg";
-import life2 from "@/assets/life-2.jpeg";
+import { useCallback, useEffect, useState } from "react";
+import { ArrowUpRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import life3 from "@/assets/life-3.jpeg";
 import life4 from "@/assets/life-4.jpeg";
 import life5 from "@/assets/life-5.jpeg";
@@ -14,41 +11,47 @@ import life6 from "@/assets/life-6.jpeg";
 import life7 from "@/assets/life-7.jpeg";
 import life8 from "@/assets/life-8.jpeg";
 import life9 from "@/assets/life-9.jpeg";
-import type { StaticImageData } from "next/image";
-import { LifeCarousel } from "./LifeCarousel";
-
-type Photo = { src: StaticImageData; caption: string; tag: string };
+import utsavAwards from "@/assets/life/shri-utsav-2025-ultimate-kings.jpeg";
+import utsavDance from "@/assets/life/shri-utsav-2025-dance-performance.jpeg";
+import utsavStage from "@/assets/life/shri-utsav-2025-stage.jpeg";
+import splWinners from "@/assets/life/spl-champions-trophy.jpeg";
+import splSelfie from "@/assets/life/spl-sideline-selfie.jpeg";
+import splToss from "@/assets/life/spl-toss.jpeg";
+import purpleDay from "@/assets/life/purple-day-courtyard.jpeg";
+import flowerCrowns from "@/assets/life/pink-day-flower-crowns.jpeg";
+import independenceDay from "@/assets/life/independence-day-office.jpeg";
+import pinkTerrace from "@/assets/life/pink-day-terrace-celebration.jpeg";
+import christmasHats from "@/assets/life/christmas-santa-hats.jpeg";
+import { Counter } from "@/components/Counter";
+import { CarouselHero } from "./CarouselHero";
+import type { Photo } from "./types";
 
 const gallery: Photo[] = [
   { src: life7, caption: "The full team, together in indigo", tag: "Team day" },
   { src: life8, caption: "Women of SMG", tag: "Culture" },
   { src: life9, caption: "Pink day at the office", tag: "Theme day" },
-  { src: life1, caption: "Everyday in the office", tag: "On the floor" },
-  { src: life2, caption: "Celebrating a milestone win", tag: "Wins" },
   { src: life3, caption: "Award winners on stage", tag: "Recognition" },
   { src: life4, caption: "Christmas at the office", tag: "Festivals" },
   { src: life5, caption: "Off-site dinner that ran past midnight", tag: "Off-site" },
   { src: life6, caption: "Diwali, decked up", tag: "Festivals" },
+  { src: utsavAwards, caption: "Meet the ultimate kings of SMG", tag: "Recognition" },
+  { src: utsavDance, caption: "Opening performance at Shri Utsav 2025", tag: "Festivals" },
+  { src: utsavStage, caption: "Shri Utsav 2025, stage set for the night", tag: "Festivals" },
+  { src: splWinners, caption: "SMG Premier League champions", tag: "Wins" },
+  { src: splSelfie, caption: "Cheering from the sidelines at SPL", tag: "Off-site" },
+  { src: splToss, caption: "Toss time at the SMG Premier League", tag: "Off-site" },
+  { src: purpleDay, caption: "Purple day in the courtyard", tag: "Theme day" },
+  { src: flowerCrowns, caption: "Flower crowns and pink, all together", tag: "Culture" },
+  { src: independenceDay, caption: "Independence Day at the office", tag: "Festivals" },
+  { src: pinkTerrace, caption: "Pink day on the terrace", tag: "Theme day" },
+  { src: christmasHats, caption: "Santa hats on for Christmas", tag: "Festivals" },
 ];
 
-// Circular portraits flanking the opening statement. left/top/size are
-// percentages of the stage, kept clear of the centre column so the headline
-// always has room. `lag` is the fraction of a viewport each one holds back by
-// as the page scrolls, so they drift vertically at different speeds.
-const avatarRing = [
-  { i: 0, left: 2.6, top: 2, size: 5.8, lag: 0.10 },
-  { i: 1, left: 12.3, top: 9, size: 6.3, lag: 0.20 },
-  { i: 2, left: 1.5, top: 30, size: 5.1, lag: 0.06 },
-  { i: 3, left: 9.9, top: 27.6, size: 6.0, lag: 0.16 },
-  { i: 4, left: 14.5, top: 44.3, size: 4.2, lag: 0.24 },
-  { i: 5, left: 4.4, top: 48, size: 7.6, lag: 0.08 },
-  { i: 6, left: 14.3, top: 63.4, size: 4.4, lag: 0.18 },
-  { i: 7, left: 78.1, top: 16.2, size: 7.6, lag: 0.14 },
-  { i: 8, left: 90.9, top: 11.7, size: 5.3, lag: 0.22 },
-  { i: 0, left: 91.2, top: 27.6, size: 7.4, lag: 0.07 },
-  { i: 2, left: 83.3, top: 38.2, size: 5.3, lag: 0.19 },
-  { i: 4, left: 88.8, top: 52.4, size: 4.0, lag: 0.11 },
-  { i: 6, left: 79.6, top: 56.8, size: 7.6, lag: 0.25 },
+const stats = [
+  { to: 28, suffix: "", label: ["Years building", "together"] },
+  { to: 500, suffix: "+", label: ["Team members", "nationwide"] },
+  { to: 12, suffix: "+", label: ["Cities and", "locations"] },
+  { to: 80, suffix: "K+", label: ["Retail partners", "we serve"] },
 ];
 
 const pillars = [
@@ -60,34 +63,6 @@ const pillars = [
 
 export function CareersView() {
   const [active, setActive] = useState<number | null>(null);
-  const ringStageRef = useRef<HTMLDivElement>(null);
-  const ringRefs = useRef<(HTMLDivElement | null)[]>([]);
-  // Vertical drift only, at a different rate per circle. Reads just scrollY and
-  // writes transforms, so it forces no layout; painting straight from the
-  // scroll event means a dropped frame can't wedge a latch and kill it.
-  useEffect(() => {
-    const stage = ringStageRef.current;
-    if (!stage) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const paint = () => {
-      const vh = window.innerHeight || 800;
-      const p = Math.min(1, Math.max(0, window.scrollY / vh));
-      for (let i = 0; i < avatarRing.length; i++) {
-        const el = ringRefs.current[i];
-        if (!el) continue;
-        el.style.transform = `translate3d(0, ${(p * vh * avatarRing[i].lag).toFixed(1)}px, 0)`;
-      }
-    };
-
-    paint();
-    window.addEventListener("scroll", paint, { passive: true });
-    window.addEventListener("resize", paint, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", paint);
-      window.removeEventListener("resize", paint);
-    };
-  }, []);
 
   const close = useCallback(() => setActive(null), []);
   const next = useCallback(() => setActive((i) => (i === null ? i : (i + 1) % gallery.length)), []);
@@ -111,164 +86,30 @@ export function CareersView() {
 
   return (
     <>
-      {/* ── OPENING STATEMENT ── centred copy ringed by circular portraits ── */}
-      {/* Fills the viewport and centres its contents, so the copy sits on the
-          optical centre instead of being pushed down by a large top padding.
-          The top padding only needs to clear the fixed nav. */}
-      <section className="relative flex min-h-[620px] items-center overflow-hidden bg-bg pb-10 pt-20 md:min-h-[680px] md:pb-12 md:pt-24">
-        <div
-          ref={ringStageRef}
-          // One shared vanishing point for the whole ring: the circles fly in
-          // along Z, so off-centre ones sweep outward as they come forward.
-          // Per-element perspective would flatten this back to a plain scale.
-          className="relative mx-auto h-[460px] w-full max-w-[1400px] [perspective:1200px] md:h-[clamp(500px,62svh,560px)]"
-        >
-          {/* Circles sit behind the copy and are decorative only */}
-          {avatarRing.map((a, n) => {
-            const p = gallery[a.i];
-            return (
-              // Outer: position + the scroll-linked vertical drift.
-              <div
-                key={n}
-                aria-hidden
-                ref={(el) => {
-                  ringRefs.current[n] = el;
-                }}
-                className="absolute hidden will-change-transform md:block"
-                style={{
-                  left: `${a.left}%`,
-                  top: `${a.top}%`,
-                  width: `clamp(56px, ${a.size}vw, 104px)`,
-                  aspectRatio: "1",
-                  // Keeps the inner circle inside the stage's 3D space, so its
-                  // translateZ resolves against the shared vanishing point.
-                  transformStyle: "preserve-3d",
-                }}
-              >
-                {/* Middle: the endless ambient drift. Pure CSS, so it costs
-                    nothing per frame, and it waits for the entrance to land
-                    before starting. */}
-                <div
-                  className="ring-float h-full w-full [transform-style:preserve-3d]"
-                  style={
-                    {
-                      "--float-y": `${5 + (n % 4) * 2.5}px`,
-                      "--float-dur": `${28 + (n % 5) * 5}s`,
-                      "--float-delay": `${1.3 + n * 0.06}s`,
-                    } as CSSProperties
-                  }
-                >
-                  {/* Inner: the entrance — rushing in from depth along Z. Runs on
-                      mount rather than on scroll-into-view: this sits above the
-                      fold, so an observer would only add a way for it to never
-                      fire and leave the ring blank. */}
-                  <motion.div
-                    // Hairline outline with the photo inset from it. Padding is
-                    // a percentage so the gap stays proportional across circles
-                    // that range from ~45px to ~120px wide.
-                    className="h-full w-full rounded-full border border-ink/10 p-[4%]"
-                    initial={{ opacity: 0, z: -900 }}
-                    animate={{ opacity: 1, z: 0 }}
-                    transition={{
-                      duration: 1.05,
-                      delay: 0.2 + n * 0.055,
-                      ease: [0.16, 1, 0.3, 1],
-                      opacity: { duration: 0.5, delay: 0.2 + n * 0.055 },
-                    }}
-                  >
-                    {/* `fill` resolves against inset-0 and would ignore the
-                        padding above, so the photo needs its own clip box. */}
-                    <div className="relative h-full w-full overflow-hidden rounded-full bg-ink/5">
-                      <Image src={p.src} alt="" fill sizes="(min-width: 768px) 12vw, 0px" className="object-cover" />
-                    </div>
-                  </motion.div>
+      {/* ── HERO ── headline in the top third, the photo carousel below ── */}
+      {/* An alternative photo-wall hero is archived in ./archive/PhotoWallHero */}
+      <CarouselHero photos={gallery} suspended={active !== null} onOpen={setActive} />
+
+      {/* ── STATS + PILLARS ── the numbers lead straight into the points ── */}
+      <section className="pb-24 pt-6 md:pb-32 md:pt-8">
+        <div className="mx-auto max-w-7xl px-6 lg:px-10">
+          <div className="mx-auto grid max-w-4xl grid-cols-2 gap-6 text-center md:grid-cols-4">
+            {stats.map((s) => (
+              <div key={s.label[0]} className="rounded-2xl border border-line bg-white p-5 shadow-2xs">
+                <div className="text-3xl font-bold tracking-tight text-brand-gradient lg:text-4xl">
+                  <Counter to={s.to} suffix={s.suffix} />
+                </div>
+                <div className="mt-1.5 text-xs font-medium leading-snug text-ink-soft">
+                  {s.label[0]}<br />{s.label[1]}
                 </div>
               </div>
-            );
-          })}
-
-          {/* Centred copy */}
-          <div className="relative mx-auto flex h-[460px] max-w-3xl flex-col items-center justify-center px-6 text-center md:h-[clamp(500px,62svh,560px)]">
-            <h2 className="text-[clamp(2.5rem,6vw,4.75rem)] font-bold tracking-[-0.035em] leading-[0.98]">
-              The people who{" "}
-              <span className="italic font-display font-normal text-brand">build SMG</span>
-            </h2>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-ink-soft md:text-lg">
-              Known by name, trusted with real decisions, and surrounded by people who
-              genuinely like showing up.
-            </p>
-            <div className="mt-7">
-              <Link
-                href="/jobs"
-                className="group inline-flex items-center gap-2 rounded-full bg-ink px-7 py-4 text-sm font-semibold text-white transition-colors hover:bg-ink/85"
-              >
-                See open roles
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </div>
+            ))}
           </div>
-        </div>
-      </section>
 
-      {/* ── STATS ── */}
-      <section className="border-y border-line bg-ink text-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
-          {[
-            ["28", "years building together"],
-            ["500+", "team members nationwide"],
-            ["12+", "cities and locations"],
-            ["80k+", "retail partners we serve"],
-          ].map(([n, l]) => (
-            <div key={l}>
-              <div className="text-4xl md:text-5xl font-bold tracking-tight">{n}</div>
-              <div className="mt-2 text-xs uppercase tracking-[0.18em] text-white/60">{l}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── LIFE AT SMG ── interactive gallery ── */}
-      {/* No bottom padding: the next section's top padding already supplies
-          the page's standard gap between content blocks. */}
-      <section aria-labelledby="life-heading" className="overflow-hidden bg-surface pt-16 md:pt-20">
-        <h2 id="life-heading" className="sr-only">Life at SMG</h2>
-
-        {/* Curved 3D ring of photos (WebGL); the grid is the no-WebGL fallback */}
-        <LifeCarousel
-          photos={gallery}
-          suspended={active !== null}
-          onOpen={setActive}
-          fallback={
-            <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-6 md:grid-cols-3 md:gap-5 lg:px-10">
-              {gallery.map((p, i) => (
-                <button
-                  key={p.caption}
-                  type="button"
-                  onClick={() => setActive(i)}
-                  className="group relative aspect-[4/5] cursor-zoom-in overflow-hidden rounded-2xl bg-ink/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-                  aria-label={`Open photo: ${p.caption}`}
-                >
-                  <Image
-                    src={p.src}
-                    alt={p.caption}
-                    fill
-                    sizes="(min-width: 768px) 33vw, 50vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </button>
-              ))}
-            </div>
-          }
-        />
-      </section>
-
-      {/* ── PILLARS ── */}
-      <section className="py-24 md:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="max-w-3xl mb-16">
-            <div className="text-xs uppercase tracking-[0.24em] text-brand font-semibold">Why people stay</div>
+          <div className="mb-16 mt-20 max-w-3xl md:mt-24">
+            <div className="text-xs uppercase tracking-[0.24em] text-accent font-semibold">Why people stay</div>
             <h2 className="mt-4 text-4xl md:text-6xl font-bold tracking-tight leading-[1.02]">
-              Four things our team mentions, <span className="italic font-display font-normal text-brand">unprompted.</span>
+              Four things our team mentions, <span className="italic font-display font-normal text-accent">unprompted.</span>
             </h2>
           </div>
 
