@@ -11,6 +11,7 @@ import {
   Scene,
   ShaderMaterial,
   SphereGeometry,
+  Vector3,
   WebGLRenderer,
   type Blending,
 } from "three";
@@ -43,9 +44,22 @@ export interface GlobeSceneOptions {
   /** The hero: sized, observed for visibility, and the source of pointer tilt. */
   container: HTMLElement;
   config: GlobeConfig;
+  /**
+   * Called after every drawn frame, for HTML overlays that track the globe.
+   * `project` places a lat/lng in the container's CSS px; `progress` is the
+   * assembly, 0–1, so overlays can wait for the continents to form.
+   */
+  onFrame?: (project: GlobeProjector, progress: number) => void;
+  /** Geography failed to load, so no globe will appear. */
+  onUnavailable?: () => void;
 }
 
+/** CSS px within the container, and how squarely the point faces the viewer (-1 to 1). */
+export type GlobeProjector = (lat: number, lng: number, lift?: number) => { x: number; y: number; facing: number };
+
 export interface GlobeSceneController {
+  /** Turns the globe to centre a point, holds there briefly, then resumes spinning. */
+  focus(lat: number, lng: number): void;
   dispose(): void;
 }
 
@@ -54,9 +68,14 @@ const TAN_HALF_FOV = Math.tan((FOV * Math.PI) / 360);
 const GLOW_RADIUS = 1.045;
 const GLOW_POWER = 3.5;
 const FADE_IN_MS = 900;
+/** Seconds to turn to a focused point, then to hold it before spinning again. */
+const FOCUS_TURN = 1.1;
+const FOCUS_HOLD = 1;
+const MAX_FOCUS_TILT = 0.9;
 
 const expoOut = (x: number) => (x >= 1 ? 1 : 1 - Math.pow(2, -10 * x));
 const clamp01 = (x: number) => Math.min(1, Math.max(0, x));
+const easeInOut = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
 type Nav = Navigator & { deviceMemory?: number; connection?: { saveData?: boolean } };
 
@@ -77,7 +96,7 @@ function resolveQuality(quality: GlobeConfig["quality"]): "high" | "low" {
  * canvas only fades in once there is a globe to show, so a failed load also
  * leaves the static background untouched.
  */
-export function createGlobeScene({ mount, container, config }: GlobeSceneOptions): GlobeSceneController | null {
+export function createGlobeScene({ mount, container, config, onFrame, onUnavailable }: GlobeSceneOptions): GlobeSceneController | null {
   if (typeof window === "undefined" || typeof WebGL2RenderingContext === "undefined") return null;
 
   const quality = resolveQuality(config.quality);
@@ -292,9 +311,14 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
     return Math.hypot(dx, dy) <= globeRadius * 1.08;
   };
 
+  // ── Focus ─────────────────────────────────────────────────────────────
+  let focusTurn: { fromSpin: number; toSpin: number; fromTilt: number; toTilt: number; t: number; hold: number } | null =
+    null;
+
   const onDragStart = (event: PointerEvent) => {
     if (event.button !== 0 || !isOverGlobe(event)) return;
     event.preventDefault();
+    focusTurn = null;
     dragging = true;
     dragLastX = event.clientX;
     dragLastY = event.clientY;
@@ -331,12 +355,32 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
     canvas.addEventListener("pointercancel", onDragEnd);
   }
 
+  // ── Overlay projection ────────────────────────────────────────────────
+  // Mirrors `rotateGlobe` in the shaders, so overlays sit on the drawn dots.
+  const projected = new Vector3();
+  const project: GlobeProjector = (lat, lng, lift = 1) => {
+    const [vx, vy, vz] = latLngToVector(lat, lng, lift);
+    const ry = uniforms.uRotY.value;
+    const rx = uniforms.uRotX.value;
+    const x = Math.cos(ry) * vx + Math.sin(ry) * vz;
+    const z = -Math.sin(ry) * vx + Math.cos(ry) * vz;
+    const y = Math.cos(rx) * vy - Math.sin(rx) * z;
+    const zz = Math.sin(rx) * vy + Math.cos(rx) * z;
+    projected.set(x, y, zz).project(camera);
+    return {
+      x: (projected.x * 0.5 + 0.5) * width,
+      y: (-projected.y * 0.5 + 0.5) * height,
+      facing: zz / lift,
+    };
+  };
+
   // ── Frame loop ────────────────────────────────────────────────────────
   function renderFrame() {
     if (disposed || contextLost || !ready || !hasSize) return;
     uniforms.uRotY.value = spin + pointerYaw;
     uniforms.uRotX.value = config.tilt + dragTilt + pointerPitch;
     renderer.render(scene, camera);
+    onFrame?.(project, uniforms.uProgress.value);
     if (!revealed) {
       revealed = true;
       canvas.style.opacity = "1";
@@ -356,7 +400,18 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
     if (assemblyElapsed < assemblyEnd) assemblyElapsed = Math.min(assemblyEnd, assemblyElapsed + dt);
     applyAssembly();
 
-    if (!dragging) {
+    if (focusTurn && !dragging) {
+      // Turn, hold, then hand back to the spin below, which eases up from rest.
+      focusTurn.t = Math.min(1, focusTurn.t + dt / FOCUS_TURN);
+      const k = easeInOut(focusTurn.t);
+      spin = focusTurn.fromSpin + (focusTurn.toSpin - focusTurn.fromSpin) * k;
+      dragTilt = focusTurn.fromTilt + (focusTurn.toTilt - focusTurn.fromTilt) * k;
+      spinVelocity = 0;
+      if (focusTurn.t >= 1) {
+        focusTurn.hold += dt;
+        if (focusTurn.hold >= FOCUS_HOLD) focusTurn = null;
+      }
+    } else if (!dragging) {
       const target = config.rotationSpeed * intensity;
       spinVelocity += (target - spinVelocity) * (1 - Math.exp(-1.6 * dt));
       spin += spinVelocity * dt;
@@ -564,12 +619,17 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
   const abort = new AbortController();
   loadLandSampler(config.geoDataUrl, abort.signal)
     .then((sampler) => {
-      if (disposed || !sampler) return;
+      if (disposed) return;
+      if (!sampler) {
+        onUnavailable?.();
+        return;
+      }
       if (hasSize) buildGlobe(sampler);
       else pendingSampler = sampler;
     })
     .catch(() => {
       // Aborted on unmount, or the data failed to load: the static background stays.
+      if (!disposed) onUnavailable?.();
     });
 
   // ── Observers and events ──────────────────────────────────────────────
@@ -626,6 +686,23 @@ export function createGlobeScene({ mount, container, config }: GlobeSceneOptions
   resize();
 
   return {
+    focus(lat, lng) {
+      if (disposed) return;
+      // Shortest way round to the point's longitude; tilt brings its latitude level.
+      const delta = spinForLongitude(lng) - spin;
+      const toSpin = spin + Math.atan2(Math.sin(delta), Math.cos(delta));
+      const toTilt = Math.max(-MAX_FOCUS_TILT, Math.min(MAX_FOCUS_TILT, (lat * Math.PI) / 180 - config.tilt));
+      dragging = false;
+      if (!running) {
+        // Static or offscreen: no frames to animate through, so jump there.
+        spin = toSpin;
+        dragTilt = toTilt;
+        focusTurn = null;
+        renderFrame();
+        return;
+      }
+      focusTurn = { fromSpin: spin, toSpin, fromTilt: dragTilt, toTilt, t: 0, hold: 0 };
+    },
     dispose() {
       if (disposed) return;
       disposed = true;
