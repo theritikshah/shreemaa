@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -9,17 +8,15 @@ import {
   Users,
   Warehouse,
   BarChart3,
-  TrendingUp,
   Megaphone,
   Truck,
   Network,
-  ShieldCheck,
   Handshake,
   Factory,
 } from "lucide-react";
 import { Counter } from "@/components/Counter";
 import { HeroTrafficBackground } from "@/components/hero-traffic/HeroTrafficBackground";
-import accent from "@/assets/infra-warehouse-interior.jpg";
+import { InfrastructureSection } from "@/components/home/InfrastructureSection";
 
 const stats = [
   { icon: Store, value: 90, suffix: "K+", label: "Retailers" },
@@ -74,6 +71,7 @@ export function DistributionView() {
             gridOpacity: 0.12,
             particleOpacity: 0.82,
             accentOpacity: 1,
+            accentRatio: 0.25,
           }}
           copyScrim="left"
         />
@@ -234,53 +232,8 @@ export function DistributionView() {
         </div>
       </section>
 
-      {/* INFRASTRUCTURE IMAGE */}
-      <section className="py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-7">
-            <div className="rounded-3xl border border-line bg-gradient-to-br from-surface-2 to-white p-2">
-              <Image
-                src={accent}
-                alt="Owned warehouse interior"
-                className="w-full h-[460px] object-cover rounded-[20px]"
-              />
-            </div>
-          </div>
-          <div className="lg:col-span-5">
-            <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">
-              Infrastructure
-            </div>
-            <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight">
-              Warehousing built{" "}
-              <span className="italic font-display">for throughput.</span>
-            </h2>
-            <p className="mt-5 text-ink-soft leading-relaxed">
-              Our facilities are designed around the realities of Indian
-              distribution: high SKU counts, seasonal spikes and the need to
-              dispatch fast. Every warehouse is company-operated, giving us
-              direct control over inventory accuracy, safety standards and
-              turnaround times.
-            </p>
-            <div className="mt-8 grid grid-cols-2 gap-3">
-              {[
-                { icon: Warehouse, label: "300K+ sq ft owned" },
-                { icon: Truck, label: "Pan-India dispatch" },
-                { icon: TrendingUp, label: "Seasonal scaling" },
-                { icon: ShieldCheck, label: "Quality control" },
-              ].map((f) => (
-                <div
-                  key={f.label}
-                  className="flex items-center gap-3 rounded-xl border border-line bg-white p-4"
-                >
-                  <f.icon className="h-4 w-4 text-brand" />
-                  <span className="text-sm font-medium">{f.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
+      {/* INFRASTRUCTURE */}
+      <InfrastructureSection />
     </>
   );
 }
