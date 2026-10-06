@@ -80,13 +80,13 @@ export function LifeCarousel({ photos, onOpen, fallback, suspended = false }: {
             return <button key={label} type="button" aria-pressed={selected} disabled={status !== "ready"}
               onClick={() => controls.current?.goTo(photos.findIndex((p) => tags.includes(p.tag)))}
               className={`inline-flex min-h-11 items-center gap-2 text-xs font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand md:text-sm ${selected ? "text-ink" : "text-ink-soft hover:text-ink"}`}>
-              <Icon className={`h-4 w-4 ${selected ? "text-brand" : ""}`} />{label}
+              <Icon className={`h-4 w-4 ${selected ? "text-accent" : ""}`} />{label}
             </button>;
           })}
         </div>
         <div className="sr-only focus-within:not-sr-only focus-within:mx-auto focus-within:mt-6 focus-within:flex focus-within:max-w-3xl focus-within:items-center focus-within:justify-between">
           <button type="button" onClick={() => onOpen(active)} className="group flex items-center gap-3 text-left focus-visible:outline-2 focus-visible:outline-brand">
-            <span className="font-mono text-xs text-brand">{String(active + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}</span>
+            <span className="font-mono text-xs text-accent">{String(active + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}</span>
             <span className="text-sm font-medium">{current.caption}</span>
             <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform group-hover:-translate-y-0.5" />
           </button>

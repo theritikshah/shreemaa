@@ -303,12 +303,12 @@ function WhoWeAre() {
         {/* Header row */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8">
           <div className="max-w-3xl">
-            <div className="text-xs uppercase tracking-[0.24em] text-brand font-semibold">Who we are</div>
+            <div className="text-xs uppercase tracking-[0.24em] text-accent font-semibold">Who we are</div>
             <h2 className="mt-4 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.02]">
               Three decades.
               <br />
               One network for{" "}
-              <span className="relative inline-block align-baseline text-brand font-serif-display italic">
+              <span className="relative inline-block align-baseline text-accent font-serif-display italic">
                 <span className="invisible" aria-hidden="true">marketplaces.</span>
                 <AnimatePresence mode="wait">
                   <motion.span
@@ -347,7 +347,7 @@ function WhoWeAre() {
                       className="group w-full text-left py-5 flex items-center gap-6 transition-colors"
                     >
                       <span
-                        className={`text-sm font-mono tabular-nums transition-colors ${isActive ? "text-brand" : "text-white/40 group-hover:text-white/70"
+                        className={`text-sm font-mono tabular-nums transition-colors ${isActive ? "text-accent" : "text-white/40 group-hover:text-white/70"
                           }`}
                       >
                         {e.year}
@@ -372,7 +372,7 @@ function WhoWeAre() {
 
             <Link
               href="/about"
-              className="mt-10 inline-flex items-center gap-2 text-sm font-semibold border-b border-white/30 pb-1 hover:border-brand hover:text-brand transition-colors"
+              className="mt-10 inline-flex items-center gap-2 text-sm font-semibold border-b border-white/30 pb-1 hover:border-brand hover:text-accent transition-colors"
             >
               More about SMG <ArrowUpRight className="h-4 w-4" />
             </Link>
@@ -402,7 +402,7 @@ function WhoWeAre() {
                     {era.body}
                   </p>
                   <div className="mt-10 inline-flex items-center gap-3 px-4 py-2 rounded-full border border-white/15 text-sm">
-                    <span className="text-brand font-semibold">{era.metric}</span>
+                    <span className="text-accent font-semibold">{era.metric}</span>
                     <span className="h-1 w-1 rounded-full bg-white/30" />
                     <span className="text-white/60">{era.tag}</span>
                   </div>

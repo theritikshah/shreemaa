@@ -63,12 +63,12 @@ export function SiteFooter() {
           {isContactPage ? (
             <>
               <div className="min-w-0 flex-[1_1_440px]">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">
                   Stay in the loop
                 </div>
                 <h2 className="mt-[clamp(14px,2vw,20px)] text-pretty font-display text-[clamp(30px,4.2vw,56px)] font-semibold leading-[1.04] tracking-[-0.03em]">
                   Commerce moves fast.{" "}
-                  <span className="font-serif-display italic text-brand">Stay ahead of it.</span>
+                  <span className="font-serif-display italic text-accent">Stay ahead of it.</span>
                 </h2>
               </div>
               <div className="min-w-0 flex-[1_1_360px]">
@@ -100,12 +100,12 @@ export function SiteFooter() {
           ) : (
             <>
               <div className="min-w-0 flex-[1_1_440px]">
-                <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
+                <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-accent">
                   Start a conversation
                 </div>
                 <h2 className="mt-[clamp(14px,2vw,20px)] text-pretty font-display text-[clamp(30px,4.2vw,56px)] font-semibold leading-[1.04] tracking-[-0.03em]">
                   Let&apos;s put your brand in front of{" "}
-                  <span className="font-serif-display italic text-brand">300 million people.</span>
+                  <span className="font-serif-display italic text-accent">300 million people.</span>
                 </h2>
               </div>
               <div className="flex min-w-0 flex-[1_1_330px] flex-col items-start gap-5">

@@ -292,7 +292,7 @@ export function MarketplaceView() {
           <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6">
             {journey.map((j, i) => (
               <div key={j.step} className="relative rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur p-8">
-                <div className="text-xs font-mono text-brand/80">{j.step}</div>
+                <div className="text-xs font-mono text-accent/80">{j.step}</div>
                 <h3 className="mt-3 text-2xl font-semibold tracking-tight">{j.title}</h3>
                 <p className="mt-3 text-sm text-white/70 leading-relaxed">{j.body}</p>
                 {i < journey.length - 1 && (
@@ -357,7 +357,7 @@ export function MarketplaceView() {
                 { icon: ShieldCheck, label: "Peak-event buffer capacity" },
               ].map((f) => (
                 <div key={f.label} className="flex items-center gap-3 rounded-xl border border-line bg-white p-4">
-                  <f.icon className="h-4 w-4 text-brand" />
+                  <f.icon className="h-4 w-4 text-accent" />
                   <span className="text-sm font-medium">{f.label}</span>
                 </div>
               ))}

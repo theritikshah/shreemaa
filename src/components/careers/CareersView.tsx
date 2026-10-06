@@ -276,7 +276,7 @@ export function CareersView() {
             {pillars.map((p) => (
               <div key={p.n} className="grid grid-cols-12 gap-6 py-10 md:py-14 group hover:bg-surface-2 transition-colors px-2 md:px-6 -mx-2 md:-mx-6 rounded-2xl">
                 <div className="col-span-12 md:col-span-2">
-                  <div className="text-sm font-mono text-brand tracking-wider">{p.n}</div>
+                  <div className="text-sm font-mono text-accent tracking-wider">{p.n}</div>
                 </div>
                 <div className="col-span-12 md:col-span-5">
                   <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{p.t}</h3>

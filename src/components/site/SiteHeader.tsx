@@ -138,10 +138,10 @@ export function SiteHeader() {
                           <>
                             <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-brand" />
                             <div className="flex-1">
-                              <div className="text-sm font-semibold text-ink group-hover:text-brand transition-colors">{b.title}</div>
+                              <div className="text-sm font-semibold text-ink group-hover:text-accent transition-colors">{b.title}</div>
                               <div className="text-[11px] text-ink-soft mt-0.5">{b.desc}</div>
                             </div>
-                            <ArrowUpRight className="h-3.5 w-3.5 text-ink/30 group-hover:text-brand transition-colors" />
+                            <ArrowUpRight className="h-3.5 w-3.5 text-ink/30 group-hover:text-accent transition-colors" />
                           </>
                         );
                         if (b.href) {

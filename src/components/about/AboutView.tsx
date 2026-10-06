@@ -84,7 +84,7 @@ export function AboutView() {
               { n: "03", t: "Today",     d: "An India-rooted company with nine offices across India, the Middle East, Asia Pacific, the Americas and Africa, powered by in-house technology across order management, distribution and marketplace operations." },
             ].map((b) => (
               <div key={b.n} className="bg-ink p-10 md:p-12">
-                <div className="font-serif-display text-5xl text-brand">{b.n}</div>
+                <div className="font-serif-display text-5xl text-accent">{b.n}</div>
                 <div className="mt-10 text-xs uppercase tracking-[0.22em] text-white/50">{b.t}</div>
                 <p className="mt-4 text-base md:text-lg text-white/80 leading-relaxed">{b.d}</p>
               </div>
@@ -237,7 +237,7 @@ export function AboutView() {
               <div className="mb-4 h-px w-8 bg-ink/30" /> What we believe
             </div>
             <h2 className="max-w-[22ch] text-3xl font-bold leading-[1.1] tracking-tight md:col-span-8 md:text-5xl">
-              Long-term partnerships. <span className="font-serif-display italic text-brand">Disciplined execution.</span>
+              Long-term partnerships. <span className="font-serif-display italic text-accent">Disciplined execution.</span>
             </h2>
           </div>
 

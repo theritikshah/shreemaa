@@ -70,7 +70,7 @@ export function GlobalTradeView() {
             <h1 className="mt-6 text-5xl md:text-6xl font-bold tracking-[-0.025em] leading-[1.02]">
               Exporting smartphones
               <br />
-              <span className="font-serif italic font-normal tracking-[-0.02em] text-[#fe0000]">
+              <span className="font-serif italic font-normal tracking-[-0.02em] text-accent">
                 and electronics to the world.
               </span>
             </h1>
@@ -101,7 +101,7 @@ export function GlobalTradeView() {
       <section id="categories" className="py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="max-w-2xl">
-            <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">
+            <div className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
               What we export
             </div>
             <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight">

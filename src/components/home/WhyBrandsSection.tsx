@@ -309,7 +309,7 @@ export function WhyBrandsSection() {
         <div className="h-px bg-line" />
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-14 pt-6 md:pt-8 md:px-14 items-end">
           <h2 className="md:col-span-5 font-display text-2xl md:text-[clamp(28px,3.4vh_+_10px,46px)] font-bold tracking-[-0.03em] leading-[1.06] text-ink">
-            Built for <span className="text-[#fd0000]">serious scale</span>.
+            Built for <span className="text-accent">serious scale</span>.
           </h2>
           <p className="md:col-span-7 text-sm md:text-[15px] leading-[1.65] text-ink-soft max-w-[56ch]">
             Nationwide reach, three decades of retail relationships and the capital strength
@@ -397,7 +397,7 @@ export function WhyBrandsSection() {
                           pointerEvents: on ? "auto" : "none",
                         }}
                       >
-                        <Icon className="h-[17px] w-[17px] text-brand-3" />
+                        <Icon className="h-[17px] w-[17px] text-accent" />
                         <div
                           className="mt-3 font-display text-2xl font-semibold tracking-[-0.02em]"
                         >
@@ -441,7 +441,7 @@ export function WhyBrandsSection() {
         </div>
         <div className="h-px bg-line" />
         <h2 className="mt-5 max-w-[16ch] font-display text-2xl font-bold leading-[1.06] tracking-[-0.03em] text-ink">
-          Built for <span className="text-[#fd0000]">serious scale</span>.
+          Built for <span className="text-accent">serious scale</span>.
         </h2>
         <p className="mt-3 text-sm leading-[1.65] text-ink-soft">
           Nationwide reach, three decades of retail relationships and the capital strength to

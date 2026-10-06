@@ -129,7 +129,7 @@ export function ContactView() {
                     animate={{ y: 0, opacity: 1, rotate: 0 }}
                     exit={{ y: "-0.6em", opacity: 0, rotate: -2 }}
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                    className="inline-block font-serif-display italic text-brand"
+                    className="inline-block font-serif-display italic text-accent"
                   >
                     {greetings[greetIdx]}
                   </motion.span>
@@ -145,7 +145,7 @@ export function ContactView() {
                 <div className="col-span-12 md:col-span-5 md:border-l md:border-ink/10 md:pl-6 space-y-3 text-sm">
                   <a href="mailto:contact@shrimaa.com" className="flex items-center justify-between group">
                     <span className="text-ink-soft uppercase tracking-[0.18em] text-[10px]">Email</span>
-                    <span className="font-medium group-hover:text-brand transition-colors flex items-center gap-1">
+                    <span className="font-medium group-hover:text-accent transition-colors flex items-center gap-1">
                       contact@shrimaa.com <ArrowUpRight className="h-3.5 w-3.5" />
                     </span>
                   </a>
@@ -262,7 +262,7 @@ export function ContactView() {
                     className="rounded-3xl bg-ink text-white p-12 relative overflow-hidden"
                   >
                     <div className="absolute -top-20 -right-20 h-72 w-72 rounded-full bg-brand/40 blur-3xl" />
-                    <CheckCircle2 className="h-10 w-10 text-brand-3 mb-6" />
+                    <CheckCircle2 className="h-10 w-10 text-accent mb-6" />
                     <div className="text-4xl font-display font-semibold tracking-tight">
                       Got it. Talk soon.
                     </div>
@@ -448,7 +448,7 @@ export function ContactView() {
             </div>
             <div className="text-lg font-medium tracking-tight text-white/80 md:text-xl">
               Or find us where you{" "}
-              <span className="font-serif-display italic text-brand">already are</span>.
+              <span className="font-serif-display italic text-accent">already are</span>.
             </div>
           </div>
           <div className="flex gap-2">

@@ -109,14 +109,14 @@ export function JobsView() {
 
       <section id="open-roles" className="scroll-mt-24 py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <Link href="/careers" className="inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-brand mb-8">
+          <Link href="/careers" className="inline-flex items-center gap-1.5 text-sm text-ink-soft hover:text-accent mb-8">
             <ArrowLeft className="h-3.5 w-3.5" /> Back to life at SMG
           </Link>
 
           <div className="mb-12">
             <div className="grid lg:grid-cols-12 gap-8 items-end pb-6 border-b border-line">
               <div className="lg:col-span-5">
-                <div className="text-[11px] uppercase tracking-[0.28em] text-brand font-semibold">Departments</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-accent font-semibold">Departments</div>
                 <h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight leading-[1.05]">
                   <span className="font-display italic">{String(filtered.length).padStart(2, "0")}</span> positions <br className="hidden md:block" />open right now.
                 </h2>
@@ -142,7 +142,7 @@ export function JobsView() {
                   >
                     <span className="inline-flex items-baseline gap-1.5">
                       {d}
-                      <span className={`text-[10px] font-mono tabular-nums transition-colors ${active ? "text-brand" : "text-ink-soft/60"}`}>
+                      <span className={`text-[10px] font-mono tabular-nums transition-colors ${active ? "text-accent" : "text-ink-soft/60"}`}>
                         {String(count).padStart(2, "0")}
                       </span>
                     </span>
@@ -166,20 +166,20 @@ export function JobsView() {
                 className="w-full text-left py-6 grid grid-cols-12 gap-4 items-center hover:bg-surface-2 transition-colors px-4 group"
               >
                 <div className="col-span-12 md:col-span-6">
-                  <div className="text-lg font-semibold tracking-tight group-hover:text-brand transition-colors">{j.title}</div>
+                  <div className="text-lg font-semibold tracking-tight group-hover:text-accent transition-colors">{j.title}</div>
                   <div className="mt-1 text-sm text-ink-soft">{j.desc}</div>
                 </div>
                 <div className="col-span-6 md:col-span-2 text-sm text-ink-soft flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5" />{j.dept}</div>
                 <div className="col-span-6 md:col-span-2 text-sm text-ink-soft flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5" />{j.location}</div>
                 <div className="col-span-12 md:col-span-2 md:text-right">
-                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand">View role <ArrowRight className="h-3.5 w-3.5" /></span>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-accent">View role <ArrowRight className="h-3.5 w-3.5" /></span>
                 </div>
               </button>
             ))}
           </div>
 
           <p className="mt-8 text-sm text-ink-soft text-center">
-            Don&apos;t see your role? Email <a href="mailto:careers@shrimaa.com" className="text-brand font-medium hover:underline">careers@shrimaa.com</a>
+            Don&apos;t see your role? Email <a href="mailto:careers@shrimaa.com" className="text-accent font-medium hover:underline">careers@shrimaa.com</a>
           </p>
         </div>
       </section>
@@ -196,7 +196,7 @@ function ApplyDialog({ job, onClose }: { job: typeof jobs[number]; onClose: () =
       <div className="bg-white rounded-t-3xl md:rounded-3xl max-w-2xl w-full max-h-[92vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="sticky top-0 bg-white p-6 border-b border-line flex items-start justify-between">
           <div>
-            <div className="text-xs uppercase tracking-wider text-brand font-semibold">{job.dept} · {job.location}</div>
+            <div className="text-xs uppercase tracking-wider text-accent font-semibold">{job.dept} · {job.location}</div>
             <h2 className="mt-1 text-2xl font-bold tracking-tight">{job.title}</h2>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-surface-2 rounded-full"><X className="h-5 w-5" /></button>

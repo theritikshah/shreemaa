@@ -46,7 +46,7 @@ export function PeopleStories() {
               <h2 className="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] leading-[0.92] tracking-tight font-bold">
                 Our people.
                 <br />
-                <span className="font-serif-display italic text-brand">Their journeys.</span>
+                <span className="font-serif-display italic text-accent">Their journeys.</span>
               </h2>
             </div>
             <p className="md:col-span-4 text-base md:text-lg text-ink-soft leading-relaxed">

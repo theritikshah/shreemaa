@@ -39,7 +39,7 @@ export function ScaleOffersSection() {
               Why brands choose SMG
             </div>
             <h2 className="mt-3 font-display text-[clamp(2.2rem,3.8vw,4.25rem)] font-semibold leading-[0.96] tracking-[-0.04em]">
-              Built for <br className="hidden lg:block" /><span className="text-[#fd0000]">serious scale.</span>
+              Built for <br className="hidden lg:block" /><span className="text-accent">serious scale.</span>
             </h2>
             <p className="mt-5 text-sm leading-relaxed text-white/65 md:text-base max-w-[40ch]">
               Nationwide reach, three decades of retail relationships and the operating strength to carry growth.
@@ -75,7 +75,7 @@ export function ScaleOffersSection() {
                         </span>
                       </div>
                       <h3 className="mt-5 font-display text-[clamp(1.8rem,2.8vw,3rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
-                        {offer.title} <span className="text-[#fd0000]">{offer.accent}</span>
+                        {offer.title} <span className="text-accent">{offer.accent}</span>
                       </h3>
                       <p className="mt-3 text-xs leading-relaxed text-ink/65 md:text-sm max-w-[44ch]">
                         {offer.description}
@@ -86,9 +86,9 @@ export function ScaleOffersSection() {
                         href={offer.href}
                         target={offer.href.startsWith("http") ? "_blank" : undefined}
                         rel={offer.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors group-hover:text-[#fd0000]"
+                        className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors group-hover:text-accent"
                       >
-                        Explore capability <ArrowUpRight className="h-4 w-4 text-[#fd0000] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        Explore capability <ArrowUpRight className="h-4 w-4 text-accent transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </Link>
                     </div>
                   </div>

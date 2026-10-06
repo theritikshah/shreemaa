@@ -85,7 +85,7 @@ export function DistributionView() {
             <h1 className="mt-6 text-[clamp(35px,8.7vw,64px)] md:text-[clamp(48px,6.975vw,108px)] font-bold tracking-[-0.025em] leading-[1.02]">
               India&apos;s most trusted
               <br />
-              <span className="font-serif italic font-normal tracking-[-0.02em] text-[#fe0000]">
+              <span className="font-serif italic font-normal tracking-[-0.02em] text-accent">
                 route to retail.
               </span>
             </h1>
@@ -123,7 +123,7 @@ export function DistributionView() {
                 i > 0 ? "sm:border-l sm:border-ink/10 sm:pl-10" : ""
               }`}
             >
-              <span className="flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-brand">
+              <span className="flex h-11 w-11 md:h-12 md:w-12 shrink-0 items-center justify-center rounded-full bg-brand/10 text-accent">
                 <s.icon className="h-5 w-5 md:h-[22px] md:w-[22px]" strokeWidth={2} />
               </span>
               <span>
@@ -142,7 +142,7 @@ export function DistributionView() {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
             <div className="lg:col-span-7">
-              <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">
+              <div className="text-xs uppercase tracking-[0.2em] text-accent font-semibold">
                 What we do
               </div>
               <h2 className="mt-3 text-4xl md:text-5xl font-bold tracking-tight">

@@ -48,7 +48,7 @@ export function ImpactSection() {
             </div>
             <h2 className="mt-[22px] font-display text-[clamp(32px,6vw,64px)] font-bold tracking-[-0.035em] leading-[1.02] max-w-[18ch]">
               Scale is only useful if it is{" "}
-              <span className="font-serif-display italic text-brand">accountable</span>.
+              <span className="font-serif-display italic text-accent">accountable</span>.
             </h2>
           </div>
           <div className="lg:col-span-6 lg:pt-2">

@@ -20,6 +20,7 @@
   --color-brand: var(--brand);
   --color-brand-2: var(--brand-2);
   --color-brand-3: var(--brand-3);
+  --color-accent: var(--accent);
   --color-accent-blue: var(--accent-blue);
   --color-destructive: var(--destructive);
 
@@ -35,6 +36,7 @@
   --brand: oklch(0.58 0.22 25); /* #E11B22 */
   --brand-2: oklch(0.66 0.22 25); /* #FF4D4D */
   --brand-3: oklch(0.72 0.19 45); /* #FF7A45 */
+  --accent: #df202e; /* text & icon accent */
   --accent-blue: oklch(0.62 0.18 250); /* #2F80ED */
 
   /* Neutrals - warm editorial off-white */

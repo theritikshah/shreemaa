@@ -41,7 +41,7 @@ const cards: Card[] = [
     statLabel: "Orders / month",
     headline: (
       <>
-        Launchpad for <span className="text-[#fd0000]">digital shelf space</span>.
+        Launchpad for <span className="text-accent">digital shelf space</span>.
       </>
     ),
     body: "From launch-day listings to daily pricing, stock and fulfilment, we run the marketplace operation behind brand growth.",
@@ -61,7 +61,7 @@ const cards: Card[] = [
     statLabel: "Retail touchpoints",
     headline: (
       <>
-        <span className="text-[#fd0000]">50 million consumers</span>, one retailer at a time.
+        <span className="text-accent">50 million consumers</span>, one retailer at a time.
       </>
     ),
     body: "Central and Western India's distribution leader, metro to rural.",
@@ -81,7 +81,7 @@ const cards: Card[] = [
     statLabel: "Sourced & served",
     headline: (
       <>
-        Sourcing the world. <span className="text-[#fd0000]">Exporting India.</span>
+        Sourcing the world. <span className="text-accent">Exporting India.</span>
       </>
     ),
     body: "Rio World sources smartphones and consumer electronics from multiple channels and supplies buyers across international markets.",
@@ -102,7 +102,7 @@ const cards: Card[] = [
     statLabel: "Verra · GS · GCC · CDM",
     headline: (
       <>
-        Verified climate impact, <span className="text-[#fd0000]">at scale</span>.
+        Verified climate impact, <span className="text-accent">at scale</span>.
       </>
     ),
     body: "From tree planting to cleaner cooking and plastic recovery, OYU Green develops projects designed to deliver measurable environmental results.",
@@ -327,7 +327,7 @@ export function OurBusinessesSection() {
                   className="z-10 grid min-h-0 flex-1 grid-cols-1 gap-4 px-5 pb-5 pt-2 md:grid-cols-12 md:items-center md:gap-14 md:overflow-visible md:px-14 md:py-7"
                 >
                   <div className="flex min-h-0 flex-col justify-end md:col-span-5 md:justify-center">
-                    <Icon className="mb-2 h-5 w-5 flex-none self-start text-[#fd0000] md:mb-4 md:h-6 md:w-6" />
+                    <Icon className="mb-2 h-5 w-5 flex-none self-start text-accent md:mb-4 md:h-6 md:w-6" />
 
                     {/* Mobile-only collage image (Hidden on desktop) */}
                     <div className="md:hidden my-1 h-24 w-full flex items-center justify-center overflow-hidden">
