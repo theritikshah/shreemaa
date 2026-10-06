@@ -89,7 +89,7 @@ export function ImpactSection() {
                 WebkitBackgroundClip: "text",
               }}
             >
-              <Counter to={100} suffix="M+" />
+              <Counter to={300} suffix="M+" />
             </div>
             <div className="mt-[18px] text-xs uppercase tracking-[0.24em] text-[oklch(0.50_0.01_60)] font-semibold">
               Consumers reached every year
