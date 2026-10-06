@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { type ReactNode } from "react";
 import { ArrowUpRight, Handshake, Landmark, MapPin, ShoppingBag, Truck, Warehouse, type LucideIcon } from "lucide-react";
-import UnicornScene from "unicornstudio-react/next";
 
 type Offer = { index: string; eyebrow: string; title: string; accent: string; description: string; stat: ReactNode; statLabel: string; note: string; href: string; icon: LucideIcon };
 
@@ -23,9 +22,6 @@ export function ScaleOffersSection() {
       <div className="absolute inset-0 overflow-hidden bg-ink">
         <div aria-hidden className="pointer-events-none absolute -right-[120px] -top-[180px] h-[560px] w-[560px] rounded-full bg-[rgba(225,27,34,0.22)] blur-[150px]" />
         <div aria-hidden className="pointer-events-none absolute -bottom-[200px] -left-[100px] h-[520px] w-[520px] rounded-full bg-[rgba(255,122,69,0.14)] blur-[160px]" />
-        <div className="absolute inset-0">
-          <UnicornScene projectId="tnAhw4e67txvvqrBP7oz" width="100%" height="100%" scale={1} dpi={1.25} lazyLoad ariaLabel="Animated SMG growth network" placeholderClassName="h-full w-full bg-transparent" />
-        </div>
       </div>
       <div aria-hidden className="pointer-events-none absolute inset-0" style={{ backgroundImage: "linear-gradient(135deg, #b30000 0%, #fd0000 100%)", mixBlendMode: "multiply" }} />
 
