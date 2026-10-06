@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
-import logo from "@/assets/smg-logo.png";
+import logo from "@/assets/SMG-Logo-optimized (1).svg";
 
 type SubItem = { to?: string; href?: string; title: string; desc: string };
 
