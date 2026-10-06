@@ -10,6 +10,8 @@
  *   compositions reflow with aspect ratio instead of scaling uniformly.
  */
 
+import type { KnockoutHeadingId } from "./knockoutPaths";
+
 export interface CommandPalette {
   /** Diagonal background gradient, top-left → bottom-right. */
   gradient: [string, string, string];
@@ -322,6 +324,8 @@ export interface CommandCopy {
   labelsDescription: string;
   /** Final heading as spoken; the visual is generated in knockoutPaths.ts. */
   heading: string;
+  /** Which generated outline in knockoutPaths.ts draws `heading`. */
+  knockout: KnockoutHeadingId;
 }
 
 export const MARKETPLACE_COPY: CommandCopy = {
@@ -329,4 +333,13 @@ export const MARKETPLACE_COPY: CommandCopy = {
   labelsDescription:
     "We list products, run ads, plan inventory, ship orders and handle returns across every marketplace.",
   heading: "Every marketplace, one team.",
+  knockout: "marketplace",
+};
+
+export const HOME_COPY: CommandCopy = {
+  labels: ["Marketplace Operations", "Distribution Network", "Global Trade", "Exports", "Sustainability"],
+  labelsDescription:
+    "Marketplace operations, a distribution network, global trade, exports and sustainability, run as one group.",
+  heading: "Five businesses. One commerce engine.",
+  knockout: "home",
 };

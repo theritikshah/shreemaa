@@ -1,8 +1,8 @@
 import { useId, useImperativeHandle, useRef, type Ref } from "react";
-import { KNOCKOUT_LAYOUTS } from "./knockoutPaths";
+import type { KnockoutLayout, KnockoutLayoutKey } from "./knockoutPaths";
 import type { KnockoutFrame } from "./timeline";
 
-export type KnockoutLayoutKey = keyof typeof KNOCKOUT_LAYOUTS;
+export type { KnockoutLayoutKey };
 
 export interface KnockoutHandle {
   /**
@@ -13,6 +13,7 @@ export interface KnockoutHandle {
 }
 
 interface KnockoutHeadingProps {
+  layouts: Record<KnockoutLayoutKey, KnockoutLayout>;
   overlayColor: string;
   textColor: string;
   handleRef: Ref<KnockoutHandle>;
@@ -31,7 +32,7 @@ const KEYS: KnockoutLayoutKey[] = ["desktop", "mobile"];
  *
  * Decorative: the heading is announced once by a real <h2> elsewhere.
  */
-export function KnockoutHeading({ overlayColor, textColor, handleRef }: KnockoutHeadingProps) {
+export function KnockoutHeading({ layouts, overlayColor, textColor, handleRef }: KnockoutHeadingProps) {
   // useId output contains ":" characters, which are awkward in url(#…).
   const maskId = `command-knockout-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -79,7 +80,7 @@ export function KnockoutHeading({ overlayColor, textColor, handleRef }: Knockout
               <rect width="100%" height="100%" fill="white" />
               {KEYS.map((key) => (
                 <g key={key} ref={(el) => { maskGroups.current[key] = el; }} style={{ display: "none" }}>
-                  <path d={KNOCKOUT_LAYOUTS[key].d} fill="black" />
+                  <path d={layouts[key].d} fill="black" />
                 </g>
               ))}
             </mask>
@@ -91,7 +92,7 @@ export function KnockoutHeading({ overlayColor, textColor, handleRef }: Knockout
         <svg className="block size-full" focusable="false">
           {KEYS.map((key) => (
             <g key={key} ref={(el) => { titleGroups.current[key] = el; }} style={{ display: "none" }}>
-              <path d={KNOCKOUT_LAYOUTS[key].d} fill={textColor} />
+              <path d={layouts[key].d} fill={textColor} />
             </g>
           ))}
         </svg>

@@ -1,89 +1,62 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Package, Building2, Ship, Store } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUpRight, Rocket } from "lucide-react";
 import { ImpactSection } from "@/components/home/ImpactSection";
 import { OurBusinessesSection } from "@/components/home/OurBusinessesSection";
 import { ScaleOffersSection } from "@/components/home/ScaleOffersSection";
-import { HeroPortalGrid } from "@/components/home/hero-portal-grid/HeroPortalGrid";
-import warehouse from "@/assets/infra-warehouse.jpg";
+import { CommandHeroExperience } from "@/components/command-hero/CommandHeroExperience";
+import { HeroCopy } from "@/components/command-hero/HeroCopy";
+import { HOME_COPY } from "@/components/command-hero/config";
 
 const brands = ["Amazon", "Flipkart", "Samsung", "Xiaomi", "OPPO", "vivo", "realme", "Lenovo", "ASUS", "boAt", "Croma", "Reliance Digital"];
 
 export function HomeView() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [mouse, setMouse] = useState({ x: 0.5, y: 0.4 });
-
   return (
     <>
-      {/* HERO - editorial, cursor-spotlight */}
-      <section
-        ref={heroRef}
-        onMouseMove={(e) => {
-          const r = heroRef.current?.getBoundingClientRect();
-          if (!r) return;
-          setMouse({ x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height });
-        }}
-        className="relative overflow-hidden bg-surface text-ink min-h-screen flex items-end pt-32 pb-16"
-      >
-        {/* Mirrored Three.js perspective grids: ceiling + floor. */}
-        <HeroPortalGrid />
-
-        {/* Cursor-follow spotlight */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-          style={{
-            background: `radial-gradient(600px circle at ${mouse.x * 100}% ${mouse.y * 100}%, oklch(0.58 0.22 25 / 0.10), transparent 55%)`,
-          }}
-        />
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-10 w-full">
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.1 }}
-            className="text-[14vw] md:text-[10vw] lg:text-[8.5vw] leading-[0.95] tracking-[-0.04em] font-display font-semibold max-w-[16ch]"
-          >
-            The launchpad
-            <br />
-            for <span className="font-serif-display italic text-brand">global brands</span>.
-          </motion.h1>
-
-
-          {/* Bottom row: subtitle + CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-14 max-w-xl"
-          >
-            <p className="text-base md:text-lg text-ink-soft leading-relaxed">
-              A global commerce network, helping the world&apos;s leading brands launch, scale and operate across e-commerce, retail, distribution and international trade.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-2">
-              <Link
-                href="/businesses/marketplace-operations"
-                className="group inline-flex items-center gap-2 bg-ink text-white pl-5 pr-2 py-2 rounded-full text-sm font-medium hover:bg-ink/85 transition-colors"
-              >
-                Explore businesses
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-ink group-hover:bg-brand group-hover:text-white transition-colors">
-                  <ArrowUpRight className="h-3.5 w-3.5" />
-                </span>
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 border border-ink/15 text-ink px-5 py-2 rounded-full text-sm font-medium hover:bg-ink hover:text-white transition-colors"
-              >
-                Partner with us
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* HERO: particles → rings → "Five businesses. One commerce engine." */}
+      <CommandHeroExperience
+        copy={HOME_COPY}
+        hero={
+          <HeroCopy
+            eyebrow={
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] backdrop-blur">
+                <Rocket className="h-3 w-3" /> Launch · Scale · Operate
+              </div>
+            }
+            title={
+              <>
+                The launchpad for <br />
+                <span className="font-display italic text-accent">global brands.</span>
+              </>
+            }
+            description={
+              <>
+                A global commerce network, helping the world&apos;s leading brands launch, scale and operate across
+                e-commerce, retail, distribution and international trade.
+              </>
+            }
+            actions={
+              <>
+                <Link
+                  href="/businesses/marketplace-operations"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-sm font-semibold text-ink transition hover:bg-white/90"
+                >
+                  Explore businesses <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold backdrop-blur transition hover:bg-white/20"
+                >
+                  Partner with us
+                </Link>
+              </>
+            }
+          />
+        }
+      />
 
       {/* TRUSTED BY */}
       <section className="py-14 bg-surface-2 border-y border-line overflow-hidden">
@@ -120,49 +93,8 @@ export function HomeView() {
       {/* FULL-BLEED SCALE OFFERS */}
       <ScaleOffersSection />
 
-      {/* INFRASTRUCTURE
-      <section className="bg-surface-2 overflow-hidden">
-        <div className="pt-28 md:pt-36">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-            <div className="lg:col-span-8">
-              <div className="text-xs uppercase tracking-[0.2em] text-brand font-semibold">Infrastructure</div>
-              <h2 className="mt-3 text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1]">
-                The backbone<br />behind the brands.
-              </h2>
-            </div>
-            <p className="lg:col-span-4 text-ink-soft text-[17px] leading-[1.65]">
-              Warehouses, fulfillment centers and offices across the country — owned, operated and accountable.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-16 bg-ink">
-          <InfrastructureBanner />
-
-          <div className="px-6 lg:px-10 pb-20 md:pb-24">
-            <div className="mx-auto max-w-7xl border-t border-white/[0.14] grid grid-cols-2 md:grid-cols-4 gap-px bg-white/10">
-              {[
-                { icon: Package, n: "70+", label: "Fulfillment centers", desc: "Positioned close to demand across 21 cities." },
-                { icon: Building2, n: "9", label: "Global offices", desc: "Gurgaon HQ, with teams across five regions." },
-                { icon: Ship, n: "5", label: "Trade regions", desc: "Sourcing and export lanes, port to shelf." },
-                { icon: Store, n: "80K+", label: "Retailers served", desc: "From metros through to deep tier-3 towns." },
-              ].map((s) => (
-                <div key={s.label} className="bg-ink p-6 md:p-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 flex-none items-center justify-center rounded-[10px] border border-white/[0.22] text-brand-3">
-                      <s.icon className="h-[22px] w-[22px]" />
-                    </div>
-                    <div className="font-display text-[30px] font-semibold tracking-[-0.03em] text-white">{s.n}</div>
-                  </div>
-                  <div className="mt-5 text-[10px] uppercase tracking-[0.2em] text-brand-3 font-semibold">{s.label}</div>
-                  <div className="mt-2 max-w-[30ch] text-[13px] leading-[1.65] text-white/60">{s.desc}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-      */}
+      {/* INFRASTRUCTURE */}
+      {/* <InfrastructureSection /> */}
 
     </>
   );
@@ -200,76 +132,6 @@ const eras = [
 ];
 
 const kineticWords = ["commerce.", "distribution.", "marketplaces.", "exports."];
-
-const PARALLAX_DEPTH = 60;
-
-function InfrastructureBanner() {
-  const frameRef = useRef<HTMLDivElement>(null);
-  const imgRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
-
-    let ticking = false;
-    const park = () => {
-      const frame = frameRef.current;
-      const img = imgRef.current;
-      if (!frame || !img) return;
-      const r = frame.getBoundingClientRect();
-      const vh = window.innerHeight || 800;
-      if (r.bottom < -200 || r.top > vh + 200) return;
-      // -1 when the frame sits below the fold, +1 when it has passed above it
-      const centered = (vh / 2 - (r.top + r.height / 2)) / (vh / 2 + r.height / 2);
-      img.style.transform = `translate3d(0, ${(-centered * PARALLAX_DEPTH).toFixed(2)}px, 0)`;
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        park();
-        ticking = false;
-      });
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll, { passive: true });
-    park();
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  return (
-    <div ref={frameRef} className="relative h-[520px] overflow-hidden">
-      <div ref={imgRef} className="absolute -top-[25%] left-0 h-[150%] w-full will-change-transform">
-        <Image src={warehouse} alt="Warehouse" fill sizes="100vw" className="object-cover" priority />
-      </div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_top,oklch(0.17_0.01_60)_0%,oklch(0.17_0.01_60/0.55)_40%,oklch(0.17_0.01_60/0.1)_85%)]" />
-      <div className="absolute inset-x-0 bottom-0 px-6 pb-10 lg:px-10 lg:pb-10">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-end justify-between gap-8 text-white">
-          <div>
-            <div className="text-[11px] uppercase tracking-[0.2em] text-white/70">
-              Bhiwandi · Gurgaon · Hyderabad · Kolkata
-            </div>
-            <div className="mt-2.5 font-display text-[28px] md:text-[34px] font-semibold tracking-[-0.03em]">
-              300K+ sq ft, owned and operated
-            </div>
-          </div>
-          <Link
-            href="/businesses/marketplace-operations"
-            className="inline-flex flex-none items-center gap-2 rounded-full bg-white py-2 pl-5 pr-2 text-sm font-medium text-ink hover:bg-white/90 transition-colors"
-          >
-            See the network
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand text-white">
-              <ArrowUpRight className="h-3.5 w-3.5" />
-            </span>
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function WhoWeAre() {
   const [active, setActive] = useState(0);

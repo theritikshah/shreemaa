@@ -12,7 +12,7 @@ import {
 } from "./config";
 import type { CommandSceneController, SceneQuality } from "./heroParticleScene";
 import { KnockoutHeading, type KnockoutHandle } from "./KnockoutHeading";
-import { KNOCKOUT_LAYOUTS } from "./knockoutPaths";
+import { KNOCKOUT_HEADINGS } from "./knockoutPaths";
 import { ScrollActionLabels } from "./ScrollActionLabels";
 import { knockoutFrame, sequenceAt } from "./timeline";
 
@@ -67,6 +67,7 @@ export function CommandHeroExperience({
   const knockoutRef = useRef<KnockoutHandle>(null);
 
   const labelCount = copy.labels.length;
+  const layouts = KNOCKOUT_HEADINGS[copy.knockout];
   // Scene and palette are plain data; key on their content, not identity.
   const sceneKey = JSON.stringify({ scene, palette, quality });
 
@@ -139,7 +140,7 @@ export function CommandHeroExperience({
       const layout = desktop ? "desktop" : "mobile";
       knockoutRef.current?.apply({
         layout,
-        frame: state.mask < 0 ? null : knockoutFrame(state.mask, KNOCKOUT_LAYOUTS[layout], viewportWidth, viewportHeight, !desktop),
+        frame: state.mask < 0 ? null : knockoutFrame(state.mask, layouts[layout], viewportWidth, viewportHeight, !desktop),
         titleOpacity: state.titleOpacity,
         covered: state.covered,
       });
@@ -206,7 +207,7 @@ export function CommandHeroExperience({
       controller?.dispose();
       controller = null;
     };
-  }, [sceneKey, labelCount]);
+  }, [sceneKey, labelCount, layouts]);
 
   const [g0, g1, g2] = palette.gradient;
   const style = {
@@ -249,7 +250,7 @@ export function CommandHeroExperience({
         />
 
         <ScrollActionLabels ref={labelsRef} labels={copy.labels} />
-        <KnockoutHeading handleRef={knockoutRef} overlayColor={palette.endBackground} textColor={palette.text} />
+        <KnockoutHeading layouts={layouts} handleRef={knockoutRef} overlayColor={palette.endBackground} textColor={palette.text} />
 
         <div
           ref={copyRef}
