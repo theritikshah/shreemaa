@@ -22,7 +22,7 @@ export function Counter({
     const start = performance.now();
     let raf = 0;
     const tick = (t: number) => {
-      const p = Math.min((t - start) / duration, 1);
+      const p = Math.min(Math.max((t - start) / duration, 0), 1);
       const eased = 1 - Math.pow(1 - p, 3);
       setVal(Math.floor(eased * to));
       if (p < 1) raf = requestAnimationFrame(tick);
