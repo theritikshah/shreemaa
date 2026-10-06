@@ -4,12 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail,
-  MapPin,
   ArrowUpRight,
-  Briefcase,
-  Handshake,
-  Users,
   CheckCircle2,
+  ChevronDown,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -17,34 +14,25 @@ import { toast } from "sonner";
 const greetings = ["Hello.", "Namaste.", "Salaam.", "Vanakkam.", "Sat Sri Akaal.", "Kem Cho."];
 
 const inquiries = [
-  { id: "business", label: "Business", icon: Briefcase, desc: "Distribution, marketplace ops, trading or trade." },
-  { id: "partnership", label: "Partnership", icon: Handshake, desc: "Manufacturing, brand or strategic alliances." },
-  { id: "career", label: "Career", icon: Users, desc: "Roles, internships and people inquiries." },
+  { id: "business", label: "Business", desc: "Distribution, marketplace ops, trading or trade." },
+  { id: "partnership", label: "Partnership", desc: "Manufacturing, brand or strategic alliances." },
+  { id: "career", label: "Career", desc: "Roles, internships and people inquiries." },
 ];
 
-const offices = [
-  {
-    id: "bhopal",
-    city: "Bhopal",
-    state: "Madhya Pradesh, IN",
-    role: "Global Headquarters",
-    blurb: "Group leadership, strategy and operations.",
-    hours: "Mon to Sat, 10:00 to 19:00 IST",
-    address: "Shri Maa Group, Bhopal, Madhya Pradesh",
-    mapQuery: "Shri Maa Group, Bhopal, Madhya Pradesh, India",
-    coords: "23.2599° N, 77.4126° E",
-  },
-  {
-    id: "gurgaon",
-    city: "Gurgaon",
-    state: "Haryana, IN",
-    role: "Corporate Office",
-    blurb: "Corporate functions, partnerships and technology.",
-    hours: "Mon to Sat, 10:00 to 19:00 IST",
-    address: "Enkay Centre, Udyog Vihar Phase 5, Sector 19, Gurugram 122016",
-    mapQuery: "Enkay centre, Udyog vihar, phase 5, Sector 19, Gurugram, Haryana 122016",
-    coords: "28.4595° N, 77.0266° E",
-  },
+type Office = {
+  city: string;
+  country: string;
+  role: string;
+  focus: string;
+  mapQuery: string;
+  address?: string;
+  hours?: string;
+  hq?: boolean;
+};
+
+const OFFICES: Office[] = [
+  { city: "Bhopal",    country: "India",     role: "Global Headquarters", focus: "Group leadership, strategy and operations",        mapQuery: "Shri Maa Group, Bhopal, Madhya Pradesh, India", address: "Shri Maa Group, Bhopal, Madhya Pradesh", hours: "Mon to Sat, 10:00 to 19:00 IST", hq: true },
+  { city: "Gurgaon",   country: "India",     role: "Corporate Office",    focus: "Corporate functions, partnerships and technology", mapQuery: "Enkay centre, Udyog vihar, phase 5, Sector 19, Gurugram, Haryana 122016", address: "Enkay Centre, Udyog Vihar Phase 5, Sector 19, Gurugram 122016", hours: "Mon to Sat, 10:00 to 19:00 IST" },
 ];
 
 const contactSchema = z.object({
@@ -65,7 +53,6 @@ type FieldErrors = Partial<Record<keyof z.infer<typeof contactSchema>, string>>;
 export function ContactView() {
   const [greetIdx, setGreetIdx] = useState(0);
   const [type, setType] = useState("business");
-  const [office, setOffice] = useState(offices[0]);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
 
@@ -192,61 +179,36 @@ export function ContactView() {
           </div>
 
           <div className="grid grid-cols-12 gap-6 lg:gap-10">
-            {/* Inquiry picker — column of large hoverable rows */}
+            {/* Office addresses */}
             <div className="col-span-12 lg:col-span-5">
               <div className="border-t border-ink/10">
-                {inquiries.map((i, idx) => {
-                  const Icon = i.icon;
-                  const active = type === i.id;
-                  return (
-                    <button
-                      key={i.id}
-                      onClick={() => setType(i.id)}
-                      className="group relative flex w-full items-start gap-6 border-b border-ink/10 py-6 text-left"
-                    >
-                      <span className="mt-2 text-[11px] tabular-nums uppercase tracking-[0.22em] text-ink-soft">
-                        0{idx + 1}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-baseline justify-between gap-4">
-                          <div className={`font-display text-3xl font-semibold tracking-tight transition-colors md:text-4xl ${active ? "text-brand" : "text-ink group-hover:text-brand"}`}>
-                            {i.label}
-                          </div>
-                          <motion.span
-                            animate={{ rotate: active ? 45 : 0, scale: active ? 1.1 : 1 }}
-                            className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${active ? "bg-brand text-white" : "bg-ink/5 text-ink"}`}
-                          >
-                            <Icon className="h-4 w-4" />
-                          </motion.span>
-                        </div>
-                        <AnimatePresence initial={false}>
-                          {active && (
-                            <motion.p
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="mt-3 overflow-hidden text-sm text-ink-soft"
-                            >
-                              {i.desc}
-                            </motion.p>
-                          )}
-                        </AnimatePresence>
+                {OFFICES.filter((o) => o.address).map((o) => (
+                  <a
+                    key={o.city}
+                    href={`https://www.google.com/maps?q=${encodeURIComponent(o.mapQuery)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group block border-b border-ink/10 py-6"
+                  >
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="font-display text-3xl font-semibold tracking-tight text-accent md:text-4xl">
+                        {o.city}
                       </div>
-                    </button>
-                  );
-                })}
+                      <ArrowUpRight className="h-5 w-5 text-ink-soft transition-colors group-hover:text-accent" />
+                    </div>
+                    <p className="mt-2 text-sm text-ink-soft">{o.address}</p>
+                  </a>
+                ))}
               </div>
 
-              <div className="mt-10 rounded-2xl border border-ink/5 bg-surface-2 p-6">
-                <div className="text-[11px] uppercase tracking-[0.2em] text-ink-soft mb-2">
-                  Prefer email?
-                </div>
+              <div className="mt-8 space-y-1 text-sm">
                 <a
-                  href={`mailto:contact@shrimaa.com?subject=${activeInquiry.label}%20inquiry`}
-                  className="inline-flex items-center gap-2 text-lg font-medium hover:text-brand transition-colors"
+                  href="mailto:contact@shrimaa.com"
+                  className="text-lg font-medium hover:text-accent transition-colors"
                 >
-                  contact@shrimaa.com <ArrowUpRight className="h-4 w-4" />
+                  contact@shrimaa.com
                 </a>
+                <p className="text-ink-soft">{OFFICES[0].hours}</p>
               </div>
             </div>
 
@@ -291,13 +253,19 @@ export function ContactView() {
                       <FloatField label="Email" name="email" type="email" error={errors.email} />
                       <FloatField label="Phone" name="phone" type="tel" error={errors.phone} />
                     </div>
+                    <FloatSelect
+                      label="Subject"
+                      name="type"
+                      value={type}
+                      onChange={setType}
+                      options={inquiries.map((i) => ({ value: i.id, label: i.label }))}
+                    />
                     <FloatField
                       label="Tell us a little about it"
                       name="message"
                       type="textarea"
                       error={errors.message}
                     />
-                    <input type="hidden" name="type" value={type} />
                     <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
                       <div className="text-xs text-ink-soft">
                         Subject:{" "}
@@ -320,122 +288,6 @@ export function ContactView() {
               </AnimatePresence>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* SECTION 03 — Offices as two distinct doors */}
-      <section id="offices" className="bg-surface py-24 md:py-28">
-        <div className="mx-auto max-w-7xl px-6 lg:px-10">
-          <div className="grid items-end gap-6 md:grid-cols-12 md:gap-10">
-            <div className="md:col-span-8">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
-                Find us in India
-              </div>
-              <h2 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.02] tracking-[-0.03em] md:text-6xl">
-                Two doors, <span className="font-serif-display italic text-brand">always open</span>.
-              </h2>
-            </div>
-            <p className="text-sm leading-relaxed text-ink-soft md:col-span-4 md:max-w-sm">
-              Strategy and operations in Bhopal. Partnerships and corporate teams in Gurgaon.
-              Choose a door to see where to find us.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 lg:grid-cols-2">
-            {offices.map((location, index) => {
-              const isActive = office.id === location.id;
-              return (
-                <button
-                  key={location.id}
-                  type="button"
-                  onClick={() => setOffice(location)}
-                  aria-pressed={isActive}
-                  className={`group relative min-h-[310px] overflow-hidden rounded-[28px] border p-7 text-left transition-all duration-300 md:p-9 ${
-                    isActive
-                      ? "border-ink bg-ink text-white shadow-[0_24px_60px_-36px_rgba(20,18,16,0.65)]"
-                      : "border-ink/10 bg-white text-ink hover:border-ink/30"
-                  }`}
-                >
-                  <div
-                    aria-hidden
-                    className={`absolute -right-20 -top-24 h-64 w-64 rounded-full blur-3xl transition-opacity ${
-                      isActive ? "bg-brand/30 opacity-100" : "bg-brand/10 opacity-0 group-hover:opacity-100"
-                    }`}
-                  />
-
-                  <div className="relative flex h-full flex-col">
-                    <div className="flex items-center justify-between gap-5">
-                      <div className={`text-[10px] font-semibold uppercase tracking-[0.22em] ${isActive ? "text-white/50" : "text-ink-soft"}`}>
-                        0{index + 1} · {location.role}
-                      </div>
-                      <div className={`flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] ${isActive ? "text-white/60" : "text-ink-soft"}`}>
-                        <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Mon–Sat
-                      </div>
-                    </div>
-
-                    <div className="mt-9">
-                      <div className="font-display text-5xl font-semibold tracking-[-0.04em] md:text-6xl">
-                        {location.city}
-                      </div>
-                      <div className={`mt-1 text-sm ${isActive ? "text-white/55" : "text-ink-soft"}`}>
-                        {location.state}
-                      </div>
-                    </div>
-
-                    <div className="mt-auto grid grid-cols-[1fr_auto] items-end gap-6 pt-10">
-                      <div>
-                        <div className={`flex max-w-md items-start gap-2 text-sm ${isActive ? "text-white/75" : "text-ink/75"}`}>
-                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-brand" />
-                          <span>{location.address}</span>
-                        </div>
-                        <div className={`mt-4 text-xs ${isActive ? "text-white/45" : "text-ink-soft"}`}>
-                          <span>{location.hours}</span>
-                        </div>
-                      </div>
-                      <span className={`grid h-11 w-11 place-items-center rounded-full transition-colors ${isActive ? "bg-white text-ink" : "bg-ink text-white group-hover:bg-brand"}`}>
-                        <ArrowUpRight className="h-4 w-4" />
-                      </span>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={office.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.35 }}
-              className="relative mt-5 h-[280px] overflow-hidden rounded-[28px] border border-ink/10 bg-white md:h-[360px]"
-            >
-              <iframe
-                title={`SMG ${office.city} office`}
-                src={`https://www.google.com/maps?q=${encodeURIComponent(office.mapQuery)}&output=embed`}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-              <div className="absolute inset-x-4 bottom-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-ink/90 px-4 py-3 text-white backdrop-blur md:inset-x-auto md:left-4 md:min-w-[420px]">
-                <div>
-                  <div className="text-[10px] uppercase tracking-[0.2em] text-white/50">Selected office</div>
-                  <div className="mt-0.5 text-sm font-medium">{office.city} · {office.coords}</div>
-                </div>
-                <a
-                  href={`https://www.google.com/maps?q=${encodeURIComponent(office.mapQuery)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-semibold hover:text-brand"
-                >
-                  Directions <ArrowUpRight className="h-3.5 w-3.5" />
-                </a>
-              </div>
-            </motion.div>
-          </AnimatePresence>
         </div>
       </section>
 
@@ -468,6 +320,51 @@ export function ContactView() {
         </div>
       </section>
     </>
+  );
+}
+
+function FloatSelect({
+  label,
+  name,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+}) {
+  const [focused, setFocused] = useState(false);
+
+  return (
+    <div className="relative">
+      <label
+        htmlFor={`contact-${name}`}
+        className="absolute left-0 top-0 pointer-events-none text-[10px] uppercase tracking-[0.22em] text-ink-soft"
+      >
+        {label}
+      </label>
+      <select
+        id={`contact-${name}`}
+        name={name}
+        value={value}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
+        onChange={(e) => onChange(e.target.value)}
+        className={`w-full appearance-none bg-transparent border-b ${
+          focused ? "border-brand" : "border-ink/20"
+        } pt-6 pb-2 pr-8 text-ink focus:outline-none transition-colors cursor-pointer`}
+      >
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown className="pointer-events-none absolute right-0 bottom-3 h-4 w-4 text-ink-soft" />
+    </div>
   );
 }
 
